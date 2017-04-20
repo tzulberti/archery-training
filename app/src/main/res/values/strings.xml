@@ -1,0 +1,12 @@
+<resources>
+    <string name="app_name">Archery Training</string>
+
+    <string name="distance">Distancia</string>
+    <string name="arrowsAmount">Cantidad de flechas</string>
+    <string name="add">Agregar</string>
+    <string name="todaysTotal">Totales de hoy</string>
+    <string name="lastSerie">Ultima serie</string>
+    <string name="datetime">Cuando</string>
+    <string name="arrowsAmountTableHeader"># de flechas</string>
+    <string name="todayTotals">Totales de hoy</string>
+</resources>
