@@ -1,75 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="1"
-    android:keepScreenOn="true"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
     >
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    android:stretchColumns="*">
 
-    <TableRow
-        android:layout_width="match_parent"
-        >
+    <TableRow android:layout_width="match_parent">
+
         <Button
             android:id="@+id/button2"
             android:layout_width="match_parent"
-            android:onClick="stop"
             android:layout_weight="1"
-            android:text="@string/button_stop"
-            />
+            android:onClick="onClick"
+            android:text="@string/button_stop" />
     </TableRow>
 
     <TableRow>
-        <TextView
-            android:text="@string/totalSeries"
-            android:padding="3dip" />
 
         <TextView
-            android:id="@+id/textTotalSeries"
+            android:padding="3dip"
+            android:text="@string/serieInfo" />
+
+        <TextView
+            android:id="@+id/textSerieInfo"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/repetitionsInfo" />
+
+        <TextView
+            android:id="@+id/textRepetionsInfo"
             android:gravity="right"
             android:padding="3dip"
             android:text="0" />
     </TableRow>
 
+
     <TableRow>
-        <TextView
-            android:text="@string/totalRepetitions"
-            android:padding="3dip" />
 
         <TextView
-            android:id="@+id/textTotalRepetitions"
-            android:gravity="right"
             android:padding="3dip"
-            android:text="0" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:text="@string/currentSerie"
-            android:padding="3dip" />
-
-        <TextView
-            android:id="@+id/textCurrentSerie"
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="0" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:text="@string/currentRepetition"
-            android:padding="3dip" />
-
-        <TextView
-            android:id="@+id/textCurrentRepetition"
-            android:gravity="right"
-            android:padding="3dip"
-            android:text="0" />
-    </TableRow>
-
-    <TableRow>
-        <TextView
-            android:text="@string/status"
-            android:padding="3dip" />
+            android:text="@string/status" />
 
         <TextView
             android:id="@+id/textStatus"
@@ -79,16 +58,19 @@
     </TableRow>
 
     <TableRow
-        android:layout_width="match_parent"
-        >
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height ="fill_parent">
+
         <TextView
             android:id="@+id/textTimeLeft"
-            android:padding="3dip"
-            android:layout_weight="1"
-            android:layout_height="60dip"
+            android:layout_width="fill_parent"
+            android:layout_height ="fill_parent"
             android:gravity="center"
+            android:padding="3dip"
             android:textSize="32sp"
             android:textStyle="bold"
-            />
+            android:layout_span="5" />
     </TableRow>
 </TableLayout>
+</LinearLayout>

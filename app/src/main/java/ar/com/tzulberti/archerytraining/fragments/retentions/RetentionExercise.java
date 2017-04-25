@@ -39,9 +39,8 @@ public class RetentionExercise extends BaseClickableFragment {
 
     private TextView timeLeftText;
     private TextView statusText;
-
-    private TextView currentSerieText;
-    private TextView currentRepetitionText;
+    private TextView textSerieInfo;
+    private TextView textRepetionsInfo;
 
 
     public static RetentionExercise newInstance(int seriesAmount, int seriesSleepTime, int repetitionsAmount, int repetitionsDuration, int startIn) {
@@ -61,14 +60,8 @@ public class RetentionExercise extends BaseClickableFragment {
 
         this.timeLeftText = (TextView) view.findViewById(R.id.textTimeLeft);
         this.statusText = (TextView) view.findViewById(R.id.textStatus);
-        this.currentSerieText = (TextView) view.findViewById(R.id.textCurrentSerie);
-        this.currentRepetitionText = (TextView) view.findViewById(R.id.textCurrentRepetition);
-
-        TextView totalSeriesText = (TextView) view.findViewById(R.id.textTotalSeries);
-        totalSeriesText.setText(Integer.toString(seriesAmount));
-
-        TextView totalRepetitionsText = (TextView) view.findViewById(R.id.textTotalRepetitions);
-        totalRepetitionsText.setText(Integer.toString(repetitionsAmount));
+        this.textSerieInfo = (TextView) view.findViewById(R.id.textSerieInfo);
+        this.textRepetionsInfo = (TextView) view.findViewById(R.id.textRepetionsInfo);
 
         this.shouldStop = false;
         this.textToSpeech = new TextToSpeech(activity.getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -139,7 +132,7 @@ public class RetentionExercise extends BaseClickableFragment {
             return;
         }
 
-        this.currentSerieText.setText(Integer.toString(this.currentSerie));
+        this.textSerieInfo.setText(Integer.toString(this.currentSerie) + " / " + Integer.toString(this.seriesAmount));
 
         // make sure of reseting this value for the different series
         this.currentRepetition = 1;
@@ -186,7 +179,7 @@ public class RetentionExercise extends BaseClickableFragment {
             return;
         }
 
-        this.currentRepetitionText.setText(Integer.toString(currentRepetition));
+        this.textRepetionsInfo.setText(Integer.toString(this.currentRepetition) + " / " + Integer.toString(this.repetitionsAmount));
 
         // set the values because on the first execution of onTick will be
         // executed after one second

@@ -42,13 +42,12 @@
     <string name="startIn">Empezar en</string>
     <string name="buttonStart">Empezar</string>
     <string name="requiredValue">Requerido</string>
+
     <!-- Text usados en la pantalla de cuando empieza todo -->
     <string name="button_stop">Parar</string>
     <string name="wait_time">Tiempo de descanso</string>
-    <string name="currentSerie">Serie actual</string>
-    <string name="currentRepetition">Repeticion actual</string>
-    <string name="totalSeries">Series totales</string>
-    <string name="totalRepetitions">Repeticiones totales</string>
+    <string name="serieInfo">Serie actual</string>
+    <string name="repetitionsInfo">Repeticion actual</string>
     <string name="status">Estado</string>
 
     <!-- Differentes estados en el que se puede encontrar la applicacion -->
