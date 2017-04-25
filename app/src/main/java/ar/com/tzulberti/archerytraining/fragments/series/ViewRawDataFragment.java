@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.seriefragments;
+package ar.com.tzulberti.archerytraining.fragments.series;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -6,27 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.github.mikephil.charting.data.PieEntry;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.SerieData;
-import ar.com.tzulberti.archerytraining.model.TodaysTotalData;
 
 /**
  * Created by tzulberti on 4/21/17.
  */
 
-public class ViewRawDataFragment extends BaseFragment implements View.OnClickListener {
+public class ViewRawDataFragment extends BaseFragment  {
 
     private static final int MAX_VALUES_TO_SHOW = 20;
 
@@ -82,8 +76,4 @@ public class ViewRawDataFragment extends BaseFragment implements View.OnClickLis
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        this.handleClick(v);
-    }
 }

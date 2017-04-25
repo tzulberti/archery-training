@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1"
+    android:keepScreenOn="true"
+    >
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:onClick="stop"
+            android:layout_weight="1"
+            android:text="@string/button_stop"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/totalSeries"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/textTotalSeries"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/totalRepetitions"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/textTotalRepetitions"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/currentSerie"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/textCurrentSerie"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/currentRepetition"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/textCurrentRepetition"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/status"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/textStatus"
+            android:gravity="right"
+            android:padding="3dip"
+            android:text="0" />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <TextView
+            android:id="@+id/textTimeLeft"
+            android:padding="3dip"
+            android:layout_weight="1"
+            android:layout_height="60dip"
+            android:gravity="center"
+            android:textSize="32sp"
+            android:textStyle="bold"
+            />
+    </TableRow>
+</TableLayout>

@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.seriefragments;
+package ar.com.tzulberti.archerytraining.fragments.series;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -14,7 +14,6 @@ import com.github.mikephil.charting.data.PieData;
 import com.github.mikephil.charting.data.PieDataSet;
 import com.github.mikephil.charting.data.PieEntry;
 import com.github.mikephil.charting.formatter.DefaultValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.github.mikephil.charting.utils.MPPointF;
 

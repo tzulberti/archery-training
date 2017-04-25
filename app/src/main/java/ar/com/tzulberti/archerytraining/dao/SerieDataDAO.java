@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
@@ -31,10 +32,10 @@ public class SerieDataDAO {
     public long addSerieData(int distance, int arrowAmount) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(DatabaseHelper.DISTANCE_COLUMN_NAME, distance);
-        contentValues.put(DatabaseHelper.ARROWS_AMOUNT_COLUMN_NAME, arrowAmount);
-        contentValues.put(DatabaseHelper.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
-        long id = db.insert(DatabaseHelper.TABLE_NAME, null, contentValues);
+        contentValues.put(SerieInformationConsts.DISTANCE_COLUMN_NAME, distance);
+        contentValues.put(SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, arrowAmount);
+        contentValues.put(SerieInformationConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
+        long id = db.insert(SerieInformationConsts.TABLE_NAME, null, contentValues);
         if (id == -1) {
             // TODO check what to do in this case
             System.err.println("-------------------------- Tuvo un error");
@@ -45,8 +46,8 @@ public class SerieDataDAO {
     public long deleteSerieId(int id) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         return db.delete(
-                DatabaseHelper.TABLE_NAME,
-                String.format("%s = ?", DatabaseHelper.ID_COLUMN_NAME),
+                SerieInformationConsts.TABLE_NAME,
+                String.format("%s = ?", SerieInformationConsts.ID_COLUMN_NAME),
                 new String[] {String.valueOf(id)}
                 );
     }
@@ -55,9 +56,9 @@ public class SerieDataDAO {
         ArrayList<SerieData> res = new ArrayList<SerieData>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
-        String sortOrder = DatabaseHelper.DATETIME_COLUMN_NAME + " DESC";
+        String sortOrder = SerieInformationConsts.DATETIME_COLUMN_NAME + " DESC";
         Cursor cursor = db.query(
-                DatabaseHelper.TABLE_NAME,                     // The table to query
+                SerieInformationConsts.TABLE_NAME,                     // The table to query
                 null,                               // The columns to return
                 null,                                // The columns for the WHERE clause
                 null,                            // The values for the WHERE clause
@@ -67,10 +68,10 @@ public class SerieDataDAO {
                 String.valueOf(limit)
         );
 
-        int idIndex = cursor.getColumnIndexOrThrow(DatabaseHelper.ID_COLUMN_NAME);
-        int datetimeIndex = cursor.getColumnIndexOrThrow(DatabaseHelper.DATETIME_COLUMN_NAME);
-        int distanceIndex = cursor.getColumnIndexOrThrow(DatabaseHelper.DISTANCE_COLUMN_NAME);
-        int arrorsAmountIndex = cursor.getColumnIndexOrThrow(DatabaseHelper.ARROWS_AMOUNT_COLUMN_NAME);
+        int idIndex = cursor.getColumnIndexOrThrow(SerieInformationConsts.ID_COLUMN_NAME);
+        int datetimeIndex = cursor.getColumnIndexOrThrow(SerieInformationConsts.DATETIME_COLUMN_NAME);
+        int distanceIndex = cursor.getColumnIndexOrThrow(SerieInformationConsts.DISTANCE_COLUMN_NAME);
+        int arrorsAmountIndex = cursor.getColumnIndexOrThrow(SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME);
 
         while (cursor.moveToNext()) {
             SerieData currentData = new SerieData();
@@ -94,9 +95,9 @@ public class SerieDataDAO {
                         "SELECT SUM(%s) " +
                         "FROM %s " +
                         "WHERE %s >= ? AND %s < ? ",
-                        DatabaseHelper.DISTANCE_COLUMN_NAME,
-                        DatabaseHelper.TABLE_NAME,
-                        DatabaseHelper.DATETIME_COLUMN_NAME, DatabaseHelper.DATETIME_COLUMN_NAME
+                        SerieInformationConsts.DISTANCE_COLUMN_NAME,
+                        SerieInformationConsts.TABLE_NAME,
+                        SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME
                 ),
                 new String[] {String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
         );
@@ -117,7 +118,7 @@ public class SerieDataDAO {
         List<TodaysTotalData> res = new ArrayList<TodaysTotalData>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
-        String sortOrder = DatabaseHelper.DATETIME_COLUMN_NAME + " DESC";
+        String sortOrder = SerieInformationConsts.DATETIME_COLUMN_NAME + " DESC";
         Cursor cursor = db.rawQuery(
             String.format(
                     "SELECT %s, SUM(%s), MAX(%s), COUNT(*) " +
@@ -125,11 +126,11 @@ public class SerieDataDAO {
                     "WHERE %s >= ? AND %s < ? " +
                     "GROUP BY %s " +
                     "ORDER BY %s ",
-                    DatabaseHelper.DISTANCE_COLUMN_NAME, DatabaseHelper.ARROWS_AMOUNT_COLUMN_NAME, DatabaseHelper.DATETIME_COLUMN_NAME,
-                    DatabaseHelper.TABLE_NAME,
-                    DatabaseHelper.DATETIME_COLUMN_NAME, DatabaseHelper.DATETIME_COLUMN_NAME,
-                    DatabaseHelper.DISTANCE_COLUMN_NAME,
-                    DatabaseHelper.DISTANCE_COLUMN_NAME
+                    SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
+                    SerieInformationConsts.TABLE_NAME,
+                    SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
+                    SerieInformationConsts.DISTANCE_COLUMN_NAME,
+                    SerieInformationConsts.DISTANCE_COLUMN_NAME
             ),
             new String[] {String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
         );

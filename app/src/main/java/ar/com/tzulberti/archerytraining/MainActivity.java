@@ -16,18 +16,20 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
+import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
+import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.seriefragments.AddSerieFragment;
-import ar.com.tzulberti.archerytraining.seriefragments.BaseFragment;
-import ar.com.tzulberti.archerytraining.seriefragments.TotayTotalsFragment;
-import ar.com.tzulberti.archerytraining.seriefragments.ViewRawDataFragment;
+import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
+import ar.com.tzulberti.archerytraining.fragments.series.BaseFragment;
+import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
+import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseHelper databaseHelper;
     private SerieDataDAO serieDataDAO;
-    private BaseFragment currentFragment;
+    private BaseClickableFragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +106,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new TotayTotalsFragment();
         } else if (id == R.id.nav_today_raw_data) {
             this.currentFragment = new ViewRawDataFragment();
+        } else if (id == R.id.nav_retentions) {
+            this.currentFragment = new ConfigureRetention();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -126,7 +130,7 @@ public class MainActivity extends AppCompatActivity
         if (fragment == null) {
             this.currentFragment = null;
         } else {
-            this.currentFragment = (BaseFragment) fragment;
+            this.currentFragment = (BaseClickableFragment) fragment;
         }
     }
 

@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:stretchColumns="1"
+        >
+
+    <TableRow>
+        <TextView
+            android:text="@string/seriesAmount"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/seriesAmount"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/repetitionsAmount"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/repetitionsAmount"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/seriesSleepTime"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/seriesSleepTime"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/repetitionsDuration"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/repetitionsDuration"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/startIn"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/startIn"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:text="@string/buttonStart"
+            />
+    </TableRow>
+</TableLayout>
+
+
+
+

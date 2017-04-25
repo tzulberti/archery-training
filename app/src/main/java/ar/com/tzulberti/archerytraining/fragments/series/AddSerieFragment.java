@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.seriefragments;
+package ar.com.tzulberti.archerytraining.fragments.series;
 
 
 import android.os.Bundle;
