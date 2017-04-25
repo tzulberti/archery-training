@@ -9,7 +9,7 @@ import java.util.Date;
 
 public class SerieData {
 
-    public long id;
+    public int id;
     public int distance;
     public int arrowsAmount;
     public Date datetime;

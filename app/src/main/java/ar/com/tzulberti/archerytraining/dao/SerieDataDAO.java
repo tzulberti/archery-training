@@ -8,8 +8,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import ar.com.tzulberti.archerytraining.helpers.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.helpers.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.SerieData;
 import ar.com.tzulberti.archerytraining.model.TodaysTotalData;
 
@@ -40,6 +42,15 @@ public class SerieDataDAO {
         return id;
     }
 
+    public long deleteSerieId(int id) {
+        SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+        return db.delete(
+                DatabaseHelper.TABLE_NAME,
+                String.format("%s = ?", DatabaseHelper.ID_COLUMN_NAME),
+                new String[] {String.valueOf(id)}
+                );
+    }
+
     public List<SerieData> getLastValues(int limit) {
         ArrayList<SerieData> res = new ArrayList<SerieData>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
@@ -63,10 +74,10 @@ public class SerieDataDAO {
 
         while (cursor.moveToNext()) {
             SerieData currentData = new SerieData();
-            currentData.id = cursor.getLong(idIndex);
+            currentData.id = cursor.getInt(idIndex);
             currentData.distance = cursor.getInt(distanceIndex);
             currentData.arrowsAmount = cursor.getInt(arrorsAmountIndex);
-            currentData.datetime = new Date(cursor.getLong(datetimeIndex));
+            currentData.datetime = DatetimeHelper.databaseValueToDate(cursor.getLong(datetimeIndex));
 
             res.add(currentData);
         }
@@ -109,7 +120,7 @@ public class SerieDataDAO {
         String sortOrder = DatabaseHelper.DATETIME_COLUMN_NAME + " DESC";
         Cursor cursor = db.rawQuery(
             String.format(
-                    "SELECT %s, SUM(%s), MAX(%s) " +
+                    "SELECT %s, SUM(%s), MAX(%s), COUNT(*) " +
                     "FROM %s " +
                     "WHERE %s >= ? AND %s < ? " +
                     "GROUP BY %s " +
@@ -127,7 +138,8 @@ public class SerieDataDAO {
             TodaysTotalData data = new TodaysTotalData();
             data.distance = cursor.getInt(0);
             data.totalArrows = cursor.getLong(1);
-            data.lastUpdate = new Date(cursor.getLong(2));
+            data.lastUpdate = DatetimeHelper.databaseValueToDate(cursor.getLong(2));
+            data.seriesAmount = cursor.getInt(3);
             res.add(data);
         }
         return res;

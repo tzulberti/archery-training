@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:overScrollMode="ifContentScrolls"
+    android:scrollbarStyle="insideOverlay"
+    android:scrollbars="vertical">
+
+    <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/todayTotalsTextData"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*"
+        >
+
+        <TableRow>
+
+            <TextView
+                android:padding="3dip"
+                android:text="@string/addSerieDistance" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="@string/addSerieArrowsAmountTableHeader" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="@string/addSerieDatetime" />
+
+            <TextView
+                android:padding="3dip"
+                android:text="@string/todayDataTotalSeries" />
+        </TableRow>
+
+    </TableLayout>
+
+    <com.github.mikephil.charting.charts.PieChart
+        android:id="@+id/todayTotalsPieChart"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/todayTotalsTextData"/>
+</RelativeLayout>
+
+
+
+

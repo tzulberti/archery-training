@@ -10,4 +10,5 @@ public class TodaysTotalData {
     public int distance;
     public long totalArrows;
     public Date lastUpdate;
+    public int seriesAmount;
 }

@@ -1,12 +1,29 @@
 <resources>
     <string name="app_name">Archery Training</string>
 
-    <string name="distance">Distancia</string>
-    <string name="arrowsAmount">Cantidad de flechas</string>
-    <string name="add">Agregar</string>
-    <string name="todaysTotal">Totales de hoy</string>
-    <string name="lastSerie">Ultima serie</string>
-    <string name="datetime">Cuando</string>
-    <string name="arrowsAmountTableHeader"># de flechas</string>
-    <string name="todayTotals">Totales de hoy</string>
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- String used when the user is going to load a new serie with information -->
+    <string name="addSerieDistance">Distancia</string>
+    <string name="addSerieArrowsAmount">Cantidad de flechas</string>
+    <string name="addSerieAdd">Agregar</string>
+    <string name="addSerieLastSerie">Totales de hoy</string>
+
+    <string name="addSerieDatetime">Cuando</string>
+    <string name="addSerieArrowsAmountTableHeader"># de flechas</string>
+    <string name="addSerieTodayTotals">Totales de hoy</string>
+
+    <!-- Today exercise left menu options -->
+    <string name="leftMenuTodayAddSerie">Agregar serie</string>
+    <string name="leftMenuTodayViewTotals">Ver totales</string>
+    <string name="leftMenuTodayRawData">Ver data</string>
+
+    <!-- Today totals data -->
+    <string name="todayDataTotalSeries"># de series</string>
+
+    <!-- Today raw data -->
+    <string name="todayRawDataDelete">Borrar</string>
 </resources>

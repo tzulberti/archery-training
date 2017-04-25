@@ -1,0 +1,112 @@
+package ar.com.tzulberti.archerytraining.seriefragments;
+
+
+import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.List;
+
+import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.model.SerieData;
+
+/**
+ * Created by tzulberti on 4/20/17.
+ */
+
+public class AddSerieFragment extends BaseFragment  {
+
+    private EditText distanceText;
+    private EditText arrowAmountText;
+
+    private TextView lastDistance;
+    private TextView lastArrowsAmount;
+    private TextView lastDatetime;
+    private TextView todaysTotals;
+
+    private static final int MAX_VALUES_TO_SHOW = 3;
+
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View view = inflater.inflate(R.layout.add_serie, container, false);
+        this.setObjects();
+
+        this.distanceText = (EditText) view.findViewById(R.id.distance);
+        this.arrowAmountText = (EditText) view.findViewById(R.id.arrowsAmount);
+
+        this.lastDistance = (TextView) view.findViewById(R.id.lastDistance);
+        this.lastArrowsAmount = (TextView) view.findViewById(R.id.lastArrowsAmount);
+        this.lastDatetime = (TextView) view.findViewById(R.id.lastDatetime);
+        this.todaysTotals = (TextView) view.findViewById(R.id.todayTotals);
+
+        this.showLastSerie();
+        this.showTodayArrows();
+
+        return view;
+    }
+
+
+    /**
+     * When the user select the option to add, so it will add the new serie to the
+     * database
+     *
+     * @param view
+     */
+    @Override
+    public void handleClick(View v) {
+        System.err.println("Entro en el onClick del AddSerieFragment");
+        CharSequence distanceValue = this.distanceText.getText().toString();
+        if (StringUtils.isBlank(distanceValue)) {
+            // TODO put a real error message
+            this.distanceText.setError("");
+            return ;
+        };
+
+        CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
+        if (StringUtils.isBlank(arrowsAmount)) {
+            this.arrowAmountText.setError("");
+            return ;
+        }
+
+        System.err.println("Llego hasta aca");
+        this.serieDataDAO.addSerieData(
+                Integer.valueOf(distanceValue.toString()),
+                Integer.valueOf(arrowsAmount.toString())
+        );
+
+        // reset the input to notify the user of a change
+        this.arrowAmountText.setText("");
+
+        this.showLastSerie();
+        this.showTodayArrows();
+    }
+
+    private void showTodayArrows() {
+        long todaysTotals = this.serieDataDAO.getTodayArrows();
+        this.todaysTotals.setText(String.valueOf(todaysTotals));
+    }
+
+
+    private void showLastSerie() {
+        List<SerieData> data = this.serieDataDAO.getLastValues(1);
+        if (data == null || data.size() == 0) {
+            this.lastDistance.setText("-");
+            this.lastArrowsAmount.setText("-");
+            this.lastDatetime.setText("-");
+
+        } else {
+            SerieData lastSerie = data.get(0);
+            this.lastDistance.setText(String.valueOf(lastSerie.distance));
+            this.lastArrowsAmount.setText(String.valueOf(lastSerie.arrowsAmount));
+            this.lastDatetime.setText(DatetimeHelper.DATETIME_FORMATTER.format(lastSerie.datetime));
+        }
+    }
+}

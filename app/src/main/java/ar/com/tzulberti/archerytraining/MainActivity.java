@@ -1,128 +1,137 @@
 package ar.com.tzulberti.archerytraining;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.view.View;
-import android.widget.EditText;
-import android.widget.TextView;
-
-import org.apache.commons.lang3.StringUtils;
-
-import java.util.List;
+import android.support.design.widget.NavigationView;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
-import ar.com.tzulberti.archerytraining.helpers.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.helpers.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.SerieData;
-import ar.com.tzulberti.archerytraining.model.TodaysTotalData;
+import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.seriefragments.AddSerieFragment;
+import ar.com.tzulberti.archerytraining.seriefragments.BaseFragment;
+import ar.com.tzulberti.archerytraining.seriefragments.TotayTotalsFragment;
+import ar.com.tzulberti.archerytraining.seriefragments.ViewRawDataFragment;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener {
 
     private DatabaseHelper databaseHelper;
     private SerieDataDAO serieDataDAO;
-
-    private EditText distanceText;
-    private EditText arrowAmountText;
-
-    private TextView lastDistance;
-    private TextView lastArrowsAmount;
-    private TextView lastDatetime;
-    private TextView todaysTotals;
-
-
-
-    private static final int MAX_VALUES_TO_SHOW = 3;
+    private BaseFragment currentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            }
+        });
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        drawer.setDrawerListener(toggle);
+        toggle.syncState();
+
+        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+
 
         this.databaseHelper = new DatabaseHelper(this);
-
         this.serieDataDAO = new SerieDataDAO(this.databaseHelper);
-        this.distanceText = (EditText) this.findViewById(R.id.distance);
-        this.arrowAmountText = (EditText) this.findViewById(R.id.arrowsAmount);
-
-
-        this.lastDistance = (TextView) this.findViewById(R.id.lastDistance);
-        this.lastArrowsAmount = (TextView) this.findViewById(R.id.lastArrowsAmount);
-        this.lastDatetime = (TextView) this.findViewById(R.id.lastDatetime);
-        this.todaysTotals = (TextView) this.findViewById(R.id.todayTotals);
-
-        //this.showExistingData();
-        this.showLastSerie();
-        this.showTodayArrows();
     }
 
-    /**
-     * Called when the user clicks on the button to add the current serie
-     * to the database
-     *
-     * @param view
-     */
-    public void start(View view) {
-
-        CharSequence distanceValue = this.distanceText.getText().toString();
-        if (StringUtils.isBlank(distanceValue)) {
-            // TODO put a real error message
-            this.distanceText.setError("");
-            return ;
-        };
-
-        CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
-        if (StringUtils.isBlank(arrowsAmount)) {
-            this.arrowAmountText.setError("");
-            return ;
-        }
-
-        System.err.println("Llego hasta aca");
-        this.serieDataDAO.addSerieData(
-            Integer.valueOf(distanceValue.toString()),
-            Integer.valueOf(arrowsAmount.toString())
-        );
-
-        // reset the input to notify the user of a change
-        this.arrowAmountText.setText("");
-
-        this.showLastSerie();
-        this.showTodayArrows();
-        //this.showExistingData();
-    }
-
-    private void showTodayArrows() {
-        long todaysTotals = this.serieDataDAO.getTodayArrows();
-        this.todaysTotals.setText(String.valueOf(todaysTotals));
-    }
-
-
-    private void showLastSerie() {
-        List<SerieData> data = this.serieDataDAO.getLastValues(1);
-        if (data == null || data.size() == 0) {
-            this.lastDistance.setText("-");
-            this.lastArrowsAmount.setText("-");
-            this.lastDatetime.setText("-");
-
+    @Override
+    public void onBackPressed() {
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        if (drawer.isDrawerOpen(GravityCompat.START)) {
+            drawer.closeDrawer(GravityCompat.START);
         } else {
-            SerieData lastSerie = data.get(0);
-            this.lastDistance.setText(String.valueOf(lastSerie.distance));
-            this.lastArrowsAmount.setText(String.valueOf(lastSerie.arrowsAmount));
-            this.lastDatetime.setText(DatetimeHelper.timestampFormatter.format(lastSerie.datetime));
+            super.onBackPressed();
         }
     }
 
-    /**
-    private void showExistingData() {
-        List<TodaysTotalData> data = this.serieDataDAO.getTodaysTotal();
-        if (data == null || data.size() == 0) {
-            return ;
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+        //noinspection SimplifiableIfStatement
+        if (id == R.id.action_settings) {
+            return true;
         }
 
-        for (TodaysTotalData totalData : data) {
-            this.existingData.setText(
-                String.format("%s - %s - %s", totalData.distance, DatetimeHelper.timeFormatter.format(totalData.lastUpdate), totalData.totalArrows)
-            );
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @SuppressWarnings("StatementWithEmptyBody")
+    @Override
+    public boolean onNavigationItemSelected(MenuItem item) {
+        // Handle navigation view item clicks here.
+        int id = item.getItemId();
+
+        if (id == R.id.nav_today_add_serie) {
+            this.currentFragment = new AddSerieFragment();
+        } else if (id == R.id.nav_today_total_data) {
+            this.currentFragment = new TotayTotalsFragment();
+        } else if (id == R.id.nav_today_raw_data) {
+            this.currentFragment = new ViewRawDataFragment();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, this.currentFragment)
+                .commit();
+        return true;
+    }
+
+
+    public SerieDataDAO getSerieDAO() {
+        return this.serieDataDAO;
+    }
+
+    @Override
+    public void onAttachFragment(Fragment fragment) {
+        if (fragment == null) {
+            this.currentFragment = null;
+        } else {
+            this.currentFragment = (BaseFragment) fragment;
         }
     }
-    */
+
+    public void onClick(View v) {
+        this.currentFragment.handleClick(v);
+    }
+
 }
