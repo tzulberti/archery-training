@@ -19,6 +19,12 @@
             android:title="@string/leftMenuRetentions" />
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_practice"
+            android:title="@string/leftMenuPratice" />
+    </group>
+
     <!--
     <item android:title="Communicate">
         <menu>

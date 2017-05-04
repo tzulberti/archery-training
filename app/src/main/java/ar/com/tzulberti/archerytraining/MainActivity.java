@@ -17,6 +17,7 @@ import android.view.MenuItem;
 
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
+import ar.com.tzulberti.archerytraining.fragments.practice.PracticeTestingFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
@@ -38,6 +39,7 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        /**
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,6 +48,7 @@ public class MainActivity extends AppCompatActivity
                         .setAction("Action", null).show();
             }
         });
+         */
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -108,6 +111,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.nav_retentions) {
             this.currentFragment = new ConfigureRetention();
+        } else if (id == R.id.nav_practice) {
+            this.currentFragment = new PracticeTestingFragment();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

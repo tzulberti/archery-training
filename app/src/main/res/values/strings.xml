@@ -11,6 +11,8 @@
     <string name="leftMenuTodayViewTotals">Ver totales</string>
     <string name="leftMenuTodayRawData">Ver data</string>
     <string name="leftMenuRetentions">Retentions</string>
+    <string name="leftMenuPratice">Puntaje</string>
+
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
