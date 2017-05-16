@@ -5,20 +5,20 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-import android.graphics.drawable.Drawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
+
 import android.os.Bundle;
-import android.provider.Settings;
+
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.EditText;
+
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.github.chrisbanes.photoview.PhotoView;
+
+
+
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,18 +36,21 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
     private static final int Y_PADDING = -80;
 
     private ImageView targetImageView;
+    private TextView currentScoreText;
 
-    private int targetCenterX = -1;
-    private int targetCenterY = -1;
+    private float targetCenterX = -1;
+    private float targetCenterY = -1;
     private float imageScale = -1;
-    private int pointWidth = -1;
+    private float pointWidth = -1;
 
-    private static final int IMAGE_WIDTH = 512;
+    private static final float IMAGE_WIDTH = 512;
+    private static final float ARROW_IMPACT_RADIUS = 5;
 
     private Bitmap imageBitmap;
     private List<Coordinate> coordinates;
     private Paint currentImpactPaint;
     private Paint finalImpactPaint;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -65,24 +68,19 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
         this.finalImpactPaint.setAntiAlias(true);
         this.finalImpactPaint.setColor(Color.LTGRAY);
 
+        this.currentScoreText = (TextView) view.findViewById(R.id.current_score);
 
         return view;
     }
-
-    @Override
-    public void handleClick(View v) {
-
-    }
-
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         if (this.targetCenterX == -1) {
-            this.targetCenterX = this.targetImageView.getWidth() / 2;
-            this.targetCenterY = this.targetImageView.getHeight() / 2;
-            this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
             this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
+            this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
+            this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
+            this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
         }
 
         if (this.imageBitmap == null) {
@@ -98,34 +96,22 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
             this.imageBitmap = Bitmap.createBitmap(bitmap);
         }
 
-        if (event.getAction() == MotionEvent.ACTION_DOWN) {
-            // when the user clicks on a point in the mouse
-            //System.out.println(String.format("Start %s - %s", event.getX(), event.getY()));
-
-            //System.out.println(String.format("%s - %s", this.targetImageView.getMaxHeight(), this.targetImageView.getMaxWidth()));
-            //System.out.println(String.format("%s - %s", this.targetImageView.getX(), this.targetImageView.getY()));
-            //System.out.println(String.format("%s - %s", this.targetImageView.getWidth(), this.targetImageView.getHeight()));
-            //System.out.println(String.format("%s - %s", this.targetImageView.getMaxWidth(), this.targetImageView.getMaxHeight()));
-
-        } else if (event.getAction() == MotionEvent.ACTION_MOVE) {
-            // when the user starts moving
-            this.currentScore(event.getX(), event.getY());
+        int eventAction = event.getAction();
+        if (eventAction == MotionEvent.ACTION_DOWN || eventAction == MotionEvent.ACTION_MOVE || eventAction == MotionEvent.ACTION_UP) {
             Coordinate currentImpact = new Coordinate(event.getX() / this.imageScale, event.getY() / this.imageScale);
-            this.addTargetImpact(currentImpact.x, currentImpact.y, false);
+            boolean isFinal = (eventAction == MotionEvent.ACTION_UP);
+            this.addTargetImpact(currentImpact.x, currentImpact.y, isFinal);
+            if (isFinal) {
+                this.coordinates.add(currentImpact);
+            }
 
-        } else if (event.getAction() == MotionEvent.ACTION_UP){
-            Coordinate currentImpact = new Coordinate(event.getX() / this.imageScale, event.getY() / this.imageScale);
-            this.coordinates.add(currentImpact);
-            this.addTargetImpact(currentImpact.x, currentImpact.y, true);
-        } else {
-            //System.out.println(String.format("%s - %s - %s", event.getAction(), event.getX(), event.getY()));
         }
         return false;
     }
 
-    private void currentScore(float x, float y) {
-        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y - this.targetCenterY, 2));
-        //System.out.println(String.format("Current score: %s", 10 - Math.floor(distance / this.pointWidth)));
+    private void currentScore(float x, float y, boolean isFinal) {
+        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
+        this.currentScoreText.setText(String.valueOf(10 - Math.floor(distance / this.pointWidth)));
     }
 
     private void addTargetImpact(float x, float y, boolean isFinal) {
@@ -137,15 +123,15 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
             this.imageBitmap = mutableBitmap;
         }
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y + Y_PADDING, 10, paint);
-
+        canvas.drawCircle(x, y + Y_PADDING, ARROW_IMPACT_RADIUS, paint);
+        this.currentScore(x, y, isFinal);
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
     }
 
-
-
-
+    @Override
+    public void handleClick(View v) {
+    }
 
     @Override
     public boolean onLongClick(View v) {
