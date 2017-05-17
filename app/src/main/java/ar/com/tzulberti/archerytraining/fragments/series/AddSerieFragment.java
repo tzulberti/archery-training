@@ -66,7 +66,6 @@ public class AddSerieFragment extends BaseFragment {
             this.distanceText.setError("");
             return;
         }
-        ;
 
         CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
         if (StringUtils.isBlank(arrowsAmount)) {

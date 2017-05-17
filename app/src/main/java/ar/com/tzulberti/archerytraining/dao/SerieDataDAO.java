@@ -143,5 +143,4 @@ public class SerieDataDAO {
         return res;
     }
 
-    ;
 }
