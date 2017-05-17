@@ -20,7 +20,7 @@ import ar.com.tzulberti.archerytraining.model.SerieData;
  * Created by tzulberti on 4/21/17.
  */
 
-public class ViewRawDataFragment extends BaseFragment  {
+public class ViewRawDataFragment extends BaseFragment {
 
     private static final int MAX_VALUES_TO_SHOW = 20;
 
@@ -32,7 +32,7 @@ public class ViewRawDataFragment extends BaseFragment  {
         View view = inflater.inflate(R.layout.today_raw_data, container, false);
         this.setObjects();
 
-        this.rawDataTableLayout =  (TableLayout) view.findViewById(R.id.todayRawData);
+        this.rawDataTableLayout = (TableLayout) view.findViewById(R.id.todayRawData);
         this.showInformation(view);
         return view;
     }

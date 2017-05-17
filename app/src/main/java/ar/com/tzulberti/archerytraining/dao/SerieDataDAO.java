@@ -5,12 +5,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.consts.SerieInformationConsts;
-import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.SerieData;
@@ -48,8 +45,8 @@ public class SerieDataDAO {
         return db.delete(
                 SerieInformationConsts.TABLE_NAME,
                 String.format("%s = ?", SerieInformationConsts.ID_COLUMN_NAME),
-                new String[] {String.valueOf(id)}
-                );
+                new String[]{String.valueOf(id)}
+        );
     }
 
     public List<SerieData> getLastValues(int limit) {
@@ -93,13 +90,13 @@ public class SerieDataDAO {
         Cursor cursor = db.rawQuery(
                 String.format(
                         "SELECT SUM(%s) " +
-                        "FROM %s " +
-                        "WHERE %s >= ? AND %s < ? ",
+                                "FROM %s " +
+                                "WHERE %s >= ? AND %s < ? ",
                         SerieInformationConsts.DISTANCE_COLUMN_NAME,
                         SerieInformationConsts.TABLE_NAME,
                         SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME
                 ),
-                new String[] {String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
+                new String[]{String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
         );
 
         while (cursor.moveToNext()) {
@@ -120,19 +117,19 @@ public class SerieDataDAO {
 
         String sortOrder = SerieInformationConsts.DATETIME_COLUMN_NAME + " DESC";
         Cursor cursor = db.rawQuery(
-            String.format(
-                    "SELECT %s, SUM(%s), MAX(%s), COUNT(*) " +
-                    "FROM %s " +
-                    "WHERE %s >= ? AND %s < ? " +
-                    "GROUP BY %s " +
-                    "ORDER BY %s ",
-                    SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
-                    SerieInformationConsts.TABLE_NAME,
-                    SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
-                    SerieInformationConsts.DISTANCE_COLUMN_NAME,
-                    SerieInformationConsts.DISTANCE_COLUMN_NAME
-            ),
-            new String[] {String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
+                String.format(
+                        "SELECT %s, SUM(%s), MAX(%s), COUNT(*) " +
+                                "FROM %s " +
+                                "WHERE %s >= ? AND %s < ? " +
+                                "GROUP BY %s " +
+                                "ORDER BY %s ",
+                        SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
+                        SerieInformationConsts.TABLE_NAME,
+                        SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
+                        SerieInformationConsts.DISTANCE_COLUMN_NAME,
+                        SerieInformationConsts.DISTANCE_COLUMN_NAME
+                ),
+                new String[]{String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
         );
 
         while (cursor.moveToNext()) {
@@ -144,5 +141,7 @@ public class SerieDataDAO {
             res.add(data);
         }
         return res;
-    };
+    }
+
+    ;
 }

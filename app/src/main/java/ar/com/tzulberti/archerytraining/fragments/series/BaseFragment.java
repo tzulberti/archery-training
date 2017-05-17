@@ -1,8 +1,5 @@
 package ar.com.tzulberti.archerytraining.fragments.series;
 
-import android.support.v4.app.Fragment;
-
-
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;

@@ -51,13 +51,13 @@ public class TotayTotalsFragment extends BaseFragment {
 
     }
 
-    private HashMap<Integer, Integer> showPieChartInformation(View view,  List<TodaysTotalData> todaysTotalDatas) {
+    private HashMap<Integer, Integer> showPieChartInformation(View view, List<TodaysTotalData> todaysTotalDatas) {
         PieChart pieChart = (PieChart) view.findViewById(R.id.todayTotalsPieChart);
         long totalsArrows = 0;
 
         HashMap<Integer, Integer> distanceToColor = new HashMap<>();
         List<PieEntry> entries = new ArrayList<PieEntry>();
-        for (TodaysTotalData data: todaysTotalDatas) {
+        for (TodaysTotalData data : todaysTotalDatas) {
             entries.add(new PieEntry(data.totalArrows, String.valueOf(data.distance) + "m"));
             totalsArrows += data.totalArrows;
         }

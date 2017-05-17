@@ -20,18 +20,15 @@ import ar.com.tzulberti.archerytraining.model.SerieData;
  * Created by tzulberti on 4/20/17.
  */
 
-public class AddSerieFragment extends BaseFragment  {
+public class AddSerieFragment extends BaseFragment {
 
+    private static final int MAX_VALUES_TO_SHOW = 3;
     private EditText distanceText;
     private EditText arrowAmountText;
-
     private TextView lastDistance;
     private TextView lastArrowsAmount;
     private TextView lastDatetime;
     private TextView todaysTotals;
-
-    private static final int MAX_VALUES_TO_SHOW = 3;
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -67,13 +64,14 @@ public class AddSerieFragment extends BaseFragment  {
         if (StringUtils.isBlank(distanceValue)) {
             // TODO put a real error message
             this.distanceText.setError("");
-            return ;
-        };
+            return;
+        }
+        ;
 
         CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
         if (StringUtils.isBlank(arrowsAmount)) {
             this.arrowAmountText.setError("");
-            return ;
+            return;
         }
 
         System.err.println("Llego hasta aca");

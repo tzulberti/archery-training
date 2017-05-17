@@ -1,15 +1,8 @@
 package ar.com.tzulberti.archerytraining.helpers;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import ar.com.tzulberti.archerytraining.model.SerieData;
 
 /**
  * Created by tzulberti on 4/18/17.
@@ -27,7 +20,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     protected static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
-        super(context, DATABASE_NAME , null, DATABASE_VERSION);
+        super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
     @Override

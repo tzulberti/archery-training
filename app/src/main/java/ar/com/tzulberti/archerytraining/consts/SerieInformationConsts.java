@@ -2,8 +2,8 @@ package ar.com.tzulberti.archerytraining.consts;
 
 /**
  * Has the schema information for the serie_information table.
- *
- *
+ * <p>
+ * <p>
  * Created by tzulberti on 4/24/17.
  */
 

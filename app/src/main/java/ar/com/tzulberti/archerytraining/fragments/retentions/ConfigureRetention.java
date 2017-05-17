@@ -1,10 +1,8 @@
 package ar.com.tzulberti.archerytraining.fragments.retentions;
 
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,7 +22,7 @@ import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
  * Created by tzulberti on 4/24/17.
  */
 
-public class ConfigureRetention extends BaseClickableFragment{
+public class ConfigureRetention extends BaseClickableFragment {
 
     public static final String SERIES_AMOUNT = "ar.com.tzulberti.archerytraining.seriesAmount";
     public static final String SERIES_SLEEP_TIME = "ar.com.tzulberti.archerytraining.seriesSleepTime";
@@ -122,7 +120,7 @@ public class ConfigureRetention extends BaseClickableFragment{
 
         if (foundError) {
             editor.clear();
-            return ;
+            return;
         }
 
         editor.commit();

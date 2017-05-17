@@ -5,20 +5,13 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
-
 import android.os.Bundle;
-
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-
 import android.widget.ImageView;
 import android.widget.TextView;
-
-
-
-
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,18 +27,14 @@ import ar.com.tzulberti.archerytraining.model.Coordinate;
 public class PracticeTestingFragment extends BaseClickableFragment implements View.OnTouchListener, View.OnLongClickListener {
 
     private static final int Y_PADDING = -80;
-
+    private static final float IMAGE_WIDTH = 512;
+    private static final float ARROW_IMPACT_RADIUS = 5;
     private ImageView targetImageView;
     private TextView currentScoreText;
-
     private float targetCenterX = -1;
     private float targetCenterY = -1;
     private float imageScale = -1;
     private float pointWidth = -1;
-
-    private static final float IMAGE_WIDTH = 512;
-    private static final float ARROW_IMPACT_RADIUS = 5;
-
     private Bitmap imageBitmap;
     private List<Coordinate> coordinates;
     private Paint currentImpactPaint;
@@ -117,7 +106,7 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
     private void addTargetImpact(float x, float y, boolean isFinal) {
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Paint paint = this.finalImpactPaint;
-        if (! isFinal) {
+        if (!isFinal) {
             paint = this.currentImpactPaint;
         } else {
             this.imageBitmap = mutableBitmap;
