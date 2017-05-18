@@ -14,12 +14,14 @@ import android.view.MenuItem;
 import android.view.View;
 
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
+import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.practice.PracticeTestingFragment;
+import ar.com.tzulberti.archerytraining.fragments.tournament.PracticeTestingFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
+import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity
@@ -27,6 +29,7 @@ public class MainActivity extends AppCompatActivity
 
     private DatabaseHelper databaseHelper;
     private SerieDataDAO serieDataDAO;
+    private TournamentDAO tournamentDAO;
     private BaseClickableFragment currentFragment;
 
     @Override
@@ -58,6 +61,7 @@ public class MainActivity extends AppCompatActivity
 
         this.databaseHelper = new DatabaseHelper(this);
         this.serieDataDAO = new SerieDataDAO(this.databaseHelper);
+        this.tournamentDAO = new TournamentDAO(this.databaseHelper);
     }
 
     @Override
@@ -99,6 +103,7 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
+        this.currentFragment = null;
         if (id == R.id.nav_today_add_serie) {
             this.currentFragment = new AddSerieFragment();
         } else if (id == R.id.nav_today_total_data) {
@@ -107,8 +112,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.nav_retentions) {
             this.currentFragment = new ConfigureRetention();
-        } else if (id == R.id.nav_practice) {
-            this.currentFragment = new PracticeTestingFragment();
+        } else if (id == R.id.nav_tournament) {
+            this.currentFragment = new ViewExistingTournamentsFragments();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -125,6 +130,8 @@ public class MainActivity extends AppCompatActivity
     public SerieDataDAO getSerieDAO() {
         return this.serieDataDAO;
     }
+
+    public TournamentDAO getTournamentDAO() { return this.tournamentDAO; }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
