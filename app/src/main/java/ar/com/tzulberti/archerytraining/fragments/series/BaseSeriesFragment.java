@@ -9,7 +9,7 @@ import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
  * Created by tzulberti on 4/21/17.
  */
 
-public abstract class BaseFragment extends BaseClickableFragment {
+public abstract class BaseSeriesFragment extends BaseClickableFragment {
 
     protected SerieDataDAO serieDataDAO;
 

@@ -29,7 +29,7 @@ import ar.com.tzulberti.archerytraining.model.TodaysTotalData;
  * Created by tzulberti on 4/21/17.
  */
 
-public class TotayTotalsFragment extends BaseFragment {
+public class TotayTotalsFragment extends BaseSeriesFragment {
 
 
     @Override

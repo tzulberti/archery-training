@@ -11,7 +11,7 @@
     <string name="leftMenuTodayViewTotals">Ver totales</string>
     <string name="leftMenuTodayRawData">Ver data</string>
     <string name="leftMenuRetentions">Retentions</string>
-    <string name="leftMenuPratice">Puntaje</string>
+    <string name="leftMenuTournament">Torneo</string>
 
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -63,6 +63,14 @@
     <string name="finishedSerie">Termino serie</string>
     <string name="downBow">Abajo</string>
     <string name="upBow">Arriba</string>
+
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- View existing tournaments information -->
+    <string name="tournament_name">Nombre</string>
+    <string name="tournament_datetime">Cuando</string>
+    <string name="tournament_delete">Borrar</string>
+
 
 
 
