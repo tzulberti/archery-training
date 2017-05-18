@@ -20,7 +20,7 @@ import ar.com.tzulberti.archerytraining.model.SerieData;
  * Created by tzulberti on 4/21/17.
  */
 
-public class ViewRawDataFragment extends BaseFragment {
+public class ViewRawDataFragment extends BaseSeriesFragment {
 
     private static final int MAX_VALUES_TO_SHOW = 20;
 

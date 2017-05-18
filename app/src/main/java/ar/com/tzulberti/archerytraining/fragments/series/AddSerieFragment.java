@@ -20,7 +20,7 @@ import ar.com.tzulberti.archerytraining.model.SerieData;
  * Created by tzulberti on 4/20/17.
  */
 
-public class AddSerieFragment extends BaseFragment {
+public class AddSerieFragment extends BaseSeriesFragment {
 
     private static final int MAX_VALUES_TO_SHOW = 3;
     private EditText distanceText;
