@@ -13,6 +13,8 @@
     <string name="leftMenuRetentions">Retentions</string>
     <string name="leftMenuTournament">Torneo</string>
 
+    <!-- ////////////////////////////////////////////////////////////////////////// -->
+    <string name="commonRequiredValidationError">Requerido</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
@@ -70,7 +72,19 @@
     <string name="tournament_name">Nombre</string>
     <string name="tournament_datetime">Cuando</string>
     <string name="tournament_delete">Borrar</string>
+    <string name="tournament_start">Empezar</string>
+    <string name="tournament_stop">Terminar</string>
 
+    <string name="tournament_distance">Distancia</string>
+    <string name="tournament_default_name">Entrenamiento</string>
+    <string name="tournament_target_size">Tamaño del blanco</string>
+    <string name="tournament_is_outdoor">¿Es outdoor?</string>
+    <string name="tournament_is_tournament">¿Es torneo?</string>
+    <string name="tournament_is_tournament_help">
+        Si se tilda esta opcion, entonces se va a validar que las series no tengan mas
+        de 3 o 6 flechas y no haya mas de 12 series. En caso contrario, se pueden hacer cuantas
+        series sean necesarias y que cada serie tenga mas o menos flechas que en un torneo oficial
+    </string>
 
 
 

@@ -40,7 +40,7 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override public void onClick(View view) {
-                PracticeTestingFragment practiceTestingFragment = new PracticeTestingFragment();
+                AddTournamentFragment practiceTestingFragment = new AddTournamentFragment();
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, practiceTestingFragment)
@@ -55,7 +55,7 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
     }
 
 
-        @Override
+    @Override
     public void handleClick(View v) {
     }
 

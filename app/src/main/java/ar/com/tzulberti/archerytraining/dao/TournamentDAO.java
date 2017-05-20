@@ -1,5 +1,6 @@
 package ar.com.tzulberti.archerytraining.dao;
 
+import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -7,6 +8,7 @@ import java.security.cert.Extension;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
@@ -47,5 +49,19 @@ public class TournamentDAO {
             ));
         }
         return res;
+    }
+
+
+    public long createTournament(String name, int distance, int targetSize, boolean isTournament, boolean isOutdoor) {
+        SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TournamentConsts.DISTANCE_COLUMN_NAME, distance);
+        contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
+        contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
+        contentValues.put(TournamentConsts.TARGET_SIZE_COLUMN_NAME, targetSize);
+        contentValues.put(TournamentConsts.IS_OUTDOOR_COLUMN_NAME, isOutdoor);
+        contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, isTournament);
+        long id = db.insert(TournamentConsts.TABLE_NAME, null, contentValues);
+        return id;
     }
 }
