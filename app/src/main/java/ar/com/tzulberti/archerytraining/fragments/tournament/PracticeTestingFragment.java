@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.fragments.practice;
+package ar.com.tzulberti.archerytraining.fragments.tournament;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
