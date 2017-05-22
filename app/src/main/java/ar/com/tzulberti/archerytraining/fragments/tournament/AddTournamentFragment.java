@@ -66,7 +66,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
         );
 
         MainActivity activity = (MainActivity) getActivity();
-        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournamentId);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, tournamentSeriesFragment)
