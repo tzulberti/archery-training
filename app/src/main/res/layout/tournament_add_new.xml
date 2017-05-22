@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="*">
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/tournament_name" />
+
+        <EditText
+            android:id="@+id/name"
+            android:gravity="right"
+            android:text="@string/tournament_default_name" />
+    </TableRow>
+
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/tournament_distance" />
+
+        <EditText
+            android:id="@+id/distance"
+            android:gravity="right"
+            android:inputType="number" />
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/tournament_target_size" />
+
+        <EditText
+            android:id="@+id/target_size"
+            android:gravity="right"
+            android:text="122"
+            android:inputType="number" />
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent" android:visibility="invisible">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/tournament_is_outdoor" />
+
+        <CheckBox
+            android:gravity="right"
+            android:checked="true"
+            android:id="@+id/is_outdoor"/>
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent" android:visibility="invisible">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/tournament_is_tournament" />
+
+        <CheckBox
+            android:gravity="right"
+            android:checked="true"
+            android:id="@+id/is_tournament"/>
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent">
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:onClick="onClick"
+            android:text="@string/tournament_start" />
+    </TableRow>
+
+</TableLayout>

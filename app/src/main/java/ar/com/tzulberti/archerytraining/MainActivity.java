@@ -16,7 +16,6 @@ import android.view.View;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.PracticeTestingFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;

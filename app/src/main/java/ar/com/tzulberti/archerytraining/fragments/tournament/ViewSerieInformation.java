@@ -24,7 +24,7 @@ import ar.com.tzulberti.archerytraining.model.Coordinate;
  * Created by tzulberti on 4/25/17.
  */
 
-public class PracticeTestingFragment extends BaseClickableFragment implements View.OnTouchListener, View.OnLongClickListener {
+public class ViewSerieInformation extends BaseTournamentFragment implements View.OnTouchListener, View.OnLongClickListener {
 
     private static final int Y_PADDING = -80;
     private static final float IMAGE_WIDTH = 512;
@@ -45,6 +45,7 @@ public class PracticeTestingFragment extends BaseClickableFragment implements Vi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.practice_testing, container, false);
         this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
+        this.setObjects();
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
 
