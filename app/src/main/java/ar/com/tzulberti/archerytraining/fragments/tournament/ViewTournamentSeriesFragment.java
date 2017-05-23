@@ -16,10 +16,9 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.tournament.ExistingTournamentData;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrowData;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieData;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
  * Created by tzulberti on 5/19/17.
@@ -27,13 +26,12 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieData;
 
 public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
-    public long tournamentId;
+    public Tournament tournament;
     private TableLayout rawDataTableLayout;
 
-    public static ViewTournamentSeriesFragment newInstance(long tournamentId) {
+    public static ViewTournamentSeriesFragment newInstance(Tournament tournament) {
         ViewTournamentSeriesFragment fragment = new ViewTournamentSeriesFragment();
-        fragment.tournamentId = tournamentId;
-
+        fragment.tournament = tournament;
 
         return fragment;
     }
@@ -45,13 +43,22 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         this.setObjects();
 
         final MainActivity activity = (MainActivity) getActivity();
+        final ViewTournamentSeriesFragment self = this;
 
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override public void onClick(View view) {
-                ViewSerieInformation practiceTestingFragment = new ViewSerieInformation();
+                // make sure that the user can add another serie to this tournament
+                TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
+                if (tournamentSerie == null) {
+                    // TODO show message to the user
+                    System.err.println("TODO XXX PENDING: el usuario no deberia ver el boton en este caso");
+                    return ;
+                }
+
+                ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie, true);
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, practiceTestingFragment)
@@ -66,10 +73,10 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
     }
 
     public void showExistingSeries() {
-        List<TournamentSerieData> exitingTournaments = this.tournamentDAO.getTournamentSeriesInformation(this.tournamentId);
+        List<TournamentSerie> exitingTournaments = this.tournamentDAO.getTournamentSeriesInformation(this.tournament.id);
 
         Context context = getContext();
-        for (TournamentSerieData data : exitingTournaments) {
+        for (TournamentSerie data : exitingTournaments) {
             TableRow tr = new TableRow(context);
 
             TextView indexText = new TextView(context);
@@ -82,12 +89,12 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             totalText.setText(String.valueOf(data.totalScore));
 
             removeButton.setText("Delete");
-            removeButton.setId(data.id);
+            removeButton.setId((int) data.id);
             removeButton.setOnClickListener(this);
 
             tr.addView(indexText);
             tr.addView(totalText);
-            for (TournamentSerieArrowData arrow : data.arrows) {
+            for (TournamentSerieArrow arrow : data.arrows) {
                 TextView arrowText = new TextView(context);
                 arrowText.setText(String.valueOf(arrow.score));
                 tr.addView(arrowText);

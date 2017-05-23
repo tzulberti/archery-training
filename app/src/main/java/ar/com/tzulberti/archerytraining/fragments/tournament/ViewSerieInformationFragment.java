@@ -13,24 +13,27 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.apache.commons.lang3.reflect.ConstructorUtils;
+
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.model.Coordinate;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
  * Created by tzulberti on 4/25/17.
  */
 
-public class ViewSerieInformation extends BaseTournamentFragment implements View.OnTouchListener, View.OnLongClickListener {
+public class ViewSerieInformationFragment extends BaseTournamentFragment implements View.OnTouchListener, View.OnLongClickListener {
 
     private static final int Y_PADDING = -80;
     private static final float IMAGE_WIDTH = 512;
     private static final float ARROW_IMPACT_RADIUS = 5;
     private ImageView targetImageView;
-    private TextView currentScoreText;
+    private TextView[] currentScoreText;
     private float targetCenterX = -1;
     private float targetCenterY = -1;
     private float imageScale = -1;
@@ -40,10 +43,19 @@ public class ViewSerieInformation extends BaseTournamentFragment implements View
     private Paint currentImpactPaint;
     private Paint finalImpactPaint;
 
+    private TournamentSerie tournamentSerie;
+    private boolean creatingSerie;
+
+    public static ViewSerieInformationFragment createInstance(TournamentSerie tournamentSerie, boolean creatingSerie) {
+        ViewSerieInformationFragment res = new ViewSerieInformationFragment();
+        res.tournamentSerie = tournamentSerie;
+        res.creatingSerie = creatingSerie;
+        return res;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.practice_testing, container, false);
+        View view = inflater.inflate(R.layout.tournament_view_serie_arrow, container, false);
         this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
         this.setObjects();
         this.targetImageView.setOnTouchListener(this);
@@ -58,7 +70,17 @@ public class ViewSerieInformation extends BaseTournamentFragment implements View
         this.finalImpactPaint.setAntiAlias(true);
         this.finalImpactPaint.setColor(Color.LTGRAY);
 
-        this.currentScoreText = (TextView) view.findViewById(R.id.current_score);
+        this.currentScoreText = new TextView[6];
+        this.currentScoreText[0] = (TextView) view.findViewById(R.id.current_score1);
+        this.currentScoreText[1] = (TextView) view.findViewById(R.id.current_score2);
+        this.currentScoreText[2] = (TextView) view.findViewById(R.id.current_score3);
+        this.currentScoreText[3] = (TextView) view.findViewById(R.id.current_score4);
+        this.currentScoreText[4] = (TextView) view.findViewById(R.id.current_score5);
+        this.currentScoreText[5] = (TextView) view.findViewById(R.id.current_score6);
+
+        for (TournamentSerieArrow serieArrow : this.tournamentSerie.arrows) {
+            this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true);
+        }
 
         return view;
     }
@@ -66,6 +88,12 @@ public class ViewSerieInformation extends BaseTournamentFragment implements View
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
+        if (! this.creatingSerie) {
+            // if the user is viewing an existing value, then he can not
+            // set a new score value
+            return false;
+        }
+
         if (this.targetCenterX == -1) {
             this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
             this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
@@ -100,8 +128,8 @@ public class ViewSerieInformation extends BaseTournamentFragment implements View
     }
 
     private void currentScore(float x, float y, boolean isFinal) {
-        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
-        this.currentScoreText.setText(String.valueOf(10 - Math.floor(distance / this.pointWidth)));
+
+
     }
 
     private void addTargetImpact(float x, float y, boolean isFinal) {
@@ -114,9 +142,21 @@ public class ViewSerieInformation extends BaseTournamentFragment implements View
         }
         Canvas canvas = new Canvas(mutableBitmap);
         canvas.drawCircle(x, y + Y_PADDING, ARROW_IMPACT_RADIUS, paint);
-        this.currentScore(x, y, isFinal);
+        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
+        int score = (int) (10 - Math.floor(distance / this.pointWidth));
+        this.currentScoreText[this.tournamentSerie.arrows.size()].setText(String.valueOf(score));
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
+
+        if (isFinal) {
+            TournamentSerieArrow serieArrow = new TournamentSerieArrow();
+            serieArrow.xPosition = x;
+            serieArrow.yPosition = y;
+            serieArrow.score = score;
+            this.tournamentSerie.totalScore += score;
+            this.tournamentSerie.arrows.add(serieArrow);
+        }
+
     }
 
     @Override

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -57,7 +58,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             }
         }
 
-        long tournamentId = this.tournamentDAO.createTournament(
+        Tournament tournament = this.tournamentDAO.createTournament(
                 ((EditText) v.findViewById(R.id.name)).getText().toString(),
                 Integer.valueOf(((EditText) v.findViewById(R.id.distance)).getText().toString()),
                 Integer.valueOf(((EditText) v.findViewById(R.id.target_size)).getText().toString()),
@@ -66,7 +67,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
         );
 
         MainActivity activity = (MainActivity) getActivity();
-        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournamentId);
+        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournament);
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, tournamentSeriesFragment)
