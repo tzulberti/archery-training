@@ -16,5 +16,4 @@ public class TournamentSerieArrow {
     public TournamentSerie serie;
     public Tournament tournament;
 
-
 }

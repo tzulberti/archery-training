@@ -5,6 +5,8 @@ import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -20,6 +22,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.model.Coordinate;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
@@ -88,7 +91,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (! this.creatingSerie) {
+        if (! this.creatingSerie || this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
             // if the user is viewing an existing value, then he can not
             // set a new score value
             return false;
@@ -127,10 +130,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         return false;
     }
 
-    private void currentScore(float x, float y, boolean isFinal) {
-
-
-    }
 
     private void addTargetImpact(float x, float y, boolean isFinal) {
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -144,9 +143,17 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         canvas.drawCircle(x, y + Y_PADDING, ARROW_IMPACT_RADIUS, paint);
         double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
         int score = (int) (10 - Math.floor(distance / this.pointWidth));
-        this.currentScoreText[this.tournamentSerie.arrows.size()].setText(String.valueOf(score));
+        if (score < 0) {
+            score = 0;
+        }
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
+
+
+        TextView scoreText = this.currentScoreText[this.tournamentSerie.arrows.size()];
+        scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(this.getColor(score), PorterDuff.Mode.SRC_IN));
+        scoreText.setText(this.getUserScore(score));
+        scoreText.setTextColor(this.getFontColor(score));
 
         if (isFinal) {
             TournamentSerieArrow serieArrow = new TournamentSerieArrow();
@@ -156,6 +163,51 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             this.tournamentSerie.totalScore += score;
             this.tournamentSerie.arrows.add(serieArrow);
         }
+    }
+
+
+    public String getUserScore(int score) {
+        if (score == 0) {
+          return " M ";
+        } else if (score < 10) {
+            return "  " + String.valueOf(score) + " ";
+        } else {
+            return String.valueOf(score) + " ";
+        }
+    }
+
+    public int getColor(int score) {
+        int res = 0;
+        switch (score) {
+            case 10 : case 9:
+                        res = Color.YELLOW;
+                        break;
+            case 8 : case 7:
+                        res = Color.RED;
+                        break;
+            case 6 : case 5:
+                        res = Color.BLUE;
+                        break;
+            case 4 : case 3:
+                        res = Color.BLACK;
+                        break;
+            case 2 : case 1:
+                        res = Color.WHITE;
+                        break;
+            case 0:
+                        res = Color.BLACK;
+                        break;
+        }
+        return res;
+    }
+
+    public int getFontColor(int score) {
+        if (score == 0 || score == 3 || score == 4) {
+            return Color.WHITE;
+        } else {
+            return Color.BLACK;
+        }
+
 
     }
 

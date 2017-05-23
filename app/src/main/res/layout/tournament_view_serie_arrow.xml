@@ -12,35 +12,95 @@
 
         >
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/current_score1"/>
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score2"/>
+            android:id="@+id/current_score1"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score3"/>
+            android:id="@+id/current_score2"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score4"/>
+            android:id="@+id/current_score3"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score5"/>
+            android:id="@+id/current_score4"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/current_score6"/>
+            android:id="@+id/current_score5"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/current_score6"
+            android:textSize="24sp"
+            android:background="@drawable/rounded_corner"
+            android:padding="3dp"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
     </LinearLayout>
 
@@ -74,6 +134,12 @@
             android:layout_height="wrap_content"
             android:onClick="onClick"
             android:text="@string/tournament_serie_next"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
 
         <Button
             android:layout_width="wrap_content"

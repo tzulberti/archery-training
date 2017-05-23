@@ -6,6 +6,6 @@ package ar.com.tzulberti.archerytraining.model.tournament;
 
 public class TournamentConfiguration {
 
-    public final int maxSeries = 12;
-    public final int maxArrorPerSerie = 6;
+    public static final int MAX_SERIES = 12;
+    public static final int MAX_ARROW_PER_SERIES = 6;
 }
