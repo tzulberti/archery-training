@@ -58,7 +58,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                     return ;
                 }
 
-                ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie, true);
+                ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, practiceTestingFragment)

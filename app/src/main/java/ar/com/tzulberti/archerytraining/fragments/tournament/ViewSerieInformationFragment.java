@@ -7,19 +7,25 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.RequiresApi;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import org.apache.commons.lang3.reflect.ConstructorUtils;
-
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.model.Coordinate;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
@@ -37,6 +43,9 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     private static final float ARROW_IMPACT_RADIUS = 5;
     private ImageView targetImageView;
     private TextView[] currentScoreText;
+    private Button previousSerieButton;
+    private Button nextSerieButton;
+
     private float targetCenterX = -1;
     private float targetCenterY = -1;
     private float imageScale = -1;
@@ -47,12 +56,11 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     private Paint finalImpactPaint;
 
     private TournamentSerie tournamentSerie;
-    private boolean creatingSerie;
 
-    public static ViewSerieInformationFragment createInstance(TournamentSerie tournamentSerie, boolean creatingSerie) {
+
+    public static ViewSerieInformationFragment createInstance(TournamentSerie tournamentSerie) {
         ViewSerieInformationFragment res = new ViewSerieInformationFragment();
         res.tournamentSerie = tournamentSerie;
-        res.creatingSerie = creatingSerie;
         return res;
     }
 
@@ -81,57 +89,102 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         this.currentScoreText[4] = (TextView) view.findViewById(R.id.current_score5);
         this.currentScoreText[5] = (TextView) view.findViewById(R.id.current_score6);
 
-        for (TournamentSerieArrow serieArrow : this.tournamentSerie.arrows) {
-            this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true);
-        }
+        this.nextSerieButton = (Button) view.findViewById(R.id.btn_serie_next);
+        this.previousSerieButton = (Button) view.findViewById(R.id.btn_serie_previous);
+        this.nextSerieButton.setEnabled(false);
+        this.previousSerieButton.setEnabled(false);
+
+        ViewTreeObserver vto = this.targetImageView.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+            @Override
+            public boolean onPreDraw() {
+                targetImageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                initializeValues();
+                return true;
+            }
+        });
 
         return view;
+    }
+
+    protected void initializeValues() {
+
+        System.err.println(String.format("Width: %s, Height: %s", this.targetImageView.getWidth(), this.targetImageView.getHeight()));
+        this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
+        this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
+        this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
+        this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
+
+
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+
+        this.imageBitmap = Bitmap.createBitmap(bitmap);
+
+        int arrowIndex = 0;
+        for (TournamentSerieArrow serieArrow : this.tournamentSerie.arrows) {
+            this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true, true, arrowIndex);
+            arrowIndex += 1;
+        }
+
+        if (this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+            this.nextSerieButton.setEnabled(true);
+            this.previousSerieButton.setEnabled(this.tournamentSerie.index > 1);
+        }
     }
 
 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
-        if (! this.creatingSerie || this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
-            // if the user is viewing an existing value, then he can not
-            // set a new score value
+        if (this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+            // already got the max number of arrows so there is nothing specific to do
             return false;
         }
 
-        if (this.targetCenterX == -1) {
-            this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
-            this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
-            this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
-            this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
-        }
-
-        if (this.imageBitmap == null) {
-            BitmapFactory.Options myOptions = new BitmapFactory.Options();
-            myOptions.inScaled = false;
-            myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
-
-            Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
-            Paint paint = new Paint();
-            paint.setAntiAlias(true);
-            paint.setColor(Color.BLUE);
-
-            this.imageBitmap = Bitmap.createBitmap(bitmap);
-        }
-
         int eventAction = event.getAction();
+        boolean isFinal = false;
         if (eventAction == MotionEvent.ACTION_DOWN || eventAction == MotionEvent.ACTION_MOVE || eventAction == MotionEvent.ACTION_UP) {
             Coordinate currentImpact = new Coordinate(event.getX() / this.imageScale, event.getY() / this.imageScale);
-            boolean isFinal = (eventAction == MotionEvent.ACTION_UP);
-            this.addTargetImpact(currentImpact.x, currentImpact.y, isFinal);
+            isFinal = (eventAction == MotionEvent.ACTION_UP);
+            this.addTargetImpact(currentImpact.x, currentImpact.y, isFinal, false, this.tournamentSerie.arrows.size());
             if (isFinal) {
                 this.coordinates.add(currentImpact);
             }
-
         }
+
+        if (isFinal && this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+            // enable the buttons to save the current serie
+            if (this.tournamentSerie.index > 1) {
+                this.previousSerieButton.setEnabled(true);
+            }
+            System.err.println("Entro en el ouTouch con el maximo cantidad de flechas");
+            this.nextSerieButton.setEnabled(true);
+
+            // update the series information after updating the arrows by it's score
+            // so it can be showed on that order
+            Collections.sort(this.tournamentSerie.arrows, new Comparator<TournamentSerieArrow>() {
+
+                @Override
+                public int compare(TournamentSerieArrow o1, TournamentSerieArrow o2) {
+                    return Integer.compare(o1.score, o2.score);
+                }
+            });
+            this.tournamentDAO.saveTournamentSerieInformation(this.tournamentSerie);
+        }
+
         return false;
     }
 
 
-    private void addTargetImpact(float x, float y, boolean isFinal) {
+    private void addTargetImpact(float x, float y, boolean isFinal, boolean showingExisting, int arrowIndex) {
+
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Paint paint = this.finalImpactPaint;
         if (!isFinal) {
@@ -139,6 +192,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         } else {
             this.imageBitmap = mutableBitmap;
         }
+
         Canvas canvas = new Canvas(mutableBitmap);
         canvas.drawCircle(x, y + Y_PADDING, ARROW_IMPACT_RADIUS, paint);
         double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
@@ -150,12 +204,13 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         this.targetImageView.setImageBitmap(mutableBitmap);
 
 
-        TextView scoreText = this.currentScoreText[this.tournamentSerie.arrows.size()];
+        TextView scoreText = this.currentScoreText[arrowIndex];
+
         scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(this.getColor(score), PorterDuff.Mode.SRC_IN));
         scoreText.setText(this.getUserScore(score));
         scoreText.setTextColor(this.getFontColor(score));
 
-        if (isFinal) {
+        if (isFinal && ! showingExisting) {
             TournamentSerieArrow serieArrow = new TournamentSerieArrow();
             serieArrow.xPosition = x;
             serieArrow.yPosition = y;
@@ -213,6 +268,33 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
     @Override
     public void handleClick(View v) {
+        final MainActivity activity = (MainActivity) getActivity();
+
+        if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
+            TournamentSerie transitionSerie = null;
+            if (v.getId() == R.id.btn_serie_previous) {
+                // -2 is required because the first index is 1.
+                transitionSerie = this.tournamentSerie.tournament.series.get(this.tournamentSerie.index - 2);
+            } else {
+                // same here... there isn't any need to add +1 because the serie already starts at 1
+                if (this.tournamentSerie.tournament.series.size() > this.tournamentSerie.index) {
+                    transitionSerie = this.tournamentSerie.tournament.series.get(this.tournamentSerie.index);
+                } else {
+                    // creating a new serie for the tournament
+                    transitionSerie = this.tournamentDAO.createNewSerie(this.tournamentSerie.tournament);
+                }
+            }
+
+            ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(transitionSerie);
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
+            fragmentManager.beginTransaction()
+                    .replace(R.id.container, practiceTestingFragment)
+                    .commit();
+        } else {
+            throw new RuntimeException("Unknown click button");
+        }
+
+
     }
 
     @Override

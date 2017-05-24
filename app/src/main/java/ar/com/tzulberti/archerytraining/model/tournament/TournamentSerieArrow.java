@@ -11,7 +11,7 @@ public class TournamentSerieArrow {
     public long id;
     public float xPosition;
     public float yPosition;
-    public long score;
+    public int score;
 
     public TournamentSerie serie;
     public Tournament tournament;

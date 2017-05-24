@@ -1,5 +1,6 @@
 package ar.com.tzulberti.archerytraining.model.tournament;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,6 +14,11 @@ public class TournamentSerie {
     public int totalScore;
     public List<TournamentSerieArrow> arrows;
     public Tournament tournament;
+
+    public TournamentSerie() {
+        this.arrows = new ArrayList<>();
+    }
+
 
     public boolean isCompleted() {
         if (this.tournament.isOutdoor && this.arrows.size() == 6) {

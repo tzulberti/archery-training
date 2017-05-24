@@ -162,8 +162,53 @@ public class TournamentDAO {
         res.index = serieIndex;
         res.totalScore = 0;
         res.tournament = tournamet;
+        tournamet.series.add(res);
         return res;
     }
 
 
+    /**
+     * Updates the database with all the information of the tournament serie, and it
+     * will return the same instance with all the ids of the object set
+     *
+     * @param tournamentSerie
+     * @return
+     */
+    public TournamentSerie saveTournamentSerieInformation(TournamentSerie tournamentSerie) {
+        // delete existing values for this serie and create new ones
+        SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+        db.delete(
+                TournamentSerieConsts.TABLE_NAME,
+                TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + "= ? AND " + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + "= ?",
+                new String[]{String.valueOf(tournamentSerie.tournament.id), String.valueOf(tournamentSerie.index)}
+        );
+
+        if (tournamentSerie.id != 0) {
+            // delete the arrow information is there is any
+            db.delete(
+                    TournamentSerieArrowConsts.TABLE_NAME,
+                    TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ?",
+                    new String[]{String.valueOf(tournamentSerie.id)}
+            );
+        }
+
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
+        contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.index);
+        contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, tournamentSerie.totalScore);
+        tournamentSerie.id = db.insert(TournamentSerieConsts.TABLE_NAME, null, contentValues);
+
+        for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
+            ContentValues contentValuesArrow = new ContentValues();
+            contentValuesArrow.put(TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
+            contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME, tournamentSerie.id);
+            contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
+            contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
+            contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+            serieArrowData.id = db.insert(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+        }
+
+        // return the updated information
+        return tournamentSerie;
+    }
 }
