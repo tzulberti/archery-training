@@ -1,9 +1,14 @@
 package ar.com.tzulberti.archerytraining.fragments.tournament;
 
 import android.content.Context;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffColorFilter;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +23,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
@@ -81,22 +87,32 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         Context context = getContext();
         for (TournamentSerie data : existingSeries) {
             TableRow tr = new TableRow(context);
+            tr.setPadding(0, 15, 0, 15);
 
             TextView serieIndexText = new TextView(context);
-            TextView totalScoreText = new TextView(context);
-
             serieIndexText.setText("Serie " + String.valueOf(data.index));
+            serieIndexText.setGravity(Gravity.LEFT);
 
             tr.addView(serieIndexText);
 
-
             for (TournamentSerieArrow arrowData : data.arrows) {
                 TextView arrowScoreText = new TextView(context);
-                arrowScoreText.setText(String.valueOf(arrowData.score));
+                arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score));
+                arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
+                arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+                arrowScoreText.setBackgroundResource(R.drawable.rounded_corner);
+                arrowScoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(arrowData.score), PorterDuff.Mode.SRC_IN));
+                arrowScoreText.setPadding(10, 0, 10, 0);
+                arrowScoreText.setGravity(Gravity.CENTER);
                 tr.addView(arrowScoreText);
             }
 
+            TextView totalScoreText = new TextView(context);
             totalScoreText.setText(String.valueOf(data.totalScore));
+            totalScoreText.setBackgroundResource(R.drawable.rounded_corner);
+            totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            totalScoreText.setGravity(Gravity.CENTER);
+
             tr.addView(totalScoreText);
             tr.setId((int) data.index);
             tr.setOnClickListener(this);
