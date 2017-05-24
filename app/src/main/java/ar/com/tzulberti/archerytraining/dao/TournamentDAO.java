@@ -211,4 +211,23 @@ public class TournamentDAO {
         // return the updated information
         return tournamentSerie;
     }
+
+    public Tournament getTournamentInformation(int tournamentId) {
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        Cursor cursor = db.rawQuery(
+                String.format(
+                        "SELECT %s, %s, %s " +
+                        "FROM %s " +
+                        "WHERE %s = ?",
+                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME,
+                        TournamentConsts.TABLE_NAME,
+                        TournamentConsts.ID_COLUMN_NAME
+                ),
+                new String[]{String.valueOf(tournamentId)}
+        );
+        cursor.moveToFirst();
+        Tournament res = new Tournament(tournamentId, cursor.getString(0), DatetimeHelper.databaseValueToDate(cursor.getLong(1)));
+        res.distance = cursor.getInt(2);
+        return res;
+    }
 }

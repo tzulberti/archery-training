@@ -27,6 +27,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.Coordinate;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
@@ -109,8 +110,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     }
 
     protected void initializeValues() {
-
-        System.err.println(String.format("Width: %s, Height: %s", this.targetImageView.getWidth(), this.targetImageView.getHeight()));
         this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
         this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
         this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
@@ -173,7 +172,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
                 @Override
                 public int compare(TournamentSerieArrow o1, TournamentSerieArrow o2) {
-                    return Integer.compare(o1.score, o2.score);
+                    return Integer.compare(o1.score, o2.score) * -1;
                 }
             });
             this.tournamentDAO.saveTournamentSerieInformation(this.tournamentSerie);
@@ -206,9 +205,9 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
         TextView scoreText = this.currentScoreText[arrowIndex];
 
-        scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(this.getColor(score), PorterDuff.Mode.SRC_IN));
-        scoreText.setText(this.getUserScore(score));
-        scoreText.setTextColor(this.getFontColor(score));
+        scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(score), PorterDuff.Mode.SRC_IN));
+        scoreText.setText(TournamentHelper.getUserScore(score));
+        scoreText.setTextColor(TournamentHelper.getFontColor(score));
 
         if (isFinal && ! showingExisting) {
             TournamentSerieArrow serieArrow = new TournamentSerieArrow();
@@ -220,51 +219,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         }
     }
 
-
-    public String getUserScore(int score) {
-        if (score == 0) {
-          return " M ";
-        } else if (score < 10) {
-            return "  " + String.valueOf(score) + " ";
-        } else {
-            return String.valueOf(score) + " ";
-        }
-    }
-
-    public int getColor(int score) {
-        int res = 0;
-        switch (score) {
-            case 10 : case 9:
-                        res = Color.YELLOW;
-                        break;
-            case 8 : case 7:
-                        res = Color.RED;
-                        break;
-            case 6 : case 5:
-                        res = Color.BLUE;
-                        break;
-            case 4 : case 3:
-                        res = Color.BLACK;
-                        break;
-            case 2 : case 1:
-                        res = Color.WHITE;
-                        break;
-            case 0:
-                        res = Color.BLACK;
-                        break;
-        }
-        return res;
-    }
-
-    public int getFontColor(int score) {
-        if (score == 0 || score == 3 || score == 4) {
-            return Color.WHITE;
-        } else {
-            return Color.BLACK;
-        }
-
-
-    }
 
     @Override
     public void handleClick(View v) {

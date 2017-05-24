@@ -17,6 +17,7 @@ public class Tournament {
     public int targetSize;
     public boolean isOutdoor;
     public boolean isTournament;
+    public int totalScore = 320;
 
     public List<TournamentSerie> series;
 
