@@ -15,6 +15,8 @@ public class DatetimeHelper {
 
     public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
 
+    public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
+
 
     public static long getTodayZeroHours() {
         Calendar date = new GregorianCalendar();

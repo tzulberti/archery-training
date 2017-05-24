@@ -4,10 +4,14 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.widget.Space;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,8 +20,10 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -25,7 +31,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
 
-    private TableLayout rawDataTableLayout;
+    private TableLayout dataContainer;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -39,16 +45,16 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override public void onClick(View view) {
-                AddTournamentFragment practiceTestingFragment = new AddTournamentFragment();
+                AddTournamentFragment addTournamentFragment = new AddTournamentFragment();
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, practiceTestingFragment)
+                        .replace(R.id.container, addTournamentFragment)
                         .commit();
             }
         });
 
 
-        this.rawDataTableLayout = (TableLayout) view.findViewById(R.id.tournamentExistingValues);
+        this.dataContainer = (TableLayout) view.findViewById(R.id.tournaments_lists);
         this.showInformation(view);
         return view;
     }
@@ -56,31 +62,42 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
 
     @Override
     public void handleClick(View v) {
+        int tournamentId = v.getId();
+        Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
+        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournament);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, tournamentSeriesFragment)
+                .commit();
     }
 
     private void showInformation(View view) {
         List<Tournament> exitingTournaments = this.tournamentDAO.getExistingTournaments();
-
         Context context = getContext();
+
         for (Tournament data : exitingTournaments) {
             TableRow tr = new TableRow(context);
+            tr.setPadding(0, 15, 0, 15);
 
             TextView nameText = new TextView(context);
             TextView datetimeText = new TextView(context);
-
-            Button removeButton = new Button(context);
+            TextView totalScoreText = new TextView(context);
 
             nameText.setText(data.name);
-            datetimeText.setText(DatetimeHelper.DATETIME_FORMATTER.format(data.datetime));
+            nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-            removeButton.setText("Delete");
-            removeButton.setId((int) data.id);
-            removeButton.setOnClickListener(this);
+            totalScoreText.setText(String.valueOf(data.totalScore) + "/" + String.valueOf(TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
+            totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+            datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(data.datetime));
 
             tr.addView(nameText);
+            tr.addView(totalScoreText);
             tr.addView(datetimeText);
-            tr.addView(removeButton);
-            this.rawDataTableLayout.addView(tr);
+            tr.setId((int) data.id);
+            tr.setOnClickListener(this);
+
+            this.dataContainer.addView(tr);
         }
     }
 }

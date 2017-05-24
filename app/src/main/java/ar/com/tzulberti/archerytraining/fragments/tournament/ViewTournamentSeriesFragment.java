@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -16,6 +17,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
@@ -27,7 +29,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
     public Tournament tournament;
-    private TableLayout rawDataTableLayout;
+    private TableLayout dataContainer;
 
     public static ViewTournamentSeriesFragment newInstance(Tournament tournament) {
         ViewTournamentSeriesFragment fragment = new ViewTournamentSeriesFragment();
@@ -67,45 +69,49 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         });
 
 
-        this.rawDataTableLayout = (TableLayout) view.findViewById(R.id.tournamentExistingValues);
+        this.dataContainer = (TableLayout) view.findViewById(R.id.tournament_series_list);
         this.showExistingSeries();
         return view;
     }
 
     public void showExistingSeries() {
-        List<TournamentSerie> exitingTournaments = this.tournamentDAO.getTournamentSeriesInformation(this.tournament.id);
+        List<TournamentSerie> existingSeries = this.tournamentDAO.getTournamentSeriesInformation(this.tournament.id);
+        this.tournament.series = existingSeries;
 
         Context context = getContext();
-        for (TournamentSerie data : exitingTournaments) {
+        for (TournamentSerie data : existingSeries) {
             TableRow tr = new TableRow(context);
 
-            TextView indexText = new TextView(context);
-            TextView totalText = new TextView(context);
-            TextView datetimeText = new TextView(context);
+            TextView serieIndexText = new TextView(context);
+            TextView totalScoreText = new TextView(context);
 
-            Button removeButton = new Button(context);
+            serieIndexText.setText("Serie " + String.valueOf(data.index));
 
-            indexText.setText(String.valueOf(data.index + 1));
-            totalText.setText(String.valueOf(data.totalScore));
+            tr.addView(serieIndexText);
 
-            removeButton.setText("Delete");
-            removeButton.setId((int) data.id);
-            removeButton.setOnClickListener(this);
 
-            tr.addView(indexText);
-            tr.addView(totalText);
-            for (TournamentSerieArrow arrow : data.arrows) {
-                TextView arrowText = new TextView(context);
-                arrowText.setText(String.valueOf(arrow.score));
-                tr.addView(arrowText);
+            for (TournamentSerieArrow arrowData : data.arrows) {
+                TextView arrowScoreText = new TextView(context);
+                arrowScoreText.setText(String.valueOf(arrowData.score));
+                tr.addView(arrowScoreText);
             }
-            tr.addView(datetimeText);
-            tr.addView(removeButton);
-            this.rawDataTableLayout.addView(tr);
+
+            totalScoreText.setText(String.valueOf(data.totalScore));
+            tr.addView(totalScoreText);
+            tr.setId((int) data.index);
+            tr.setOnClickListener(this);
+
+            this.dataContainer.addView(tr);
         }
     }
 
     @Override
     public void handleClick(View v) {
+        TournamentSerie tournamentSerie = this.tournament.series.get(v.getId() -1);
+        ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, practiceTestingFragment)
+                .commit();
     }
 }

@@ -109,8 +109,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     }
 
     protected void initializeValues() {
-
-        System.err.println(String.format("Width: %s, Height: %s", this.targetImageView.getWidth(), this.targetImageView.getHeight()));
         this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
         this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
         this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
