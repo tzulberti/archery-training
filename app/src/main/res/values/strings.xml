@@ -87,5 +87,7 @@
     </string>
 
     <string name="tournament_serie_index">Serie</string>
+    <string name="tournament_serie_next">Siguente</string>
+    <string name="tournament_serie_previous">Anterior</string>
 
 </resources>

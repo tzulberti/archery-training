@@ -3,7 +3,6 @@ package ar.com.tzulberti.archerytraining.fragments.tournament;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,7 +17,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.tournament.ExistingTournamentData;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -60,10 +59,10 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
     }
 
     private void showInformation(View view) {
-        List<ExistingTournamentData> exitingTournaments = this.tournamentDAO.getExistingTournaments();
+        List<Tournament> exitingTournaments = this.tournamentDAO.getExistingTournaments();
 
         Context context = getContext();
-        for (ExistingTournamentData data : exitingTournaments) {
+        for (Tournament data : exitingTournaments) {
             TableRow tr = new TableRow(context);
 
             TextView nameText = new TextView(context);
@@ -75,7 +74,7 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
             datetimeText.setText(DatetimeHelper.DATETIME_FORMATTER.format(data.datetime));
 
             removeButton.setText("Delete");
-            removeButton.setId(data.id);
+            removeButton.setId((int) data.id);
             removeButton.setOnClickListener(this);
 
             tr.addView(nameText);

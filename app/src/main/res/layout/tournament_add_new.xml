@@ -26,6 +26,7 @@
         <EditText
             android:id="@+id/distance"
             android:gravity="right"
+            android:text="70"
             android:inputType="number" />
     </TableRow>
 
