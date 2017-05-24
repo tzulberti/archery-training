@@ -34,9 +34,6 @@ public class AddTournamentFragment extends BaseTournamentFragment {
         View view = inflater.inflate(R.layout.tournament_add_new, container, false);
         this.setObjects();
 
-
-
-
         return view;
     }
 
