@@ -100,7 +100,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                 arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score));
                 arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
                 arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                arrowScoreText.setBackgroundResource(R.drawable.rounded_corner);
+                arrowScoreText.setBackgroundResource(R.drawable.rounded);
                 arrowScoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(arrowData.score), PorterDuff.Mode.SRC_IN));
                 arrowScoreText.setPadding(10, 0, 10, 0);
                 arrowScoreText.setGravity(Gravity.CENTER);
@@ -109,7 +109,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
             TextView totalScoreText = new TextView(context);
             totalScoreText.setText(String.valueOf(data.totalScore));
-            totalScoreText.setBackgroundResource(R.drawable.rounded_corner);
+            totalScoreText.setBackgroundResource(R.drawable.rounded);
             totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             totalScoreText.setGravity(Gravity.CENTER);
 

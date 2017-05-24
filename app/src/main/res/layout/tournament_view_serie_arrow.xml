@@ -20,8 +20,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score1"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
@@ -34,8 +35,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score2"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
@@ -48,8 +50,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score3"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
@@ -62,8 +65,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score4"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
@@ -76,8 +80,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score5"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
@@ -90,8 +95,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/current_score6"
-            android:textSize="24sp"
-            android:background="@drawable/rounded_corner"
+            android:textSize="20sp"
+            android:background="@drawable/rounded"
+            android:gravity="center"
             android:padding="3dp"/>
 
         <Space
