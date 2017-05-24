@@ -16,6 +16,7 @@ import android.view.View;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
+import ar.com.tzulberti.archerytraining.fragments.MainFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
@@ -38,16 +39,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        /**
-         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-         fab.setOnClickListener(new View.OnClickListener() {
-        @Override public void onClick(View view) {
-        Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-        .setAction("Action", null).show();
-        }
-        });
-         */
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -57,6 +48,11 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        this.currentFragment = new MainFragment();
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, this.currentFragment)
+                .commit();
 
         this.databaseHelper = new DatabaseHelper(this);
         this.serieDataDAO = new SerieDataDAO(this.databaseHelper);
@@ -86,11 +82,6 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -123,6 +114,31 @@ public class MainActivity extends AppCompatActivity
                 .replace(R.id.container, this.currentFragment)
                 .commit();
         return true;
+    }
+
+    public void goToFragment(View selectedOption) {
+        int id = selectedOption.getId();
+
+        this.currentFragment = null;
+        if (id == R.id.main_activity_today_add_serie) {
+            this.currentFragment = new AddSerieFragment();
+        } else if (id == R.id.main_activity_today_view_totals) {
+            this.currentFragment = new TotayTotalsFragment();
+        } else if (id == R.id.main_activity_today_raw_data) {
+            this.currentFragment = new ViewRawDataFragment();
+        } else if (id == R.id.main_activity_today_retentions) {
+            this.currentFragment = new ConfigureRetention();
+        } else if (id == R.id.main_activity_today_tournament) {
+            this.currentFragment = new ViewExistingTournamentsFragments();
+        }
+
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+        drawer.closeDrawer(GravityCompat.START);
+
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, this.currentFragment)
+                .commit();
     }
 
 
