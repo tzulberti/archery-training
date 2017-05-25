@@ -21,6 +21,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import org.w3c.dom.Text;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -45,6 +47,8 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     private static final float ARROW_IMPACT_RADIUS = 5;
     private ImageView targetImageView;
     private TextView[] currentScoreText;
+    private TextView totalSerieScoreText;
+
     private Button previousSerieButton;
     private Button nextSerieButton;
 
@@ -106,6 +110,12 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
                 return true;
             }
         });
+
+        ((TextView) view.findViewById(R.id.serie_index)).setText("Serie " + this.tournamentSerie.index);
+        ((TextView) view.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", this.tournamentSerie.tournament.totalScore, TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
+
+        this.totalSerieScoreText = (TextView) view.findViewById(R.id.total_serie_score);
+
 
         return view;
     }
@@ -222,6 +232,10 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             this.tournamentSerie.totalScore += score;
             this.tournamentSerie.arrows.add(serieArrow);
         }
+
+        if (isFinal) {
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.tournamentSerie.totalScore, TournamentConfiguration.MAX_SCORE_PER_SERIES));
+        }
     }
 
 
@@ -237,7 +251,9 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             } else {
 
                 // same here... there isn't any need to add +1 because the serie already starts at 1
+
                 System.err.println(String.format("SerieIndex: %s, MaxSeries: %s", this.tournamentSerie.index, TournamentConfiguration.MAX_SERIES));
+
                 if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
                     // return to the tournament view because all the series for the tournament have been loaded
                     Bundle bundle = new Bundle();
@@ -254,6 +270,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
                 } else if (this.tournamentSerie.tournament.series.size() > this.tournamentSerie.index) {
                     transitionSerie = this.tournamentSerie.tournament.series.get(this.tournamentSerie.index);
+
                 } else {
                     // creating a new serie for the tournament
                     transitionSerie = this.tournamentDAO.createNewSerie(this.tournamentSerie.tournament);
