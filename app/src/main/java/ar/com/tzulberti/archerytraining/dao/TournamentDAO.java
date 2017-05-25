@@ -78,6 +78,8 @@ public class TournamentDAO {
     }
 
     public List<TournamentSerie> getTournamentSeriesInformation(long tournamentId) {
+        Tournament tournament = this.getTournamentInformation(tournamentId);
+
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                    "SELECT " +
@@ -104,16 +106,19 @@ public class TournamentDAO {
                 currentSerie = new TournamentSerie();
                 res.add(currentSerie);
 
+                currentSerie.tournament = tournament;
                 currentSerie.id = cursor.getInt(0);
                 currentSerie.index = cursor.getInt(1);
                 currentSerie.arrows = new ArrayList<>();
                 currentSerie.totalScore = 0;
+                tournament.series.add(currentSerie);
             }
 
             TournamentSerieArrow arrowData = new TournamentSerieArrow();
             currentSerie.arrows.add(arrowData);
             arrowData.score = cursor.getInt(2);
             currentSerie.totalScore += arrowData.score;
+
             arrowData.xPosition = cursor.getInt(3);
             arrowData.yPosition = cursor.getInt(4);
         }
