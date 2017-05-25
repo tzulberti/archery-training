@@ -7,6 +7,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -124,10 +125,11 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
     @Override
     public void handleClick(View v) {
         TournamentSerie tournamentSerie = this.tournament.series.get(v.getId() -1);
-        ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+        ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, practiceTestingFragment)
-                .commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.container, viewSerieInformationFragment);
+        fragmentTransaction.addToBackStack("Serie " + String.valueOf(tournamentSerie.id));
+        fragmentTransaction.commit();
     }
 }

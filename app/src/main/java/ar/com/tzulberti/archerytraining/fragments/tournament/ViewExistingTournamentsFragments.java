@@ -4,14 +4,12 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.widget.Space;
+import android.support.v4.app.FragmentTransaction;
+
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -20,7 +18,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.consts.TournamentConsts;
+
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
@@ -66,9 +64,10 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
         Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
         ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournament);
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, tournamentSeriesFragment)
-                .commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.container, tournamentSeriesFragment);
+        fragmentTransaction.addToBackStack("Tournament " + String.valueOf(tournamentId));
+        fragmentTransaction.commit();
     }
 
     private void showInformation(View view) {
