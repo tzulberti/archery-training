@@ -63,8 +63,13 @@ public class AddTournamentFragment extends BaseTournamentFragment {
                 ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked()
         );
 
+        Bundle bundle = new Bundle();
+        bundle.putLong("tournamentId", tournament.id);
+
         MainActivity activity = (MainActivity) getActivity();
-        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournament);
+        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+        tournamentSeriesFragment.setArguments(bundle);
+
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
                 .replace(R.id.container, tournamentSeriesFragment)

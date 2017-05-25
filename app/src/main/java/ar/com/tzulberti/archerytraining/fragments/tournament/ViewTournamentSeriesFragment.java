@@ -38,18 +38,14 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
     public Tournament tournament;
     private TableLayout dataContainer;
 
-    public static ViewTournamentSeriesFragment newInstance(Tournament tournament) {
-        ViewTournamentSeriesFragment fragment = new ViewTournamentSeriesFragment();
-        fragment.tournament = tournament;
-
-        return fragment;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.tournament_view_series, container, false);
         this.setObjects();
+
+
+        this.tournament = this.tournamentDAO.getTournamentInformation(getArguments().getLong("tournamentId"));
 
         final MainActivity activity = (MainActivity) getActivity();
         final ViewTournamentSeriesFragment self = this;

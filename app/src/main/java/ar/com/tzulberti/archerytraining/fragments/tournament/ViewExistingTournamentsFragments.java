@@ -61,12 +61,17 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
     @Override
     public void handleClick(View v) {
         int tournamentId = v.getId();
-        Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
-        ViewTournamentSeriesFragment tournamentSeriesFragment = ViewTournamentSeriesFragment.newInstance(tournament);
+        Bundle bundle = new Bundle();
+        bundle.putLong("tournamentId", tournamentId);
+
+        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+        tournamentSeriesFragment.setArguments(bundle);
+
         FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.container, tournamentSeriesFragment);
         fragmentTransaction.addToBackStack("Tournament " + String.valueOf(tournamentId));
+
         fragmentTransaction.commit();
     }
 
