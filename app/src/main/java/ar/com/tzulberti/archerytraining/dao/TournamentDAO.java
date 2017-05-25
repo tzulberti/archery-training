@@ -62,8 +62,8 @@ public class TournamentDAO {
         contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
         contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(TournamentConsts.TARGET_SIZE_COLUMN_NAME, targetSize);
-        contentValues.put(TournamentConsts.IS_OUTDOOR_COLUMN_NAME, isOutdoor);
-        contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, isTournament);
+        contentValues.put(TournamentConsts.IS_OUTDOOR_COLUMN_NAME, (isOutdoor) ? 1 : 0);
+        contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
         long id = db.insert(TournamentConsts.TABLE_NAME, null, contentValues);
 
         Tournament res = new Tournament(id, name, DatetimeHelper.databaseValueToDate(databaseTimestamp));
@@ -140,6 +140,7 @@ public class TournamentDAO {
         if (hasData) {
             serieIndex = cursor.getInt(0) + 1;
         }
+        System.err.println(String.format("Has Data: %s, serieIndex: %s, IsOutdoor: %s", hasData, serieIndex, tournamet.isOutdoor));
 
         if (tournamet.isOutdoor && serieIndex > 12) {
             // already has the max number of series for this outdoor tournament
@@ -216,10 +217,10 @@ public class TournamentDAO {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
-                        "SELECT %s, %s, %s " +
+                        "SELECT %s, %s, %s, %s " +
                         "FROM %s " +
                         "WHERE %s = ?",
-                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME,
+                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME, TournamentConsts.IS_OUTDOOR_COLUMN_NAME,
                         TournamentConsts.TABLE_NAME,
                         TournamentConsts.ID_COLUMN_NAME
                 ),
@@ -228,6 +229,7 @@ public class TournamentDAO {
         cursor.moveToFirst();
         Tournament res = new Tournament(tournamentId, cursor.getString(0), DatetimeHelper.databaseValueToDate(cursor.getLong(1)));
         res.distance = cursor.getInt(2);
+        res.isOutdoor = (cursor.getInt(3) == 1);
         return res;
     }
 }

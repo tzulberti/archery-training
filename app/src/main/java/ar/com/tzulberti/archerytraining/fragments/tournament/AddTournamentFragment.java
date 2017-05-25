@@ -55,6 +55,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             }
         }
 
+        System.err.println(String.format("is_outdoor: %s", ((CheckBox) v.findViewById(R.id.is_outdoor)).isChecked()));
         Tournament tournament = this.tournamentDAO.createTournament(
                 ((EditText) v.findViewById(R.id.name)).getText().toString(),
                 Integer.valueOf(((EditText) v.findViewById(R.id.distance)).getText().toString()),

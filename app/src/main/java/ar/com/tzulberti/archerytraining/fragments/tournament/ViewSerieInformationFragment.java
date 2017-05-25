@@ -11,6 +11,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -137,6 +138,10 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             this.nextSerieButton.setEnabled(true);
             this.previousSerieButton.setEnabled(this.tournamentSerie.index > 1);
         }
+
+        if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
+            this.nextSerieButton.setText("Terminar");
+        }
     }
 
 
@@ -230,8 +235,24 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
                 // -2 is required because the first index is 1.
                 transitionSerie = this.tournamentSerie.tournament.series.get(this.tournamentSerie.index - 2);
             } else {
+
                 // same here... there isn't any need to add +1 because the serie already starts at 1
-                if (this.tournamentSerie.tournament.series.size() > this.tournamentSerie.index) {
+                System.err.println(String.format("SerieIndex: %s, MaxSeries: %s", this.tournamentSerie.index, TournamentConfiguration.MAX_SERIES));
+                if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
+                    // return to the tournament view because all the series for the tournament have been loaded
+                    Bundle bundle = new Bundle();
+                    bundle.putLong("tournamentId", this.tournamentSerie.tournament.id);
+
+                    ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+                    tournamentSeriesFragment.setArguments(bundle);
+
+                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, tournamentSeriesFragment)
+                            .commit();
+                    return;
+
+                } else if (this.tournamentSerie.tournament.series.size() > this.tournamentSerie.index) {
                     transitionSerie = this.tournamentSerie.tournament.series.get(this.tournamentSerie.index);
                 } else {
                     // creating a new serie for the tournament
