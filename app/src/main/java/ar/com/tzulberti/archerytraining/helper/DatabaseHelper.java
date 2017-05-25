@@ -8,6 +8,7 @@ import ar.com.tzulberti.archerytraining.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.consts.TournamentSerieConsts;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * Created by tzulberti on 4/18/17.
@@ -17,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "archery_training.db";
 
 
-    protected static final int DATABASE_VERSION = 4;
+    protected static final int DATABASE_VERSION = 5;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,7 +45,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TournamentConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConsts.TARGET_SIZE_COLUMN_NAME + " INTEGER NOT NULL " +
+                        TournamentConsts.TARGET_SIZE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0" +
                         ");"
         );
     }
@@ -79,14 +81,22 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        if (oldVersion == 2) {
-
-        } else if (oldVersion == 3) {
-            this.createTournamentTable(db);
-            this.createTournamentSerieTable(db);
-            this.createTournamentSerieArrowTable(db);
-        } else {
-            throw new RuntimeException("Unexpected oldVersion: " + String.valueOf(oldVersion));
+        switch (oldVersion) {
+            case 1: case 2:
+                break;
+            case 3:
+                this.createTournamentTable(db);
+                this.createTournamentSerieTable(db);
+                this.createTournamentSerieArrowTable(db);
+                break;
+            case 4:
+                db.execSQL(String.format(
+                        "ALTER TABLE %s ADD COLUMN %s INTEGER NOT NULL DEFAULT 0",
+                        TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME
+                ));
+                break;
+            default:
+                throw new RuntimeException("Unexpected oldVersion: " + String.valueOf(oldVersion));
         }
     }
 

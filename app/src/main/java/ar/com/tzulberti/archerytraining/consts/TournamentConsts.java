@@ -15,5 +15,5 @@ public class TournamentConsts {
     public static final String TARGET_SIZE_COLUMN_NAME = "target_size";
     public static final String IS_OUTDOOR_COLUMN_NAME = "is_outdoor";
     public static final String IS_TOURNAMENT_DATA_COLUMN_NAME = "is_tournament_data";
-
+    public static final String TOTAL_SCORE_COLUMN_NAME = "total_score";
 }
