@@ -212,7 +212,7 @@ public class TournamentDAO {
         return tournamentSerie;
     }
 
-    public Tournament getTournamentInformation(int tournamentId) {
+    public Tournament getTournamentInformation(long tournamentId) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
