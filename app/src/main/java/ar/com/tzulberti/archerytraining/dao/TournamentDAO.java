@@ -33,10 +33,10 @@ public class TournamentDAO {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
-                        "SELECT %s, %s, %s " +
+                        "SELECT %s, %s, %s, %s " +
                         "FROM %s " +
                         "ORDER BY %s DESC",
-                        TournamentConsts.ID_COLUMN_NAME, TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME,
+                        TournamentConsts.ID_COLUMN_NAME, TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME,
                         TournamentConsts.TABLE_NAME,
                         TournamentConsts.DATETIME_COLUMN_NAME
                 ),
@@ -44,11 +44,14 @@ public class TournamentDAO {
         );
 
         while (cursor.moveToNext()) {
-            res.add(new Tournament(
+            Tournament tournament = new Tournament(
                     cursor.getInt(0),
                     cursor.getString(1),
                     DatetimeHelper.databaseValueToDate(cursor.getLong(2))
-            ));
+            );
+            tournament.totalScore = cursor.getInt(3);
+            res.add(tournament);
+
         }
         return res;
     }
@@ -178,6 +181,9 @@ public class TournamentDAO {
     public TournamentSerie saveTournamentSerieInformation(TournamentSerie tournamentSerie) {
         // delete existing values for this serie and create new ones
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+
+
+
         db.delete(
                 TournamentSerieConsts.TABLE_NAME,
                 TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + "= ? AND " + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + "= ?",
@@ -185,6 +191,23 @@ public class TournamentDAO {
         );
 
         if (tournamentSerie.id != 0) {
+            // Update the tournament with the score of the current serie
+            Cursor cursor = db.rawQuery(
+                    String.format("SELECT SUM(%s) FROM %s WHERE %s = ?",
+                            TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, TournamentSerieConsts.TABLE_NAME, TournamentSerieConsts.ID_COLUMN_NAME),
+                    new String[]{String.valueOf(tournamentSerie.id)}
+            );
+            cursor.moveToNext();
+
+            int databaseSerieTotalScore = cursor.getInt(0);
+            db.execSQL(
+                String.format("UPDATE %s SET %s = %s - ? WHERE %s = ?",
+                        TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.ID_COLUMN_NAME),
+                new String[]{String.valueOf(databaseSerieTotalScore), String.valueOf(tournamentSerie.tournament.id)}
+            );
+            tournamentSerie.tournament.totalScore -= databaseSerieTotalScore;
+
+
             // delete the arrow information is there is any
             db.delete(
                     TournamentSerieArrowConsts.TABLE_NAME,
@@ -209,7 +232,17 @@ public class TournamentDAO {
             serieArrowData.id = db.insert(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
         }
 
-        // return the updated information
+        // update the tournament information
+        db.execSQL(
+                String.format("UPDATE %s SET %s = %s + ? WHERE %s = ?",
+                        TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.ID_COLUMN_NAME),
+                new String[]{String.valueOf(tournamentSerie.totalScore), String.valueOf(tournamentSerie.tournament.id)}
+        );
+        System.err.println(String.format("SerieTotalScore: %s, TournamentTotalScore: %s", tournamentSerie.totalScore, tournamentSerie.tournament.totalScore));
+
+        // update the current instance of the tournament information
+        tournamentSerie.tournament.totalScore += tournamentSerie.totalScore;
+
         return tournamentSerie;
     }
 
@@ -217,10 +250,12 @@ public class TournamentDAO {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
-                        "SELECT %s, %s, %s, %s " +
+                        "SELECT %s, %s, %s, " +
+                                "%s, %s " +
                         "FROM %s " +
                         "WHERE %s = ?",
-                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME, TournamentConsts.IS_OUTDOOR_COLUMN_NAME,
+                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME,
+                            TournamentConsts.IS_OUTDOOR_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME,
                         TournamentConsts.TABLE_NAME,
                         TournamentConsts.ID_COLUMN_NAME
                 ),
@@ -230,6 +265,7 @@ public class TournamentDAO {
         Tournament res = new Tournament(tournamentId, cursor.getString(0), DatetimeHelper.databaseValueToDate(cursor.getLong(1)));
         res.distance = cursor.getInt(2);
         res.isOutdoor = (cursor.getInt(3) == 1);
+        res.totalScore = cursor.getInt(4);
         return res;
     }
 }
