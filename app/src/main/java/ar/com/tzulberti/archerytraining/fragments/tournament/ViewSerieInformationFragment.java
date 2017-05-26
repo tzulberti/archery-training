@@ -31,7 +31,6 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
-import ar.com.tzulberti.archerytraining.model.Coordinate;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -42,9 +41,12 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 public class ViewSerieInformationFragment extends BaseTournamentFragment implements View.OnTouchListener, View.OnLongClickListener {
 
+    public static final float IMAGE_WIDTH = 512;
+    public static final float ARROW_IMPACT_RADIUS = 5;
+
     private static final int Y_PADDING = -80;
-    private static final float IMAGE_WIDTH = 512;
-    private static final float ARROW_IMPACT_RADIUS = 5;
+
+
     private ImageView targetImageView;
     private TextView[] currentScoreText;
     private TextView totalSerieScoreText;
@@ -57,7 +59,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     private float imageScale = -1;
     private float pointWidth = -1;
     private Bitmap imageBitmap;
-    private List<Coordinate> coordinates;
     private Paint currentImpactPaint;
     private Paint finalImpactPaint;
 
@@ -78,7 +79,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
 
-        this.coordinates = new ArrayList<Coordinate>();
         this.currentImpactPaint = new Paint();
         this.currentImpactPaint.setAntiAlias(true);
         this.currentImpactPaint.setColor(Color.MAGENTA);
@@ -165,12 +165,8 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         int eventAction = event.getAction();
         boolean isFinal = false;
         if (eventAction == MotionEvent.ACTION_DOWN || eventAction == MotionEvent.ACTION_MOVE || eventAction == MotionEvent.ACTION_UP) {
-            Coordinate currentImpact = new Coordinate(event.getX() / this.imageScale, event.getY() / this.imageScale);
             isFinal = (eventAction == MotionEvent.ACTION_UP);
-            this.addTargetImpact(currentImpact.x, currentImpact.y, isFinal, false, this.tournamentSerie.arrows.size());
-            if (isFinal) {
-                this.coordinates.add(currentImpact);
-            }
+            this.addTargetImpact(event.getX() / this.imageScale, event.getY() / this.imageScale, isFinal, false, this.tournamentSerie.arrows.size());
         }
 
         if (isFinal && this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
@@ -201,10 +197,10 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Paint paint = this.finalImpactPaint;
-        if (!isFinal) {
-            paint = this.currentImpactPaint;
-        } else {
+        if (isFinal) {
             this.imageBitmap = mutableBitmap;
+        } else {
+            paint = this.currentImpactPaint;
         }
 
         Canvas canvas = new Canvas(mutableBitmap);

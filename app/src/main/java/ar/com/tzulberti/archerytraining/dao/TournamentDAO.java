@@ -77,8 +77,7 @@ public class TournamentDAO {
         return res;
     }
 
-    public List<TournamentSerie> getTournamentSeriesInformation(long tournamentId) {
-        Tournament tournament = this.getTournamentInformation(tournamentId);
+    public List<TournamentSerie> getTournamentSeriesInformation(Tournament tournament) {
 
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
@@ -95,7 +94,7 @@ public class TournamentDAO {
                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?" +
                     "ORDER BY " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME,
 
-                new String[]{String.valueOf(tournamentId)}
+                new String[]{String.valueOf(tournament.id)}
         );
 
         List<TournamentSerie> res = new ArrayList<>();
@@ -272,5 +271,31 @@ public class TournamentDAO {
         res.isOutdoor = (cursor.getInt(3) == 1);
         res.totalScore = cursor.getInt(4);
         return res;
+    }
+
+    /**
+     * Deletes the existing tournament with all the series/arrows information
+     * @param tournamentId the id of the tournament to delete
+     */
+    public void deleteTournament(long tournamentId) {
+        SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+
+        db.delete(
+                TournamentSerieArrowConsts.TABLE_NAME,
+                TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + "= ? ",
+                new String[]{String.valueOf(tournamentId)}
+        );
+
+        db.delete(
+                TournamentSerieConsts.TABLE_NAME,
+                TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + "= ? ",
+                new String[]{String.valueOf(tournamentId)}
+        );
+
+        db.delete(
+                TournamentConsts.TABLE_NAME,
+                TournamentConsts.ID_COLUMN_NAME + "= ? ",
+                new String[]{String.valueOf(tournamentId)}
+        );
     }
 }
