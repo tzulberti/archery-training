@@ -15,6 +15,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Requerido</string>
+    <string name="common_confirmation_dialog_title">Confirmación</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
@@ -89,5 +90,8 @@
     <string name="tournament_serie_index">Serie</string>
     <string name="tournament_serie_next">Siguente</string>
     <string name="tournament_serie_previous">Anterior</string>
+    <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
+    <string name="tournament_view_tournament_charts">Ver todos los impactos</string>
+    <string name="tournament_view_tournament_delete">Borrar</string>
 
 </resources>
