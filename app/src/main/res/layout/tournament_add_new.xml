@@ -55,7 +55,7 @@
             android:id="@+id/is_outdoor"/>
     </TableRow>
 
-    <TableRow android:layout_width="match_parent" android:visibility="invisible">
+    <TableRow android:layout_width="match_parent">
 
         <TextView
             android:padding="3dip"
@@ -63,7 +63,7 @@
 
         <CheckBox
             android:gravity="right"
-            android:checked="true"
+            android:checked="false"
             android:id="@+id/is_tournament"/>
     </TableRow>
 
