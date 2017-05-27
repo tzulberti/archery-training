@@ -204,8 +204,9 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         }
 
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y + Y_PADDING, ARROW_IMPACT_RADIUS, paint);
-        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y + Y_PADDING - this.targetCenterY, 2));
+        y = y + Y_PADDING;
+        canvas.drawCircle(x, y, ARROW_IMPACT_RADIUS, paint);
+        double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y - this.targetCenterY, 2));
         int score = (int) (10 - Math.floor(distance / this.pointWidth));
         if (score < 0) {
             score = 0;
