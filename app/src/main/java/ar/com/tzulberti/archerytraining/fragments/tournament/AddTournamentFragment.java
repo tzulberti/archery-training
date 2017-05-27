@@ -13,6 +13,7 @@ import org.apache.commons.lang3.StringUtils;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -65,12 +66,9 @@ public class AddTournamentFragment extends BaseTournamentFragment {
                 ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked()
         );
 
-        Bundle bundle = new Bundle();
-        bundle.putLong("tournamentId", tournament.id);
-
+        TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
         MainActivity activity = (MainActivity) this.getActivity();
-        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
-        tournamentSeriesFragment.setArguments(bundle);
+        ViewSerieInformationFragment tournamentSeriesFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
