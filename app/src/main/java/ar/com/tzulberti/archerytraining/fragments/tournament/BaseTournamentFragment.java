@@ -12,9 +12,11 @@ import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 public abstract class BaseTournamentFragment extends BaseClickableFragment{
 
     protected TournamentDAO tournamentDAO;
+    protected SerieDataDAO serieDataDAO;
 
     public void setObjects() {
         MainActivity activity = (MainActivity) getActivity();
         this.tournamentDAO = activity.getTournamentDAO();
+        this.serieDataDAO = activity.getSerieDAO();
     }
 }

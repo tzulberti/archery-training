@@ -186,6 +186,8 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
                     return Integer.compare(o1.score, o2.score) * -1;
                 }
             });
+
+            this.serieDataDAO.addSerieData(this.tournamentSerie.tournament.distance, this.tournamentSerie.arrows.size());
             this.tournamentDAO.saveTournamentSerieInformation(this.tournamentSerie);
         }
 
