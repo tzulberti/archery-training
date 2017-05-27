@@ -91,7 +91,8 @@
     <string name="tournament_serie_next">Siguente</string>
     <string name="tournament_serie_previous">Anterior</string>
     <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
-    <string name="tournament_view_tournament_charts">Ver todos los impactos</string>
+    <string name="tournament_view_all_impacts">Ver todos los impactos</string>
+    <string name="tournament_view_score_sheet">Ver planilla</string>
     <string name="tournament_view_tournament_delete">Borrar</string>
 
 </resources>

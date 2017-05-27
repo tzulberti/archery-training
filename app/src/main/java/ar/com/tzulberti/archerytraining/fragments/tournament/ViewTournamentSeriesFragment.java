@@ -134,23 +134,31 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         TableRow tr1 = new TableRow(context);
         Button viewChartsButton = new Button(context);
         viewChartsButton.setId(Integer.MAX_VALUE - 1);
-        viewChartsButton.setText(R.string.tournament_view_tournament_charts);
+        viewChartsButton.setText(R.string.tournament_view_all_impacts);
         viewChartsButton.setLayoutParams(trParams);
         viewChartsButton.setOnClickListener(this);
         tr1.addView(viewChartsButton);
         this.dataContainer.addView(tr1);
 
-
         TableRow tr2 = new TableRow(context);
+        Button viewScoreSheetButton = new Button(context);
+        viewScoreSheetButton.setId(Integer.MAX_VALUE - 2);
+        viewScoreSheetButton.setText(R.string.tournament_view_score_sheet);
+        viewScoreSheetButton.setLayoutParams(trParams);
+        viewScoreSheetButton.setOnClickListener(this);
+        tr2.addView(viewScoreSheetButton);
+        this.dataContainer.addView(tr2);
 
+
+        TableRow trN = new TableRow(context);
         Button deleteButton = new Button(context);
-        deleteButton.setId(Integer.MAX_VALUE - 2);
+        deleteButton.setId(Integer.MAX_VALUE - 15);
         deleteButton.setText(R.string.tournament_view_tournament_delete);
         deleteButton.setLayoutParams(trParams);
         deleteButton.setOnClickListener(this);
         deleteButton.getBackground().setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
-        tr2.addView(deleteButton);
-        this.dataContainer.addView(tr2);
+        trN.addView(deleteButton);
+        this.dataContainer.addView(trN);
 
     }
 
@@ -160,21 +168,27 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         Context context = this.getContext();
         final MainActivity activity = (MainActivity) this.getActivity();
 
-        if (id == Integer.MAX_VALUE - 1) {
+        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2) {
             // selected the option to view all impacts for the current tournament
             Bundle bundle = new Bundle();
             bundle.putLong("tournamentId", this.tournament.id);
 
-            ViewAllTournamentTargetArrowFragment viewAllTournamentTargetArrowFragment = new ViewAllTournamentTargetArrowFragment();
-            viewAllTournamentTargetArrowFragment.setArguments(bundle);
+            BaseTournamentFragment fragment = null;
+            if (id == Integer.MAX_VALUE - 1 ) {
+                fragment = new ViewAllTournamentTargetArrowFragment();
+            } else {
+                fragment = new ViewTournamentScoreSheetFragment();
+            }
+
+            fragment.setArguments(bundle);
 
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                    .replace(R.id.container, viewAllTournamentTargetArrowFragment);
+                    .replace(R.id.container, fragment);
             fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
-        } else if (id == Integer.MAX_VALUE - 2) {
+        } else if (id == Integer.MAX_VALUE - 15) {
             // selected option to delete the tournament
             new AlertDialog.Builder(context)
                     .setTitle(R.string.common_confirmation_dialog_title)
