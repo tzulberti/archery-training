@@ -5,57 +5,47 @@
     android:orientation="vertical"
     >
 
-    <TextView
+    <Button
         android:id="@+id/main_activity_today_add_serie"
         android:text="@string/leftMenuTodayAddSerie"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24dp"
-        android:background="@color/colorGrey"
         android:onClick="goToFragment"
-        android:padding="8dp"/>
+        />
 
-    <TextView
+    <Button
         android:id="@+id/main_activity_today_view_totals"
         android:text="@string/leftMenuTodayViewTotals"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24dp"
-        android:background="@color/colorGrey"
         android:onClick="goToFragment"
-        android:padding="8dp"/>
+        />
 
-    <TextView
+    <Button
         android:id="@+id/main_activity_today_raw_data"
         android:text="@string/leftMenuTodayRawData"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24dp"
-        android:background="@color/colorGrey"
         android:onClick="goToFragment"
-        android:padding="8dp"/>
+        />
 
 
-    <TextView
+    <Button
         android:id="@+id/main_activity_today_retentions"
         android:text="@string/leftMenuRetentions"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24dp"
-        android:background="@color/colorGrey"
         android:onClick="goToFragment"
-        android:padding="8dp"/>
+        />
 
 
-    <TextView
+    <Button
         android:id="@+id/main_activity_today_tournament"
         android:text="@string/leftMenuTournament"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:textSize="24dp"
-        android:background="@color/colorGrey"
         android:onClick="goToFragment"
-        android:padding="8dp"/>
+        />
 
 
 
