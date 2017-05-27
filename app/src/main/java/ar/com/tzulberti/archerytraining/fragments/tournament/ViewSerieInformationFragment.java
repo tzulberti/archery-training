@@ -184,7 +184,18 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
                 @Override
                 public int compare(TournamentSerieArrow o1, TournamentSerieArrow o2) {
-                    return Integer.compare(o1.score, o2.score) * -1;
+                    int res = 0;
+                    if (o1.isX && ! o2.isX) {
+                        res = 1;
+                    } else if (! o1.isX && o2.isX) {
+                        res = -1;
+                    } else if (o1.score > o2.score) {
+                        res = 1;
+                    } else if (o1.score < o2.score) {
+                        res = -1;
+                    }
+                    res = -1 * res;
+                    return res;
                 }
             });
 
@@ -253,7 +264,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             } else {
 
                 // same here... there isn't any need to add +1 because the serie already starts at 1
-
                 System.err.println(String.format("SerieIndex: %s, MaxSeries: %s", this.tournamentSerie.index, TournamentConfiguration.MAX_SERIES));
 
                 if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
