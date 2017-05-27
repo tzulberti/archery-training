@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.container, this.currentFragment);
 
-        fragmentTransaction.addToBackStack(String.valueOf(id));
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
 

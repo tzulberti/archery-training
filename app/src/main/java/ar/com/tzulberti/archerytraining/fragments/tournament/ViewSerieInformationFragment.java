@@ -73,6 +73,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         View view = inflater.inflate(R.layout.tournament_view_serie_arrow, container, false);
         this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
         this.setObjects();
@@ -242,7 +243,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
     @Override
     public void handleClick(View v) {
-        final MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) this.getActivity();
 
         if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
             TournamentSerie transitionSerie = null;
@@ -263,7 +264,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
                     ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
                     tournamentSeriesFragment.setArguments(bundle);
 
-                    FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
                     fragmentManager.beginTransaction()
                             .replace(R.id.container, tournamentSeriesFragment)
                             .commit();

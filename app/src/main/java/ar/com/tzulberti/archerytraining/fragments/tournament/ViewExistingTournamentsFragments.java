@@ -33,6 +33,7 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.tournament_view_existing, container, false);
         this.setObjects();
@@ -67,10 +68,10 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
         ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
         tournamentSeriesFragment.setArguments(bundle);
 
-        FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                 .replace(R.id.container, tournamentSeriesFragment);
-        fragmentTransaction.addToBackStack("Tournament " + String.valueOf(tournamentId));
+        fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();
     }
