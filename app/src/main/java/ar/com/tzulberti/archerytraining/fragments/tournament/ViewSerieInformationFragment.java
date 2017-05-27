@@ -213,6 +213,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         if (score < 0) {
             score = 0;
         }
+        boolean isX = (score == 10 && (distance / this.pointWidth) < 0.5);
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
 
@@ -220,7 +221,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         TextView scoreText = this.currentScoreText[arrowIndex];
 
         scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(score), PorterDuff.Mode.SRC_IN));
-        scoreText.setText(TournamentHelper.getUserScore(score));
+        scoreText.setText(TournamentHelper.getUserScore(score, isX));
         scoreText.setTextColor(TournamentHelper.getFontColor(score));
 
         if (isFinal && ! showingExisting) {
@@ -228,6 +229,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             serieArrow.xPosition = x;
             serieArrow.yPosition = y;
             serieArrow.score = score;
+            serieArrow.isX = isX;
             this.tournamentSerie.totalScore += score;
             this.tournamentSerie.arrows.add(serieArrow);
         }

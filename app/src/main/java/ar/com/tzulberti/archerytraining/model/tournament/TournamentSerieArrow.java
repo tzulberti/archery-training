@@ -12,6 +12,7 @@ public class TournamentSerieArrow {
     public float xPosition;
     public float yPosition;
     public int score;
+    public boolean isX;
 
     public TournamentSerie serie;
     public Tournament tournament;

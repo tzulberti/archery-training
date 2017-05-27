@@ -86,7 +86,8 @@ public class TournamentDAO {
                         TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + " " +
+                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
+                           TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " " +
                     "FROM " +  TournamentSerieArrowConsts.TABLE_NAME  + " " +
                     "JOIN " + TournamentSerieConsts.TABLE_NAME + " " +
                         "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
@@ -120,6 +121,7 @@ public class TournamentDAO {
 
             arrowData.xPosition = cursor.getInt(3);
             arrowData.yPosition = cursor.getInt(4);
+            arrowData.isX = (cursor.getInt(5) == 1);
         }
 
         return res;
@@ -233,6 +235,7 @@ public class TournamentDAO {
             contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
             contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
             contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+            contentValuesArrow.put(TournamentSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
             serieArrowData.id = db.insert(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
         }
 

@@ -93,7 +93,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
             for (TournamentSerieArrow arrowData : data.arrows) {
                 TextView arrowScoreText = new TextView(context);
-                arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score));
+                arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score, arrowData.isX));
                 arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
                 arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 arrowScoreText.setBackgroundResource(R.drawable.rounded);
