@@ -9,13 +9,15 @@ import android.graphics.Color;
 public class TournamentHelper {
 
 
-    public static final String getUserScore(int score) {
+    public static final String getUserScore(int score, boolean isX) {
         if (score == 0) {
-            return " M ";
+            return "M";
+        } else if (isX) {
+            return "X";
         } else if (score < 10) {
-            return "  " + String.valueOf(score) + " ";
+            return String.valueOf(score);
         } else {
-            return String.valueOf(score) + " ";
+            return String.valueOf(score);
         }
     }
 

@@ -18,7 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "archery_training.db";
 
 
-    protected static final int DATABASE_VERSION = 5;
+    protected static final int DATABASE_VERSION = 6;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -73,6 +73,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                         TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
+                        TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
                         "FOREIGN KEY (" + TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentSerieConsts.ID_COLUMN_NAME + " ) " +
                         ");"
@@ -93,6 +94,12 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 db.execSQL(String.format(
                         "ALTER TABLE %s ADD COLUMN %s INTEGER NOT NULL DEFAULT 0",
                         TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME
+                ));
+                break;
+            case 5:
+                db.execSQL(String.format(
+                        "ALTER TABLE %s ADD COLUMN %s INTEGER NOT NULL DEFAULT 0",
+                        TournamentSerieArrowConsts.TABLE_NAME, TournamentSerieArrowConsts.IS_X_COLUMN_NAME
                 ));
                 break;
             default:
