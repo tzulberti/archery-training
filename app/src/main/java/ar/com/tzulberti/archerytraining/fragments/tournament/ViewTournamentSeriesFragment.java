@@ -148,7 +148,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         deleteButton.setText(R.string.tournament_view_tournament_delete);
         deleteButton.setLayoutParams(trParams);
         deleteButton.setOnClickListener(this);
-        deleteButton.setBackgroundColor(Color.RED);
+        deleteButton.getBackground().setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
         tr2.addView(deleteButton);
         this.dataContainer.addView(tr2);
 
