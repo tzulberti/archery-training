@@ -28,6 +28,7 @@ public class ViewRawDataFragment extends BaseSeriesFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.today_raw_data, container, false);
         this.setObjects();

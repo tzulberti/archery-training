@@ -41,13 +41,14 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
+        this.cleanState(container);
         View view = inflater.inflate(R.layout.tournament_view_series, container, false);
         this.setObjects();
 
 
         this.tournament = this.tournamentDAO.getTournamentInformation(getArguments().getLong("tournamentId"));
 
-        final MainActivity activity = (MainActivity) getActivity();
+        final MainActivity activity = (MainActivity) this.getActivity();
         final ViewTournamentSeriesFragment self = this;
 
 
@@ -167,10 +168,10 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             ViewAllTournamentTargetArrowFragment viewAllTournamentTargetArrowFragment = new ViewAllTournamentTargetArrowFragment();
             viewAllTournamentTargetArrowFragment.setArguments(bundle);
 
-            FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                     .replace(R.id.container, viewAllTournamentTargetArrowFragment);
-            fragmentTransaction.addToBackStack("TournamentSeries " + String.valueOf(this.tournament.id));
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
 
         } else if (id == Integer.MAX_VALUE - 2) {
@@ -196,10 +197,10 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         } else {
             TournamentSerie tournamentSerie = this.tournament.series.get(v.getId() - 1);
             ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
-            FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
+            FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                     .replace(R.id.container, viewSerieInformationFragment);
-            fragmentTransaction.addToBackStack("Serie " + String.valueOf(tournamentSerie.id));
+            fragmentTransaction.addToBackStack(null);
             fragmentTransaction.commit();
         }
     }

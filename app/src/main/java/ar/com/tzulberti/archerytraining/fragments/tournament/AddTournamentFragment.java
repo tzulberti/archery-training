@@ -30,6 +30,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.tournament_add_new, container, false);
         this.setObjects();
@@ -67,7 +68,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
         Bundle bundle = new Bundle();
         bundle.putLong("tournamentId", tournament.id);
 
-        MainActivity activity = (MainActivity) getActivity();
+        MainActivity activity = (MainActivity) this.getActivity();
         ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
         tournamentSeriesFragment.setArguments(bundle);
 

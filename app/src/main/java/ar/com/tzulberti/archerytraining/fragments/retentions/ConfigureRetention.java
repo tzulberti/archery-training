@@ -39,6 +39,7 @@ public class ConfigureRetention extends BaseClickableFragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         View view = inflater.inflate(R.layout.configure_retention, container, false);
         MainActivity activity = (MainActivity) getActivity();
 

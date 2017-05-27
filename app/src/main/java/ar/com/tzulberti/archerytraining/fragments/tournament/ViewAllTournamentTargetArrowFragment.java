@@ -42,6 +42,7 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        this.cleanState(container);
         View view = inflater.inflate(R.layout.tournament_view_tournament_series_on_target, container, false);
         this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
         this.rangeBar = (RangeBar) view.findViewById(R.id.tournament_series_rangebar);
