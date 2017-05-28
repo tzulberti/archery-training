@@ -66,9 +66,14 @@ public class AddTournamentFragment extends BaseTournamentFragment {
                 ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked()
         );
 
-        TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
+
         MainActivity activity = (MainActivity) this.getActivity();
-        ViewSerieInformationFragment tournamentSeriesFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+        Bundle bundle = new Bundle();
+        bundle.putLong("tournamentId", tournament.id);
+        bundle.putInt("creating", 1);
+
+        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+        tournamentSeriesFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
