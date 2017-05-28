@@ -64,10 +64,10 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                     return ;
                 }
 
-                ViewSerieInformationFragment practiceTestingFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+                ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
-                        .replace(R.id.container, practiceTestingFragment)
+                        .replace(R.id.container, viewSerieInformationFragment)
                         .commit();
             }
         });
@@ -79,8 +79,23 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
     }
 
     public void showExistingSeries() {
-        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
 
+
+        if (this.getArguments().containsKey("creating")) {
+            this.getArguments().remove("creating");
+            TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
+
+            ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+            FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+            FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                    .replace(R.id.container, viewSerieInformationFragment);
+            fragmentTransaction.addToBackStack(null);
+            fragmentTransaction.commit();
+            return;
+        }
+
+
+        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
         Context context = this.getContext();
         for (TournamentSerie data : this.tournament.series) {
             TableRow tr = new TableRow(context);
