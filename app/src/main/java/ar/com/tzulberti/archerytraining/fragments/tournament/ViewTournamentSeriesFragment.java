@@ -145,6 +145,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         trParams.span = span;
 
 
+        boolean buttonsEnabled = ! this.tournament.series.isEmpty();
         // add the buttons to delete/view charts for the tournament
         TableRow tr1 = new TableRow(context);
         Button viewChartsButton = new Button(context);
@@ -152,6 +153,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         viewChartsButton.setText(R.string.tournament_view_all_impacts);
         viewChartsButton.setLayoutParams(trParams);
         viewChartsButton.setOnClickListener(this);
+        viewChartsButton.setEnabled(buttonsEnabled);
         tr1.addView(viewChartsButton);
         this.dataContainer.addView(tr1);
 
@@ -161,6 +163,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         viewScoreSheetButton.setText(R.string.tournament_view_score_sheet);
         viewScoreSheetButton.setLayoutParams(trParams);
         viewScoreSheetButton.setOnClickListener(this);
+        viewScoreSheetButton.setEnabled(buttonsEnabled);
         tr2.addView(viewScoreSheetButton);
         this.dataContainer.addView(tr2);
 
