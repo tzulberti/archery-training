@@ -23,4 +23,8 @@ public abstract class BaseClickableFragment extends Fragment implements View.OnC
     public void onClick(View v) {
         this.handleClick(v);
     }
+
+    public boolean canGoBack() {
+        return true;
+    }
 }

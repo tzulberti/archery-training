@@ -1,5 +1,7 @@
 package ar.com.tzulberti.archerytraining.fragments.tournament;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -62,12 +64,14 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
     private Paint currentImpactPaint;
     private Paint finalImpactPaint;
 
+    private boolean canGoBack;
     private TournamentSerie tournamentSerie;
 
 
     public static ViewSerieInformationFragment createInstance(TournamentSerie tournamentSerie) {
         ViewSerieInformationFragment res = new ViewSerieInformationFragment();
         res.tournamentSerie = tournamentSerie;
+        res.canGoBack = false;
         return res;
     }
 
@@ -185,9 +189,9 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
                 @Override
                 public int compare(TournamentSerieArrow o1, TournamentSerieArrow o2) {
                     int res = 0;
-                    if (o1.isX && ! o2.isX) {
+                    if (o1.isX && !o2.isX) {
                         res = 1;
-                    } else if (! o1.isX && o2.isX) {
+                    } else if (!o1.isX && o2.isX) {
                         res = -1;
                     } else if (o1.score > o2.score) {
                         res = 1;
@@ -218,7 +222,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         }
 
         Canvas canvas = new Canvas(mutableBitmap);
-        if (! showingExisting) {
+        if (!showingExisting) {
             y = y + Y_PADDING;
         }
         canvas.drawCircle(x, y, ARROW_IMPACT_RADIUS, paint);
@@ -238,7 +242,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         scoreText.setText(TournamentHelper.getUserScore(score, isX));
         scoreText.setTextColor(TournamentHelper.getFontColor(score));
 
-        if (isFinal && ! showingExisting) {
+        if (isFinal && !showingExisting) {
             TournamentSerieArrow serieArrow = new TournamentSerieArrow();
             serieArrow.xPosition = x;
             serieArrow.yPosition = y;
@@ -308,4 +312,39 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         System.out.println("On long click");
         return false;
     }
+
+    @Override
+    public boolean canGoBack() {
+        if (this.tournamentSerie.arrows.size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+            // if the serie is created with 6 arrows, then I dont have any issue
+            // if the user go backs
+            return true;
+        }
+
+        if (this.canGoBack) {
+            // if the user already confirmed that he can go back, then it should do it
+            return true;
+        }
+
+        final ViewSerieInformationFragment self = this;
+
+        new AlertDialog.Builder(this.getContext())
+                .setTitle(R.string.common_confirmation_dialog_title)
+                .setMessage(R.string.tournament_view_serie_creating_back)
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+
+                    public void onClick(DialogInterface dialog, int whichButton) {
+                        self.canGoBack = true;
+                        self.tournamentDAO.deleteSerie(self.tournamentSerie.id);
+                        self.getActivity().onBackPressed();
+                    }})
+                .setNegativeButton(android.R.string.no, null)
+                .show();
+
+        // ask the user if he is sure to go back or not
+        return false;
+    }
+
+
 }
