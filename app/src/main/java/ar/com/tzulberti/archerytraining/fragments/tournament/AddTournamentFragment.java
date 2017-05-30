@@ -52,7 +52,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             String value = element.getText().toString();
 
             if (StringUtils.isBlank(value)) {
-                element.setError("");
+                element.setError(getText(R.string.commonRequiredValidationError));
                 return ;
             }
         }
