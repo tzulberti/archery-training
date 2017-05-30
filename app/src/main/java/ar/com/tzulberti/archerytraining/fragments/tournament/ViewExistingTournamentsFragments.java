@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -84,18 +85,28 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
             TableRow tr = new TableRow(context);
             tr.setPadding(0, 15, 0, 15);
 
+            ImageView imageView = new ImageView(context);
             TextView nameText = new TextView(context);
             TextView datetimeText = new TextView(context);
             TextView totalScoreText = new TextView(context);
 
+
+            if (data.isTournament) {
+                imageView.setImageResource(R.drawable.ic_trophy);
+            } else {
+                imageView.setImageResource(R.drawable.ic_bow);
+            }
             nameText.setText(data.name);
             nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
 
             totalScoreText.setText(String.valueOf(data.totalScore) + "/" + String.valueOf(TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
             totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
             datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(data.datetime));
 
+
+            tr.addView(imageView);
             tr.addView(nameText);
             tr.addView(totalScoreText);
             tr.addView(datetimeText);
