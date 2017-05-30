@@ -301,4 +301,19 @@ public class TournamentDAO {
                 new String[]{String.valueOf(tournamentId)}
         );
     }
+
+    public void deleteSerie(long tournamentSerieId) {
+        SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+        db.delete(
+                TournamentSerieArrowConsts.TABLE_NAME,
+                TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ? ",
+                new String[]{String.valueOf(tournamentSerieId)}
+        );
+
+        db.delete(
+                TournamentSerieConsts.TABLE_NAME,
+                TournamentSerieConsts.ID_COLUMN_NAME + "= ? ",
+                new String[]{String.valueOf(tournamentSerieId)}
+        );
+    }
 }

@@ -94,5 +94,6 @@
     <string name="tournament_view_all_impacts">Ver todos los impactos</string>
     <string name="tournament_view_score_sheet">Ver planilla</string>
     <string name="tournament_view_tournament_delete">Borrar</string>
+    <string name="tournament_view_serie_creating_back">Si vas para atras vas a borrar la serie incompleta. ¿Estas seguro?</string>
 
 </resources>
