@@ -33,10 +33,12 @@ public class TournamentDAO {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
-                        "SELECT %s, %s, %s, %s " +
+                        "SELECT %s, %s, %s, " +
+                            "%s, %s " +
                         "FROM %s " +
                         "ORDER BY %s DESC",
-                        TournamentConsts.ID_COLUMN_NAME, TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME,
+                        TournamentConsts.ID_COLUMN_NAME, TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME,
+                                TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME,
                         TournamentConsts.TABLE_NAME,
                         TournamentConsts.DATETIME_COLUMN_NAME
                 ),
@@ -50,6 +52,7 @@ public class TournamentDAO {
                     DatetimeHelper.databaseValueToDate(cursor.getLong(2))
             );
             tournament.totalScore = cursor.getInt(3);
+            tournament.isTournament = (cursor.getInt(4) == 1);
             res.add(tournament);
 
         }
@@ -57,7 +60,7 @@ public class TournamentDAO {
     }
 
 
-    public Tournament createTournament(String name, int distance, int targetSize, boolean isTournament, boolean isOutdoor) {
+    public Tournament createTournament(String name, int distance, int targetSize, boolean isOutdoor, boolean isTournament) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long databaseTimestamp = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
