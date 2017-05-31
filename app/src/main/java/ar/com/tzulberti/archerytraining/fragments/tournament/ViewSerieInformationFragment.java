@@ -116,7 +116,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             }
         });
 
-        ((TextView) view.findViewById(R.id.serie_index)).setText("Serie " + this.tournamentSerie.index);
+        ((TextView) view.findViewById(R.id.serie_index)).setText(getString(R.string.tournament_serie_current_serie, this.tournamentSerie.index));
         ((TextView) view.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", this.tournamentSerie.tournament.totalScore, TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
 
         this.totalSerieScoreText = (TextView) view.findViewById(R.id.total_serie_score);
@@ -155,7 +155,7 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
         }
 
         if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
-            this.nextSerieButton.setText("Terminar");
+            this.nextSerieButton.setText(getText(R.string.tournament_serie_end));
         }
     }
 

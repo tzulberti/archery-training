@@ -99,7 +99,7 @@ public class ConfigureRetention extends BaseClickableFragment {
         SharedPreferences.Editor editor = sharedPref.edit();
 
         boolean foundError = false;
-        String requiredValueError = getResources().getString(R.string.requiredValue);
+        String requiredValueError = getResources().getString(R.string.commonRequiredValidationError);
         for (Map.Entry<String, EditText> info : inputMapping.entrySet()) {
             String inputValue = info.getValue().getText().toString();
             if (StringUtils.isBlank(inputValue)) {

@@ -109,7 +109,7 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
             }
         }
 
-        this.seriesShowingText.setText(String.format("Serie %s to %s", minSerie, maxSerie));
+        this.seriesShowingText.setText(getString(R.string.tournament_serie_showing_series, minSerie, maxSerie));
     }
 
     private void addTargetImpact(float x, float y, Bitmap mutableBitmap) {

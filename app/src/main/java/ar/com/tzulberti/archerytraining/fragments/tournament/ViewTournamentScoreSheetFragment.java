@@ -60,7 +60,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
                 tr.setPadding(0, 25, 0, 10);
                 TextView roundIndexText = new TextView(context);
                 roundIndexText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                roundIndexText.setText("Ronda " + String.valueOf(roundIndex));
+                roundIndexText.setText(getString(R.string.tournament_serie_current_round, roundIndex));
                 tr.addView(roundIndexText);
                 this.tableLayout.addView(tr);
                 roundAccumulatedScore = 0;
@@ -68,7 +68,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
 
             TableRow serieTableRow = new TableRow(context);
             TextView serieIndexText = new TextView(context);
-            serieIndexText.setText("Serie " + String.valueOf(tournamentSerie.index));
+            serieIndexText.setText(getString(R.string.tournament_serie_current_serie, tournamentSerie.index));
             serieTableRow.addView(serieIndexText);
 
             for (TournamentSerieArrow arrowData : tournamentSerie.arrows) {
