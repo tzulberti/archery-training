@@ -102,7 +102,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             tr.setPadding(0, 15, 0, 15);
 
             TextView serieIndexText = new TextView(context);
-            serieIndexText.setText("Serie " + String.valueOf(data.index));
+            serieIndexText.setText(getString(R.string.tournament_serie_current_serie, data.index));
             serieIndexText.setGravity(Gravity.LEFT);
 
             tr.addView(serieIndexText);

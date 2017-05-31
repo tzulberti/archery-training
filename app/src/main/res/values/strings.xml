@@ -15,6 +15,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Requerido</string>
+    <string name="commonDelete">commonDelete</string>
     <string name="common_confirmation_dialog_title">Confirmación</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -46,7 +47,6 @@
     <string name="seriesSleepTime">Descanso entre series</string>
     <string name="startIn">Empezar en</string>
     <string name="buttonStart">Empezar</string>
-    <string name="requiredValue">Requerido</string>
 
     <!-- Text usados en la pantalla de cuando empieza todo -->
     <string name="button_stop">Parar</string>
@@ -81,15 +81,16 @@
     <string name="tournament_target_size">Tamaño del blanco</string>
     <string name="tournament_is_outdoor">¿Es outdoor?</string>
     <string name="tournament_is_tournament">¿Es torneo?</string>
-    <string name="tournament_is_tournament_help">
-        Si se tilda esta opcion, entonces se va a validar que las series no tengan mas
-        de 3 o 6 flechas y no haya mas de 12 series. En caso contrario, se pueden hacer cuantas
-        series sean necesarias y que cada serie tenga mas o menos flechas que en un torneo oficial
-    </string>
+
+
 
     <string name="tournament_serie_index">Serie</string>
+    <string name="tournament_serie_current_serie">Serie %1$d</string>
+    <string name="tournament_serie_current_round">Ronda %1$d</string>
     <string name="tournament_serie_next">Siguente</string>
     <string name="tournament_serie_previous">Anterior</string>
+    <string name="tournament_serie_end">Terminar</string>
+    <string name="tournament_serie_showing_series">Serie %1$d to %2$d</string>
     <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
     <string name="tournament_view_all_impacts">Ver todos los impactos</string>
     <string name="tournament_view_score_sheet">Ver planilla</string>

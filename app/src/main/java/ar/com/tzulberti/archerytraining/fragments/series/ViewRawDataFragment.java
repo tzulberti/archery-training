@@ -65,7 +65,7 @@ public class ViewRawDataFragment extends BaseSeriesFragment {
             arrowsAmountText.setText(String.valueOf(data.arrowsAmount));
             datetimeText.setText(DatetimeHelper.DATETIME_FORMATTER.format(data.datetime));
 
-            removeButton.setText("Delete");
+            removeButton.setText(getText(R.string.commonDelete));
             removeButton.setId(data.id);
             removeButton.setOnClickListener(this);
 

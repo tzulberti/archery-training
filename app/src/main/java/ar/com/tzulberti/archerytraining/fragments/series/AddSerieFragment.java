@@ -62,14 +62,13 @@ public class AddSerieFragment extends BaseSeriesFragment {
         System.err.println("Entro en el onClick del AddSerieFragment");
         CharSequence distanceValue = this.distanceText.getText().toString();
         if (StringUtils.isBlank(distanceValue)) {
-            // TODO put a real error message
-            this.distanceText.setError("");
+            this.distanceText.setError(getText(R.string.commonRequiredValidationError));
             return;
         }
 
         CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
         if (StringUtils.isBlank(arrowsAmount)) {
-            this.arrowAmountText.setError("");
+            this.arrowAmountText.setError(getText(R.string.commonRequiredValidationError));
             return;
         }
 
