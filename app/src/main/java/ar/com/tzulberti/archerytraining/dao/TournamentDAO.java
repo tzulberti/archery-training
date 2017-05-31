@@ -152,7 +152,6 @@ public class TournamentDAO {
         if (hasData) {
             serieIndex = cursor.getInt(0) + 1;
         }
-        System.err.println(String.format("Has Data: %s, serieIndex: %s, IsOutdoor: %s", hasData, serieIndex, tournamet.isOutdoor));
 
         if (tournamet.isOutdoor && serieIndex > 12) {
             // already has the max number of series for this outdoor tournament
@@ -248,7 +247,6 @@ public class TournamentDAO {
                         TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.ID_COLUMN_NAME),
                 new String[]{String.valueOf(tournamentSerie.totalScore), String.valueOf(tournamentSerie.tournament.id)}
         );
-        System.err.println(String.format("SerieTotalScore: %s, TournamentTotalScore: %s", tournamentSerie.totalScore, tournamentSerie.tournament.totalScore));
 
         // update the current instance of the tournament information
         tournamentSerie.tournament.totalScore += tournamentSerie.totalScore;

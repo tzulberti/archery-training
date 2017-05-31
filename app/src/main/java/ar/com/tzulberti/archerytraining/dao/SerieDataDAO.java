@@ -35,7 +35,6 @@ public class SerieDataDAO {
         long id = db.insert(SerieInformationConsts.TABLE_NAME, null, contentValues);
         if (id == -1) {
             // TODO check what to do in this case
-            System.err.println("-------------------------- Tuvo un error");
         }
         return id;
     }

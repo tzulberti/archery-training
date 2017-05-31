@@ -43,10 +43,6 @@ public class ViewRawDataFragment extends BaseSeriesFragment {
         this.serieDataDAO.deleteSerieId(v.getId());
         TableRow tr = (TableRow) v.getParent();
         rawDataTableLayout.removeView(tr);
-
-        System.err.println("Entro en el handleClick de ViewRawDataFragment");
-        System.err.println("Entro en el handleClick de ViewRawDataFragment");
-        System.err.println("Entro en el handleClick de ViewRawDataFragment");
     }
 
     private void showInformation(View view) {

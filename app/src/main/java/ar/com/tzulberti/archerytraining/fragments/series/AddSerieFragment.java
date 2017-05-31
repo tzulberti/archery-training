@@ -59,7 +59,6 @@ public class AddSerieFragment extends BaseSeriesFragment {
      */
     @Override
     public void handleClick(View v) {
-        System.err.println("Entro en el onClick del AddSerieFragment");
         CharSequence distanceValue = this.distanceText.getText().toString();
         if (StringUtils.isBlank(distanceValue)) {
             this.distanceText.setError(getText(R.string.commonRequiredValidationError));
@@ -72,7 +71,6 @@ public class AddSerieFragment extends BaseSeriesFragment {
             return;
         }
 
-        System.err.println("Llego hasta aca");
         this.serieDataDAO.addSerieData(
                 Integer.valueOf(distanceValue.toString()),
                 Integer.valueOf(arrowsAmount.toString())
