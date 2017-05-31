@@ -49,7 +49,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             EditText element = (EditText) v.findViewById(elementId);
 
             if (element == null) {
-                System.err.println(String.format("No element found for %s, [%s, %s, %s]", elementId, this.REQUIRED_VALUES[0], this.REQUIRED_VALUES[1], this.REQUIRED_VALUES[2]));
+                // TODO check what to do in this case
             }
             String value = element.getText().toString();
 
@@ -59,7 +59,6 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             }
         }
 
-        System.err.println(String.format("is_outdoor: %s", ((CheckBox) v.findViewById(R.id.is_outdoor)).isChecked()));
         Tournament tournament = this.tournamentDAO.createTournament(
                 ((EditText) v.findViewById(R.id.name)).getText().toString(),
                 Integer.valueOf(((EditText) v.findViewById(R.id.distance)).getText().toString()),

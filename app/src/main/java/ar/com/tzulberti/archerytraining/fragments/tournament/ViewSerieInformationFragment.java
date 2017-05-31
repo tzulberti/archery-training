@@ -179,7 +179,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             if (this.tournamentSerie.index > 1) {
                 this.previousSerieButton.setEnabled(true);
             }
-            System.err.println("Entro en el ouTouch con el maximo cantidad de flechas");
             this.nextSerieButton.setEnabled(true);
 
             // update the series information after updating the arrows by it's score
@@ -270,8 +269,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
             } else {
 
                 // same here... there isn't any need to add +1 because the serie already starts at 1
-                System.err.println(String.format("SerieIndex: %s, MaxSeries: %s", this.tournamentSerie.index, TournamentConfiguration.MAX_SERIES));
-
                 if (this.tournamentSerie.index == TournamentConfiguration.MAX_SERIES) {
                     // return to the tournament view because all the series for the tournament have been loaded
                     Bundle bundle = new Bundle();
@@ -309,7 +306,6 @@ public class ViewSerieInformationFragment extends BaseTournamentFragment impleme
 
     @Override
     public boolean onLongClick(View v) {
-        System.out.println("On long click");
         return false;
     }
 

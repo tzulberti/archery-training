@@ -60,7 +60,6 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                 TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
                 if (tournamentSerie == null) {
                     // TODO show message to the user
-                    System.err.println("TODO XXX PENDING: el usuario no deberia ver el boton en este caso");
                     return ;
                 }
 

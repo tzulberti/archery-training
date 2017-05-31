@@ -245,7 +245,6 @@ public class RetentionExercise extends BaseClickableFragment {
         int res = this.textToSpeech.speak(String.valueOf(text), TextToSpeech.QUEUE_FLUSH, null);
         if (res != TextToSpeech.SUCCESS) {
             // TODO check what we can do in this case
-            System.err.println("Error while reading value: " + text);
         }
     }
 
