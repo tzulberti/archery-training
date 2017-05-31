@@ -1,10 +1,12 @@
 package ar.com.tzulberti.archerytraining.fragments.tournament;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.EditText;
 
@@ -66,6 +68,12 @@ public class AddTournamentFragment extends BaseTournamentFragment {
                 ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked()
         );
 
+        
+        View view = this.getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         MainActivity activity = (MainActivity) this.getActivity();
         Bundle bundle = new Bundle();
