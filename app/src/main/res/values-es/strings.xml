@@ -1,0 +1,100 @@
+<resources>
+    <string name="app_name">Archery Training</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+    <!-- Today exercise left menu options -->
+    <string name="leftMenuTodayAddSerie">Agregar serie</string>
+    <string name="leftMenuTodayViewTotals">Ver totales</string>
+    <string name="leftMenuTodayRawData">Ver data</string>
+    <string name="leftMenuRetentions">Retentions</string>
+    <string name="leftMenuTournament">Torneo</string>
+
+    <!-- ////////////////////////////////////////////////////////////////////////// -->
+    <string name="commonRequiredValidationError">Requerido</string>
+    <string name="commonDelete">commonDelete</string>
+    <string name="common_confirmation_dialog_title">Confirmación</string>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Things related to the add serie option -->
+    <!-- String used when the user is going to load a new serie with information -->
+    <string name="addSerieDistance">Distancia</string>
+    <string name="addSerieArrowsAmount">Cantidad de flechas</string>
+    <string name="addSerieAdd">Agregar</string>
+    <string name="addSerieLastSerie">Totales de hoy</string>
+
+    <string name="addSerieDatetime">Cuando</string>
+    <string name="addSerieArrowsAmountTableHeader"># de flechas</string>
+    <string name="addSerieTodayTotals">Totales de hoy</string>
+
+
+
+    <!-- Today totals data -->
+    <string name="todayDataTotalSeries"># de series</string>
+
+    <!-- Today raw data -->
+    <string name="todayRawDataDelete">Borrar</string>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Different texts used on the retentions window -->
+
+    <string name="seriesAmount">Cantidad de series</string>
+    <string name="repetitionsAmount">Cantidad de repeticiones</string>
+    <string name="repetitionsDuration">Duracion de cada repeticion</string>
+    <string name="seriesSleepTime">Descanso entre series</string>
+    <string name="startIn">Empezar en</string>
+    <string name="buttonStart">Empezar</string>
+
+    <!-- Text usados en la pantalla de cuando empieza todo -->
+    <string name="button_stop">Parar</string>
+    <string name="wait_time">Tiempo de descanso</string>
+    <string name="serieInfo">Serie actual</string>
+    <string name="repetitionsInfo">Repeticion actual</string>
+    <string name="status">Estado</string>
+
+    <!-- Differentes estados en el que se puede encontrar la applicacion -->
+    <string name="runningStatus">Arco abierto</string>
+    <string name="restStatus">Descansando</string>
+    <string name="stoppedStatus">Paro</string>
+    <string name="finishedStatus">Termino</string>
+    <string name="waitingToStart">Esperando...</string>
+
+    <!-- Notifications between the excersie -->
+    <string name="finishedSerie">Termino serie</string>
+    <string name="downBow">Abajo</string>
+    <string name="upBow">Arriba</string>
+
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- View existing tournaments information -->
+    <string name="tournament_name">Nombre</string>
+    <string name="tournament_datetime">Cuando</string>
+    <string name="tournament_delete">Borrar</string>
+    <string name="tournament_start">Empezar</string>
+    <string name="tournament_stop">Terminar</string>
+
+    <string name="tournament_distance">Distancia</string>
+    <string name="tournament_default_name">Entrenamiento</string>
+    <string name="tournament_target_size">Tamaño del blanco</string>
+    <string name="tournament_is_outdoor">¿Es outdoor?</string>
+    <string name="tournament_is_tournament">¿Es torneo?</string>
+
+
+
+    <string name="tournament_serie_index">Serie</string>
+    <string name="tournament_serie_current_serie">Serie %1$d</string>
+    <string name="tournament_serie_current_round">Ronda %1$d</string>
+    <string name="tournament_serie_next">Siguente</string>
+    <string name="tournament_serie_previous">Anterior</string>
+    <string name="tournament_serie_end">Terminar</string>
+    <string name="tournament_serie_showing_series">Serie %1$d to %2$d</string>
+    <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
+    <string name="tournament_view_all_impacts">Ver todos los impactos</string>
+    <string name="tournament_view_score_sheet">Ver planilla</string>
+    <string name="tournament_view_tournament_delete">Borrar</string>
+    <string name="tournament_view_serie_creating_back">Si vas para atras vas a borrar la serie incompleta. ¿Estas seguro?</string>
+
+</resources>
