@@ -94,7 +94,16 @@
     <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
     <string name="tournament_view_all_impacts">Ver todos los impactos</string>
     <string name="tournament_view_score_sheet">Ver planilla</string>
+    <string name="tournament_view_arrow_stats">Ver estadisticas</string>
     <string name="tournament_view_tournament_delete">Borrar</string>
     <string name="tournament_view_serie_creating_back">Si vas para atras vas a borrar la serie incompleta. ¿Estas seguro?</string>
-
+    <string name="tournament_view_stats_arrow_chart_description"># de flechas por puntaje</string>
+    <string name="tournament_view_stats_series_chart_description">Puntaje por serie</string>
+    <string name="tournament_view_stats_serie">Serie</string>
+    <string name="tournament_view_stats_arrow">Flecha</string>
+    <string name="tournament_view_stats_datatype">Data</string>
+    <string name="tournament_view_stats_min">Min</string>
+    <string name="tournament_view_stats_avg">Prom</string>
+    <string name="tournament_view_stats_mean">Mean</string>
+    <string name="tournament_view_stats_max">Max</string>
 </resources>
