@@ -167,6 +167,16 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         this.dataContainer.addView(tr2);
 
 
+        TableRow tr3 = new TableRow(context);
+        Button viewTournamentArrowStats = new Button(context);
+        viewTournamentArrowStats.setId(Integer.MAX_VALUE - 3);
+        viewTournamentArrowStats.setText(R.string.tournament_view_arrow_stats);
+        viewTournamentArrowStats.setLayoutParams(trParams);
+        viewTournamentArrowStats.setOnClickListener(this);
+        viewTournamentArrowStats.setEnabled(buttonsEnabled);
+        tr3.addView(viewTournamentArrowStats);
+        this.dataContainer.addView(tr3);
+
         TableRow trN = new TableRow(context);
         Button deleteButton = new Button(context);
         deleteButton.setId(Integer.MAX_VALUE - 15);
@@ -185,16 +195,18 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         Context context = this.getContext();
         final MainActivity activity = (MainActivity) this.getActivity();
 
-        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2) {
+        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2 || id == Integer.MAX_VALUE -3 ) {
             // selected the option to view all impacts for the current tournament
             Bundle bundle = new Bundle();
             bundle.putLong("tournamentId", this.tournament.id);
 
             BaseTournamentFragment fragment = null;
-            if (id == Integer.MAX_VALUE - 1 ) {
+            if (id == Integer.MAX_VALUE - 1) {
                 fragment = new ViewAllTournamentTargetArrowFragment();
-            } else {
+            } else if (id == Integer.MAX_VALUE - 2) {
                 fragment = new ViewTournamentScoreSheetFragment();
+            } else if (id == Integer.MAX_VALUE - 3) {
+                fragment = new ViewTournamentArrowStatsFragment();
             }
 
             fragment.setArguments(bundle);
