@@ -7,10 +7,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.tzulberti.archerytraining.consts.TournamentConsts;
-import ar.com.tzulberti.archerytraining.consts.TournamentSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.consts.TournamentSerieConsts;
-import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
+import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
+import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
+import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;

@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.consts;
+package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
  * Has the schema information for the serie_information table.
