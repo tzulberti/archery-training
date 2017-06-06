@@ -14,16 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.MainFragment;
+import ar.com.tzulberti.archerytraining.fragments.playoff.AddPlayoffFragment;
+import ar.com.tzulberti.archerytraining.fragments.playoff.ViewExistingPlayoffFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
-import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -31,6 +34,7 @@ public class MainActivity extends AppCompatActivity
     private DatabaseHelper databaseHelper;
     private SerieDataDAO serieDataDAO;
     private TournamentDAO tournamentDAO;
+    private PlayoffDAO playoffDAO;
     private BaseClickableFragment currentFragment;
 
     @Override
@@ -58,6 +62,7 @@ public class MainActivity extends AppCompatActivity
         this.databaseHelper = new DatabaseHelper(this);
         this.serieDataDAO = new SerieDataDAO(this.databaseHelper);
         this.tournamentDAO = new TournamentDAO(this.databaseHelper);
+        this.playoffDAO = new PlayoffDAO(this.databaseHelper);
     }
 
     @Override
@@ -110,6 +115,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ConfigureRetention();
         } else if (id == R.id.nav_tournament) {
             this.currentFragment = new ViewExistingTournamentsFragments();
+        }  else if (id == R.id.nav_playoff) {
+            this.currentFragment = new ViewExistingPlayoffFragment();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -136,6 +143,10 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ConfigureRetention();
         } else if (id == R.id.main_activity_today_tournament) {
             this.currentFragment = new ViewExistingTournamentsFragments();
+        } else if (id == R.id.main_activity_playoff) {
+            this.currentFragment = new ViewExistingPlayoffFragment();
+        } else {
+            throw new RuntimeException("Unknown selected menu option");
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -155,6 +166,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     public TournamentDAO getTournamentDAO() { return this.tournamentDAO; }
+
+    public PlayoffDAO getPlayoffDAO() { return this.playoffDAO; }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
