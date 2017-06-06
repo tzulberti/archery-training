@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:stretchColumns="1"
+    >
+
+    <TableRow>
+        <TextView
+            android:text="@string/playoff_distance"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/distance"
+            android:gravity="right"
+            android:inputType="number"
+            android:text="70"
+            />
+    </TableRow>
+
+
+    <TableRow>
+        <TextView
+            android:text="@string/playoff_min_score"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/min_socre"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+    <TableRow>
+        <TextView
+            android:text="@string/playoff_max_score"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/max_socre"
+            android:gravity="right"
+            android:inputType="number"
+            />
+    </TableRow>
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:text="@string/playoff_start"
+            />
+    </TableRow>
+</TableLayout>
+
+
+
+

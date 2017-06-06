@@ -11,6 +11,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -42,6 +43,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment implements View.OnTouchListener, View.OnLongClickListener {
 
     public static final String SERIE_ARGUMENT_KEY = "serie";
+    public static final String CONTAINER_ARGUMENT_KEY = "container";
 
 
     public static final float IMAGE_WIDTH = 512;
@@ -198,7 +200,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int numberOfArrows = this.serie.getArrows().size();
-        if (numberOfArrows == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+        if (this.canActivateButtons()) {
             // already got the max number of arrows so there is nothing specific to do
             return false;
         }
@@ -296,14 +298,11 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
                 // -2 is required because the first index is 1.
                 transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex() - 2);
             } else {
-
-                // same here... there isn't any need to add +1 because the serie already starts at 1
                 if (this.hasFinished()) {
-
 
                     // return to the tournament view because all the series for the tournament have been loaded
                     Bundle bundle = new Bundle();
-                    bundle.putLong(SERIE_ARGUMENT_KEY, this.serie.getContainer().getId());
+                    bundle.putSerializable(CONTAINER_ARGUMENT_KEY, this.serie.getContainer());
 
                     BaseClickableFragment containerDetailsFragment = this.getContainerDetailsFragment();
                     containerDetailsFragment.setArguments(bundle);
@@ -315,6 +314,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
                     return;
 
                 } else if (this.serie.getContainer().getSeries().size() > this.serie.getIndex()) {
+                    // same here... there isn't any need to add +1 because the serie already starts at 1
                     transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex());
 
                 } else {
@@ -379,7 +379,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
     @Override
     public boolean canGoBack() {
-        if (this.serie.getArrows().size() == TournamentConfiguration.MAX_ARROW_PER_SERIES) {
+        if (this.canActivateButtons()) {
             // if the serie is created with 6 arrows, then it doesnt has any issue
             // if the user go back
             return true;

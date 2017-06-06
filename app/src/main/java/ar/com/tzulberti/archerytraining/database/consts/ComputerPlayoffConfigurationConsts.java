@@ -10,6 +10,6 @@ public class ComputerPlayoffConfigurationConsts {
 
     public static final String ID_COLUMN_NAME = "id";
     public static final String PLAYOFF_ID_COLUMN_NAME = "playoff_id";
-    public static final String MIN_SCORE_COLUMN_NAME = "min_socre";
+    public static final String MIN_SCORE_COLUMN_NAME = "min_score";
     public static final String MAX_SCORE_COLUMN_NAME = "max_score";
 }

@@ -106,4 +106,14 @@
     <string name="tournament_view_stats_avg">Prom</string>
     <string name="tournament_view_stats_mean">Mean</string>
     <string name="tournament_view_stats_max">Max</string>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Computer playoff option -->
+
+    <string name="playoff">Playoff</string>
+    <string name="playoff_distance">Distancia</string>
+    <string name="playoff_min_score">Puntaje min por serie</string>
+    <string name="playoff_max_score">Puntaje max por serie</string>
+    <string name="playoff_computer_name">Computadora</string>
+    <string name="playoff_start">Empezar</string>
 </resources>
