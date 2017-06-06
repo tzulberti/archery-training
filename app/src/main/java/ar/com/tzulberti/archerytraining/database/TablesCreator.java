@@ -105,7 +105,7 @@ public class TablesCreator {
         db.execSQL(
                 "CREATE TABLE " + PlayoffSerieConsts.TABLE_NAME + " (" +
                         PlayoffSerieConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PlayoffSerieConsts.INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +

@@ -17,7 +17,7 @@ import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
  * Created by tzulberti on 6/3/17.
  */
 
-public class DatabaseDatbasseMigration6 implements IDatbasseMigration {
+public class DatabaseMigration6 implements IDatbasseMigration {
 
     @Override
     public int getCurentVersion() {
@@ -50,7 +50,7 @@ public class DatabaseDatbasseMigration6 implements IDatbasseMigration {
         db.execSQL(
                 "CREATE TABLE " + PlayoffSerieConsts.TABLE_NAME + " (" +
                         PlayoffSerieConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PlayoffSerieConsts.INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
@@ -81,7 +81,7 @@ public class DatabaseDatbasseMigration6 implements IDatbasseMigration {
                 "CREATE TABLE " + ComputerPlayoffConfigurationConsts.TABLE_NAME + " (" +
                         ComputerPlayoffConfigurationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        "min_socre INTEGER NOT NULL, " +
                         ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         "FOREIGN KEY (" + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
                         ");"

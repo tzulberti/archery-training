@@ -7,9 +7,10 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.tzulberti.archerytraining.database.migrations.DatabaseDatbasseMigration4;
-import ar.com.tzulberti.archerytraining.database.migrations.DatabaseDatbasseMigration5;
-import ar.com.tzulberti.archerytraining.database.migrations.DatabaseDatbasseMigration6;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration7;
 import ar.com.tzulberti.archerytraining.database.migrations.IDatbasseMigration;
 
 /**
@@ -20,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "archery_training.db";
 
 
-    protected static final int DATABASE_VERSION = 7;
+    protected static final int DATABASE_VERSION = 8;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -38,9 +39,10 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Get all the existing database migrations
         List<IDatbasseMigration> existingMigrations = new ArrayList<>();
-        existingMigrations.add(new DatabaseDatbasseMigration4());
-        existingMigrations.add(new DatabaseDatbasseMigration5());
-        existingMigrations.add(new DatabaseDatbasseMigration6());
+        existingMigrations.add(new DatabaseMigration4());
+        existingMigrations.add(new DatabaseMigration5());
+        existingMigrations.add(new DatabaseMigration6());
+        existingMigrations.add(new DatabaseMigration7());
 
         if (oldVersion > existingMigrations.get(existingMigrations.size() - 1).getCurentVersion()) {
             throw new RuntimeException("Missing database migration");
