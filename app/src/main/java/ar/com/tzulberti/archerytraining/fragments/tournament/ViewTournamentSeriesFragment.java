@@ -63,7 +63,11 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                     return ;
                 }
 
-                ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+                Bundle bundle = new Bundle();
+                bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
+                ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+                viewSerieInformationFragment.setArguments(bundle);
+
                 FragmentManager fragmentManager = activity.getSupportFragmentManager();
                 fragmentManager.beginTransaction()
                         .replace(R.id.container, viewSerieInformationFragment)
@@ -84,7 +88,11 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             this.getArguments().remove("creating");
             TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
 
-            ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
+            ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+            viewSerieInformationFragment.setArguments(bundle);
+
             FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                     .replace(R.id.container, viewSerieInformationFragment);
@@ -239,7 +247,10 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
         } else {
             TournamentSerie tournamentSerie = this.tournament.series.get(v.getId() - 1);
-            ViewSerieInformationFragment viewSerieInformationFragment = ViewSerieInformationFragment.createInstance(tournamentSerie);
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
+            ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+            viewSerieInformationFragment.setArguments(bundle);
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
                     .replace(R.id.container, viewSerieInformationFragment);
