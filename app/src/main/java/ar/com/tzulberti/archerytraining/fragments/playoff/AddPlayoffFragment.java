@@ -7,6 +7,7 @@ import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import org.apache.commons.lang3.StringUtils;
@@ -83,9 +84,22 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
                 continue;
             }
 
+            if (info.getKey().equals(MIN_SCORE) || info.getKey().equals(MAX_SCORE)) {
+                if (value > 30) {
+                    info.getValue().setError(this.getString(R.string.playoff_error_creating_max_value_30));
+                    foundError = true;
+                    continue;
+                }
+            }
+
             editor.putInt(info.getKey(), value);
             constructorKwargs.put(info.getKey(), value);
             bundle.putInt(info.getKey(), value);
+        }
+        
+        if (bundle.getInt(MAX_SCORE) < bundle.getInt(MIN_SCORE)) {
+            inputMapping.get(MIN_SCORE).setError(this.getString(R.string.playoff_error_creating_min_greater_max));
+            foundError = true;
         }
 
         if (foundError) {
@@ -106,6 +120,12 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
                 computerPlayOffConfiguration
                 );
 
+        // Hide the keyboard when starting a new playoff
+        View view = this.getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
 
         Bundle arguments = new Bundle();
         arguments.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, playoff);

@@ -118,4 +118,6 @@
     <string name="playoff_start">Empezar</string>
     <string name="playoff_confirm_delete_playoff">¿Queres borrar esta eliminatoria?</string>
     <string name="playoff_serie_score">%1$d - %2$d</string>
+    <string name="playoff_error_creating_max_value_30">El valor tiene que ser 30 o menos</string>
+    <string name="playoff_error_creating_min_greater_max">El puntaje min tiene que ser menor o igual que el max</string>
 </resources>
