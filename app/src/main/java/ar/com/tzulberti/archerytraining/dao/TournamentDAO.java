@@ -220,7 +220,7 @@ public class TournamentDAO {
         );
 
         if (tournamentSerie.id != 0) {
-            if (deletedArrows> 0) {
+            if (deletedArrows > 0) {
                 // Update the tournament with the score of the current serie
                 Cursor cursor = db.rawQuery(
                         String.format("SELECT SUM(%s) FROM %s WHERE %s = ?",
