@@ -102,7 +102,6 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         }
 
 
-        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
         Context context = this.getContext();
         for (TournamentSerie data : this.tournament.series) {
             TableRow tr = new TableRow(context);
