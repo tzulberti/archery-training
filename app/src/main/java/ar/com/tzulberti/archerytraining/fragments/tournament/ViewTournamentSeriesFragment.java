@@ -100,9 +100,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             fragmentTransaction.commit();
             return;
         }
-
-
-        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
+        
         Context context = this.getContext();
         for (TournamentSerie data : this.tournament.series) {
             TableRow tr = new TableRow(context);
