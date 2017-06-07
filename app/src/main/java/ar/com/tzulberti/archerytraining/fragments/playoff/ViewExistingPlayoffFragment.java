@@ -18,6 +18,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentSeriesFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
@@ -97,16 +98,19 @@ public class ViewExistingPlayoffFragment extends BasePlayoffFragment {
 
     @Override
     public void handleClick(View v) {
-        int tournamentId = v.getId();
-        Bundle bundle = new Bundle();
-        bundle.putLong("tournamentId", tournamentId);
+        int playoffId = v.getId();
+        Playoff playoff = this.playoffDAO.getCompletePlayoffData(playoffId);
 
-        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
-        tournamentSeriesFragment.setArguments(bundle);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, playoff);
+
+        ViewPlayoffSeriesFragment viewPlayoffSeriesFragment = new ViewPlayoffSeriesFragment();
+        viewPlayoffSeriesFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                .replace(R.id.container, tournamentSeriesFragment);
+                .replace(R.id.container, viewPlayoffSeriesFragment);
         fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();

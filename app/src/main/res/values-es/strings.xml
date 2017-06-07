@@ -116,4 +116,6 @@
     <string name="playoff_max_score">Puntaje max por serie</string>
     <string name="playoff_computer_name">Computadora</string>
     <string name="playoff_start">Empezar</string>
+    <string name="playoff_confirm_delete_playoff">¿Queres borrar esta eliminatoria?</string>
+    <string name="playoff_serie_score">%1$d - %2$d</string>
 </resources>

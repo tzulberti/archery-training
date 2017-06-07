@@ -248,7 +248,6 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
 
     private void addTargetImpact(float x, float y, boolean isFinal, boolean showingExisting, int arrowIndex) {
-
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
         Paint paint = this.finalImpactPaint;
         if (isFinal) {
@@ -280,6 +279,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
         if (isFinal && !showingExisting) {
             this.addArrowData(x, y, score, isX);
+            this.serie.updateTotalScore(score);
         }
 
         if (isFinal) {

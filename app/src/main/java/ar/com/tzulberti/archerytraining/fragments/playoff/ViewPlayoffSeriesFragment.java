@@ -31,7 +31,9 @@ import ar.com.tzulberti.archerytraining.fragments.tournament.ViewSerieInformatio
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentArrowStatsFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentScoreSheetFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentSeriesFragment;
+import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
+import ar.com.tzulberti.archerytraining.model.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
@@ -64,24 +66,28 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
 
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        if (this.playoff.series.size() < 5 || this.playoff.opponentPlayoffScore >= 6 || this.playoff.userPlayoffScore >= 6) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setOnClickListener(new View.OnClickListener() {
 
-            @Override public void onClick(View view) {
-                // make sure that the user can add another serie to this tournament
-                PlayoffSerie playoffSerie = self.playoffDAO.createSerie(self.playoff);
+                @Override
+                public void onClick(View view) {
+                    // make sure that the user can add another serie to this tournament
+                    PlayoffSerie playoffSerie = self.playoffDAO.createSerie(self.playoff);
 
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ViewPlayoffSerieInformationFragment.SERIE_ARGUMENT_KEY, playoffSerie);
-                ViewPlayoffSerieInformationFragment viewPlayoffSerieInformationFragment = new ViewPlayoffSerieInformationFragment();
-                viewPlayoffSerieInformationFragment.setArguments(bundle);
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ViewPlayoffSerieInformationFragment.SERIE_ARGUMENT_KEY, playoffSerie);
+                    ViewPlayoffSerieInformationFragment viewPlayoffSerieInformationFragment = new ViewPlayoffSerieInformationFragment();
+                    viewPlayoffSerieInformationFragment.setArguments(bundle);
 
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, viewPlayoffSerieInformationFragment)
-                        .commit();
-            }
-        });
-
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, viewPlayoffSerieInformationFragment)
+                            .commit();
+                }
+            });
+        }
 
         this.dataContainer = (TableLayout) view.findViewById(R.id.tournament_series_list);
         this.showExistingSeries();
@@ -136,6 +142,12 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
             totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
             totalScoreText.setGravity(Gravity.CENTER);
 
+            PlayoffSerieScore playoffSerieScore = PlayoffHelper.getScore(data.userTotalScore, data.opponentTotalScore);
+            TextView serieScore = new TextView(context);
+            serieScore.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            serieScore.setGravity(Gravity.CENTER);
+            serieScore.setText(this.getString(R.string.playoff_serie_score, playoffSerieScore.userPoints, playoffSerieScore.opponentPoints));
+
             TextView opponentScoreText = new TextView(context);
             opponentScoreText.setText(String.valueOf(data.opponentTotalScore));
             opponentScoreText.setBackgroundResource(R.drawable.rounded);
@@ -143,6 +155,7 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
             opponentScoreText.setGravity(Gravity.CENTER);
 
             tr.addView(totalScoreText);
+            tr.addView(serieScore);
             tr.addView(opponentScoreText);
             tr.setId((int) data.index);
             tr.setOnClickListener(this);
@@ -224,7 +237,7 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
             // selected option to delete the tournament
             new AlertDialog.Builder(context)
                     .setTitle(R.string.common_confirmation_dialog_title)
-                    .setMessage(R.string.tournament_confirm_delete_tournament)
+                    .setMessage(R.string.playoff_confirm_delete_playoff)
                     .setIcon(android.R.drawable.ic_dialog_alert)
                     .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
 
@@ -234,7 +247,7 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
                             // go to the screen with all the tournaments
                             FragmentManager fragmentManager = activity.getSupportFragmentManager();
                             fragmentManager.beginTransaction()
-                                    .replace(R.id.container, new ViewExistingTournamentsFragments())
+                                    .replace(R.id.container, new ViewExistingPlayoffFragment())
                                     .commit();
 
                         }})
