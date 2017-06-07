@@ -48,6 +48,15 @@
         />
 
 
+    <Button
+        android:id="@+id/main_activity_playoff"
+        android:text="@string/playoff"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToFragment"
+        />
+
+
 
 </LinearLayout>
 

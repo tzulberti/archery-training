@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.consts;
+package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
  * Created by tzulberti on 4/25/17.

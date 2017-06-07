@@ -11,22 +11,13 @@
 
         <TableLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/tournaments_lists"
+            android:id="@+id/playoff_list"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:stretchColumns="*"
             >
         </TableLayout>
     </ScrollView>
-
-
-    <ImageView
-        android:id="@+id/photo_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        />
 
 
     <android.support.design.widget.FloatingActionButton

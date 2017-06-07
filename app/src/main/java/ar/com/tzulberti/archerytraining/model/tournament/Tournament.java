@@ -1,14 +1,18 @@
 package ar.com.tzulberti.archerytraining.model.tournament;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+
+import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 
 /**
  * Created by tzulberti on 5/17/17.
  */
 
-public class Tournament {
+public class Tournament implements ISerieContainer, Serializable{
 
     public long id;
     public String name;
@@ -27,4 +31,12 @@ public class Tournament {
         this.datetime = datetime;
         this.series = new ArrayList<>();
     }
+
+    @Override
+    public List<? extends ISerie> getSeries() {
+        return this.series;
+    }
+
+    @Override
+    public long getId() { return this.id; }
 }

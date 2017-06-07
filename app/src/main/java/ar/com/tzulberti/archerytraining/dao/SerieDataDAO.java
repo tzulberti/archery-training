@@ -7,8 +7,8 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
-import ar.com.tzulberti.archerytraining.consts.SerieInformationConsts;
-import ar.com.tzulberti.archerytraining.helper.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.SerieData;
 import ar.com.tzulberti.archerytraining.model.TodaysTotalData;

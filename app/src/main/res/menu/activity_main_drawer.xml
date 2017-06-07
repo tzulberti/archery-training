@@ -25,6 +25,12 @@
             android:title="@string/leftMenuTournament" />
     </group>
 
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_playoff"
+            android:title="@string/playoff" />
+    </group>
+
     <!--
     <item android:title="Communicate">
         <menu>
