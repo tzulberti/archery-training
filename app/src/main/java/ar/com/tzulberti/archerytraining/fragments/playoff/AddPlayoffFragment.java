@@ -96,7 +96,7 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
             constructorKwargs.put(info.getKey(), value);
             bundle.putInt(info.getKey(), value);
         }
-        
+
         if (bundle.getInt(MAX_SCORE) < bundle.getInt(MIN_SCORE)) {
             inputMapping.get(MIN_SCORE).setError(this.getString(R.string.playoff_error_creating_min_greater_max));
             foundError = true;

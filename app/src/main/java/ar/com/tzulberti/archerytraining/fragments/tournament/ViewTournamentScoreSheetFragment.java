@@ -15,6 +15,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
@@ -26,8 +27,6 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
 
-    private Tournament tournament;
-    private TableLayout tableLayout;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -35,16 +34,13 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
         View view = inflater.inflate(R.layout.tournament_view_tournament_score_sheet, container, false);
         this.setObjects();
 
-        this.tournament = this.tournamentDAO.getTournamentInformation(this.getArguments().getLong("tournamentId"));
-        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
-
-        this.tableLayout = (TableLayout) view.findViewById(R.id.tournament_score_sheet_table);
-        this.renderScoreSheet();
+        Tournament tournament = this.getTournamentArgument();
+        this.renderScoreSheet((TableLayout) view.findViewById(R.id.tournament_score_sheet_table), tournament);
         return view;
     }
 
 
-    private void renderScoreSheet() {
+    private void renderScoreSheet(TableLayout tableLayout, Tournament tournament) {
         Context context = this.getContext();
         int roundAccumulatedScore = 0;
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(
@@ -53,7 +49,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
         );
 
 
-        for (TournamentSerie tournamentSerie : this.tournament.series) {
+        for (TournamentSerie tournamentSerie : tournament.series) {
             if (tournamentSerie.index == 1 || tournamentSerie.index == 7) {
                 int roundIndex = (tournamentSerie.index == 1) ? 1 : 2;
                 TableRow tr = new TableRow(context);
@@ -62,7 +58,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
                 roundIndexText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 roundIndexText.setText(getString(R.string.tournament_serie_current_round, roundIndex));
                 tr.addView(roundIndexText);
-                this.tableLayout.addView(tr);
+                tableLayout.addView(tr);
                 roundAccumulatedScore = 0;
             }
 
@@ -89,7 +85,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
             }
             roundAccumulatedScore += tournamentSerie.totalScore;
             serieTableRow.addView(accumulatedRoundScoreText);
-            this.tableLayout.addView(serieTableRow);
+            tableLayout.addView(serieTableRow);
         }
     }
 

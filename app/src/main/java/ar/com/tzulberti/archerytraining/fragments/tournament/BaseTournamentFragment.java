@@ -4,6 +4,8 @@ import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -18,5 +20,9 @@ public abstract class BaseTournamentFragment extends BaseClickableFragment{
         MainActivity activity = (MainActivity) getActivity();
         this.tournamentDAO = activity.getTournamentDAO();
         this.serieDataDAO = activity.getSerieDAO();
+    }
+
+    protected Tournament getTournamentArgument() {
+        return (Tournament) this.getArguments().getSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY);
     }
 }

@@ -20,7 +20,9 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 
@@ -60,23 +62,6 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
     }
 
 
-    @Override
-    public void handleClick(View v) {
-        int tournamentId = v.getId();
-        Bundle bundle = new Bundle();
-        bundle.putLong("tournamentId", tournamentId);
-
-        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
-        tournamentSeriesFragment.setArguments(bundle);
-
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                .replace(R.id.container, tournamentSeriesFragment);
-        fragmentTransaction.addToBackStack(null);
-
-        fragmentTransaction.commit();
-    }
-
     private void showInformation(View view) {
         List<Tournament> exitingTournaments = this.tournamentDAO.getExistingTournaments();
         Context context = getContext();
@@ -115,5 +100,27 @@ public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
 
             this.dataContainer.addView(tr);
         }
+    }
+
+    @Override
+    public void handleClick(View v) {
+        int tournamentId = v.getId();
+
+        Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
+        this.tournamentDAO.getTournamentSeriesInformation(tournament);
+
+        Bundle bundle = new Bundle();
+        bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, tournament);
+
+
+        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
+        tournamentSeriesFragment.setArguments(bundle);
+
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.container, tournamentSeriesFragment);
+        fragmentTransaction.addToBackStack(null);
+
+        fragmentTransaction.commit();
     }
 }
