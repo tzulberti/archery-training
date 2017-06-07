@@ -12,7 +12,7 @@ import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
  * Created by tzulberti on 5/17/17.
  */
 
-public class Tournament implements ISerieContainer, Serializable{
+public class Tournament implements ISerieContainer, Serializable {
 
     public long id;
     public String name;

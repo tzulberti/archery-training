@@ -14,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
@@ -76,7 +77,7 @@ public class AddTournamentFragment extends BaseTournamentFragment {
 
         MainActivity activity = (MainActivity) this.getActivity();
         Bundle bundle = new Bundle();
-        bundle.putLong("tournamentId", tournament.id);
+        bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, tournament);
         bundle.putInt("creating", 1);
 
         ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();

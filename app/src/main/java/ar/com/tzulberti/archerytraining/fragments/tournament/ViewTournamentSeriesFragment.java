@@ -23,6 +23,7 @@ import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
@@ -45,8 +46,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         View view = inflater.inflate(R.layout.tournament_view_series, container, false);
         this.setObjects();
 
-
-        this.tournament = this.tournamentDAO.getTournamentInformation(getArguments().getLong("tournamentId"));
+        this.tournament = this.getTournamentArgument();
 
         final MainActivity activity = (MainActivity) this.getActivity();
         final ViewTournamentSeriesFragment self = this;
@@ -206,7 +206,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2 || id == Integer.MAX_VALUE -3 ) {
             // selected the option to view all impacts for the current tournament
             Bundle bundle = new Bundle();
-            bundle.putLong("tournamentId", this.tournament.id);
+            bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, this.tournament);
 
             BaseTournamentFragment fragment = null;
             if (id == Integer.MAX_VALUE - 1) {

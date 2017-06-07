@@ -55,9 +55,7 @@ public class ViewTournamentArrowStatsFragment extends BaseTournamentFragment {
         View view = inflater.inflate(R.layout.tournament_view_tournament_arrow_stats, container, false);
         this.setObjects();
 
-        Tournament tournament = this.tournamentDAO.getTournamentInformation(this.getArguments().getLong("tournamentId"));
-        this.tournamentDAO.getTournamentSeriesInformation(tournament);
-
+        Tournament tournament = this.getTournamentArgument();
 
         this.renderSeriesChart((LineChart) view.findViewById(R.id.tournament_series_chart), tournament);
         this.renderArrowsChart((HorizontalBarChart) view.findViewById(R.id.tournament_arrows_horizontal_chart), tournament);
