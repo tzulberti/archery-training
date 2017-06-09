@@ -33,6 +33,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         tablesCreator.createAll(db);
     }
 
+    @Override
+    public void onOpen(SQLiteDatabase db) {
+        super.onOpen(db);
+        if (! db.isReadOnly()) {
+            db.setForeignKeyConstraintsEnabled(true);
+        }
+    }
+
 
 
     @Override
