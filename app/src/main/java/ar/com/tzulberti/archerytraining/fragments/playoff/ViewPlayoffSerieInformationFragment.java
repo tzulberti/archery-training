@@ -126,7 +126,7 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     @Override
     protected boolean hasFinished() {
         Playoff playoff = (Playoff) this.serie.getContainer();
-        Log.e("foobar", String.format("%s - %s", playoff.opponentPlayoffScore, playoff.userPlayoffScore));
+
         if (playoff.opponentPlayoffScore >= 6 || playoff.userPlayoffScore >= 6) {
             // one of the 2 got to 6 points so it finished
             return true;

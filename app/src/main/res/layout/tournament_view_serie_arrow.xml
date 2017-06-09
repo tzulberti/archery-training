@@ -192,6 +192,19 @@
             android:layout_height="1dp"
             android:layout_weight="1" >
         </Space>
+
+        <Button
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:onClick="onClick"
+            android:text="@string/tournament_serie_undo"
+            android:id="@+id/btn_arrow_undo"/>
+
+        <Space
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1" >
+        </Space>
         <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

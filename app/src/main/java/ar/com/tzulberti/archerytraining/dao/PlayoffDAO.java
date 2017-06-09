@@ -155,7 +155,7 @@ public class PlayoffDAO {
         int deletedArrows = db.delete(
                 PlayoffSerieArrowConsts.TABLE_NAME,
                 PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + "= ? AND " + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ?",
-                new String[]{String.valueOf(playoffSerie.playoff.id), String.valueOf(playoffSerie.index)}
+                new String[]{String.valueOf(playoffSerie.playoff.id), String.valueOf(playoffSerie.id)}
         );
 
         if (playoffSerie.id != 0) {
@@ -175,15 +175,19 @@ public class PlayoffDAO {
                 int databaseOpponentScore = cursor.getInt(0);
                 int databaseUserScore = cursor.getInt(1);
 
+                // reduce the database score values
                 PlayoffSerieScore playoffSerieScore = PlayoffHelper.getScore(databaseUserScore, databaseOpponentScore);
-
                 db.execSQL(
                         String.format("UPDATE %s SET %s = %s - ?, %s = %s - ? WHERE %s = ?",
-                                PlayoffSerieConsts.TABLE_NAME,
-                                PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME,
-                                PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME,
-                                PlayoffSerieConsts.ID_COLUMN_NAME),
-                        new String[]{String.valueOf(playoffSerieScore.userPoints), String.valueOf(playoffSerieScore.opponentPoints), String.valueOf(playoffSerie.playoff.id)}
+                                PlayoffConsts.TABLE_NAME,
+                                PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME,
+                                PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME,
+                                PlayoffConsts.ID_COLUMN_NAME),
+                        new String[]{
+                                String.valueOf(playoffSerieScore.userPoints),
+                                String.valueOf(playoffSerieScore.opponentPoints),
+                                String.valueOf(playoffSerie.playoff.id)
+                        }
                 );
 
 
@@ -227,12 +231,17 @@ public class PlayoffDAO {
                         PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME,
                         PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME,
                         PlayoffConsts.ID_COLUMN_NAME),
-                new String[]{String.valueOf(updatePlayoffSerieScore.opponentPoints), String.valueOf(String.valueOf(updatePlayoffSerieScore.userPoints)), String.valueOf(playoffSerie.playoff.id)}
+                new String[]{String.valueOf(
+                        updatePlayoffSerieScore.opponentPoints),
+                        String.valueOf(String.valueOf(updatePlayoffSerieScore.userPoints)),
+                        String.valueOf(playoffSerie.playoff.id)
+                }
         );
 
         // update the current instance of the tournament information
         playoffSerie.playoff.opponentPlayoffScore += updatePlayoffSerieScore.opponentPoints;
         playoffSerie.playoff.userPlayoffScore += updatePlayoffSerieScore.userPoints;
+        Log.e("foobar", String.format("%s - %s", playoffSerie.playoff.opponentPlayoffScore, playoffSerie.playoff.userPlayoffScore));
     }
 
     public void deletePlayoff(long playoffId) {
