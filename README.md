@@ -11,5 +11,5 @@ Check [Google Play](https://play.google.com/store/apps/details?id=ar.com.tzulber
 # Assets
 
 - The target image was taken from Wikipedia. By Alberto Barbati - Own work, CC BY-SA 2.5, https://commons.wikimedia.org/w/index.php?curid=828148
-- Icons taken from 
+- Icons taken from FlatIcon
 - Logo image given by Aixa Rodriguez Avendaño
