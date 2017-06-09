@@ -25,6 +25,7 @@
     <string name="addSerieArrowsAmount">Arrows amount</string>
     <string name="addSerieAdd">Add</string>
     <string name="addSerieLastSerie">Today total</string>
+    <string name="addSerieAdded">Added serie of %1$d arrows</string>
 
     <string name="addSerieDatetime">When</string>
     <string name="addSerieArrowsAmountTableHeader"># Arrows</string>
