@@ -91,7 +91,7 @@ public class SerieDataDAO {
                         "SELECT SUM(%s) " +
                                 "FROM %s " +
                                 "WHERE %s >= ? AND %s < ? ",
-                        SerieInformationConsts.DISTANCE_COLUMN_NAME,
+                        SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME,
                         SerieInformationConsts.TABLE_NAME,
                         SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME
                 ),
