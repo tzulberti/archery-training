@@ -25,6 +25,7 @@
     <string name="addSerieArrowsAmount">Cantidad de flechas</string>
     <string name="addSerieAdd">Agregar</string>
     <string name="addSerieLastSerie">Totales de hoy</string>
+    <string name="addSerieAdded">Se agrego la serie de %1$d flechas</string>
 
     <string name="addSerieDatetime">Cuando</string>
     <string name="addSerieArrowsAmountTableHeader"># de flechas</string>

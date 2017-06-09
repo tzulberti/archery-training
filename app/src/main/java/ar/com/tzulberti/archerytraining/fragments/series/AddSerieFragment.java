@@ -1,10 +1,13 @@
 package ar.com.tzulberti.archerytraining.fragments.series;
 
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -76,8 +79,21 @@ public class AddSerieFragment extends BaseSeriesFragment {
                 Integer.valueOf(arrowsAmount.toString())
         );
 
-        // reset the input to notify the user of a change
+        // reset the input to notify the user of a change and hide the keyboard because
+        // if not the snackbar isn't shown
         this.arrowAmountText.setText("");
+        View view = this.getActivity().getCurrentFocus();
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+
+        Snackbar.make(
+                this.getView(),
+                this.getString(R.string.addSerieAdded, Integer.valueOf(arrowsAmount.toString())),
+                Snackbar.LENGTH_SHORT
+        )
+        .setAction("Action", null).show();
 
         this.showLastSerie();
         this.showTodayArrows();
