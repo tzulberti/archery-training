@@ -1,6 +1,7 @@
 package ar.com.tzulberti.archerytraining.fragments.retentions;
 
 import android.content.res.Resources;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
@@ -41,21 +42,18 @@ public class RetentionExercise extends BaseClickableFragment {
     private TextView textRepetionsInfo;
 
 
-    public static RetentionExercise newInstance(int seriesAmount, int seriesSleepTime, int repetitionsAmount, int repetitionsDuration, int startIn) {
-        RetentionExercise res = new RetentionExercise();
-        res.seriesAmount = seriesAmount;
-        res.seriesSleepTime = seriesSleepTime;
-        res.repetitionsAmount = repetitionsAmount;
-        res.repetitionsDuration = repetitionsDuration;
-        res.startIn = startIn;
-        return res;
-    }
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.cleanState(container);
         View view = inflater.inflate(R.layout.retention_exercise, container, false);
         MainActivity activity = (MainActivity) getActivity();
+
+        Bundle arguments = this.getArguments();
+        this.seriesAmount = arguments.getInt(ConfigureRetention.SERIES_AMOUNT);
+        this.seriesSleepTime = arguments.getInt(ConfigureRetention.SERIES_SLEEP_TIME);
+        this.repetitionsAmount = arguments.getInt(ConfigureRetention.REPETITIONS_AMOUNT);
+        this.repetitionsDuration = arguments.getInt(ConfigureRetention.REPETITIONS_DURATION);
+        this.startIn = arguments.getInt(ConfigureRetention.START_IN);
 
         this.timeLeftText = (TextView) view.findViewById(R.id.textTimeLeft);
         this.statusText = (TextView) view.findViewById(R.id.textStatus);
