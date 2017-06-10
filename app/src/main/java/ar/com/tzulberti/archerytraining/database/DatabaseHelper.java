@@ -57,11 +57,11 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         }
 
         for (IDatbasseMigration databaseMigration : existingMigrations) {
-            if (oldVersion == databaseMigration.getCurentVersion()) {
+            int migrationVersion = databaseMigration.getCurentVersion();
+            if (oldVersion < migrationVersion && migrationVersion < newVersion) {
                 databaseMigration.executeMigration(db);
             }
         }
-
     }
 
 
