@@ -85,6 +85,7 @@ public class ConfigureRetention extends BaseClickableFragment {
     @Override
     public void handleClick(View v) {
         Map<String, EditText> inputMapping = new HashMap<>();
+        Bundle bundle = new Bundle();
         inputMapping.put(SERIES_AMOUNT, this.seriesAmountEditText);
         inputMapping.put(REPETITIONS_AMOUNT, this.repetitionsAmountEditText);
         inputMapping.put(SERIES_SLEEP_TIME, this.seriesSleepTimeEditText);
@@ -116,7 +117,7 @@ public class ConfigureRetention extends BaseClickableFragment {
             }
 
             editor.putInt(info.getKey(), value);
-            constructorKwargs.put(info.getKey(), value);
+            bundle.putInt(info.getKey(), value);
         }
 
         if (foundError) {
@@ -125,13 +126,8 @@ public class ConfigureRetention extends BaseClickableFragment {
         }
 
         editor.commit();
-        RetentionExercise retentionExercise = RetentionExercise.newInstance(
-                constructorKwargs.get(SERIES_AMOUNT),
-                constructorKwargs.get(SERIES_SLEEP_TIME),
-                constructorKwargs.get(REPETITIONS_AMOUNT),
-                constructorKwargs.get(REPETITIONS_DURATION),
-                constructorKwargs.get(START_IN)
-        );
+        RetentionExercise retentionExercise = new RetentionExercise();
+        retentionExercise.setArguments(bundle);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
         fragmentManager.beginTransaction()
