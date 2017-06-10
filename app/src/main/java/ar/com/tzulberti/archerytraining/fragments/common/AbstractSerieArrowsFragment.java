@@ -58,6 +58,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
     private Button previousSerieButton;
     private Button nextSerieButton;
+    private Button arrowUndoButton;
 
     private float targetCenterX = -1;
     private float targetCenterY = -1;
@@ -140,6 +141,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
         this.nextSerieButton = (Button) view.findViewById(R.id.btn_serie_next);
         this.previousSerieButton = (Button) view.findViewById(R.id.btn_serie_previous);
+        this.arrowUndoButton = (Button) view.findViewById(R.id.btn_arrow_undo);
         this.nextSerieButton.setEnabled(false);
         this.previousSerieButton.setEnabled(false);
 
@@ -184,6 +186,12 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         for (AbstractArrow serieArrow : this.serie.getArrows()) {
             this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true, true, arrowIndex);
             arrowIndex += 1;
+        }
+
+        // if viewing an already existing serie, then disable the undo button since
+        // the serie was already saved
+        if (this.serie.getArrows().size() > 0) {
+            this.arrowUndoButton.setEnabled(false);
         }
 
         if (this.canActivateButtons()) {
@@ -291,8 +299,26 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
     @Override
     public void handleClick(View v) {
         final MainActivity activity = (MainActivity) this.getActivity();
+        if (v.getId() == R.id.btn_arrow_undo) {
 
-        if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
+            // finally reset the arrow score on the textbox
+            TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
+            scoreText.setText("");
+            scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+
+            // remove the last added arrow
+            AbstractArrow arrowToRemove = this.serie.getArrows().get(this.serie.getArrows().size() - 1);
+            this.serie.getArrows().remove(this.serie.getArrows().size() - 1);
+            this.serie.updateTotalScore(0 - arrowToRemove.score);
+
+            // disable the buttons if they were enabled
+            this.previousSerieButton.setEnabled(false);
+            this.nextSerieButton.setEnabled(false);
+
+            // update the total score of the serie
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), TournamentConfiguration.MAX_SCORE_PER_SERIES));
+
+        } else if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
             ISerie transitionSerie = null;
             if (v.getId() == R.id.btn_serie_previous) {
                 // -2 is required because the first index is 1.
