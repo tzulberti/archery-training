@@ -46,21 +46,33 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     @Override
     protected void setAdditionalInformation(View view) {
         Playoff playoff = (Playoff) this.serie.getContainer();
+        PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
         this.opponentScoreEdit = (EditText) view.findViewById(R.id.opponent_score);
+
         if (playoff.computerPlayOffConfiguration != null) {
             this.opponentScoreEdit.setVisibility(View.GONE);
 
-            // set a random value so the user can compete
+
             TextView computerScoreText = (TextView) view.findViewById(R.id.computer_score);
-            Random random = new Random();
-            int computerScore = random.nextInt(playoff.computerPlayOffConfiguration.maxScore + 1 - playoff.computerPlayOffConfiguration.minScore) + playoff.computerPlayOffConfiguration.minScore;
-            PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-            playoffSerie.opponentTotalScore = computerScore;
+            int computerScore = -1;
+            if (playoffSerie.opponentTotalScore > 0) {
+                // the user already saved the playoff serie so used the saved value
+                computerScore = playoffSerie.opponentTotalScore;
+            } else {
+                // set a random value so the user can compete, when the serie isn't complete
+                Random random = new Random();
+                computerScore = random.nextInt(playoff.computerPlayOffConfiguration.maxScore + 1 - playoff.computerPlayOffConfiguration.minScore) + playoff.computerPlayOffConfiguration.minScore;
+                playoffSerie.opponentTotalScore = computerScore;
+            }
             computerScoreText.setText(String.valueOf(computerScore));
 
         } else {
             view.findViewById(R.id.computer_score).setVisibility(View.GONE);
-            this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+            if (playoffSerie.opponentTotalScore > 0 ) {
+                this.opponentScoreEdit.setText(String.valueOf(playoffSerie.opponentTotalScore));
+            } else {
+                this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+            }
         }
     }
 
