@@ -290,7 +290,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         }
 
         if (isFinal) {
-            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), TournamentConfiguration.MAX_SCORE_PER_SERIES));
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
             this.arrowUndoButton.setEnabled(true);
         }
     }
@@ -316,7 +316,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
             this.nextSerieButton.setEnabled(false);
 
             // update the total score of the serie
-            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), TournamentConfiguration.MAX_SCORE_PER_SERIES));
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
             // removed only arrow for the current serie so he can not undo anymore
             if (this.serie.getArrows().size() == 0) {
                 this.arrowUndoButton.setEnabled(false);
