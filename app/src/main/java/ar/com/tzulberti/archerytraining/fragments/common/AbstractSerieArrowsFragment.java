@@ -189,10 +189,9 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         }
 
         // if viewing an already existing serie, then disable the undo button since
-        // the serie was already saved
-        if (this.serie.getArrows().size() > 0) {
-            this.arrowUndoButton.setEnabled(false);
-        }
+        // the serie was already saved, or it is disabled because the serie has no
+        // arrow information
+        this.arrowUndoButton.setEnabled(false);
 
         if (this.canActivateButtons()) {
             this.nextSerieButton.setEnabled(true);
@@ -292,6 +291,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
         if (isFinal) {
             this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), TournamentConfiguration.MAX_SCORE_PER_SERIES));
+            this.arrowUndoButton.setEnabled(true);
         }
     }
 
@@ -317,6 +317,10 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
             // update the total score of the serie
             this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), TournamentConfiguration.MAX_SCORE_PER_SERIES));
+            // removed only arrow for the current serie so he can not undo anymore
+            if (this.serie.getArrows().size() == 0) {
+                this.arrowUndoButton.setEnabled(false);
+            }
 
         } else if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
             ISerie transitionSerie = null;
