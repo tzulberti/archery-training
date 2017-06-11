@@ -39,4 +39,13 @@ public class Tournament implements ISerieContainer, Serializable {
 
     @Override
     public long getId() { return this.id; }
+
+    @Override
+    public int getSerieMaxPossibleScore() {
+        if (this.isOutdoor) {
+            return 60;
+        } else {
+            return 30;
+        }
+    }
 }

@@ -12,4 +12,6 @@ public interface ISerieContainer extends Serializable {
     List<? extends ISerie> getSeries();
 
     long getId();
+
+    int getSerieMaxPossibleScore();
 }
