@@ -171,22 +171,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
 
 
-        BitmapFactory.Options myOptions = new BitmapFactory.Options();
-        myOptions.inScaled = false;
-        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
-
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        paint.setColor(Color.BLUE);
-
-        this.imageBitmap = Bitmap.createBitmap(bitmap);
-
-        int arrowIndex = 0;
-        for (AbstractArrow serieArrow : this.serie.getArrows()) {
-            this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true, true, arrowIndex);
-            arrowIndex += 1;
-        }
+        this.showSeriesArrow();
 
         // if viewing an already existing serie, then disable the undo button since
         // the serie was already saved, or it is disabled because the serie has no
@@ -200,6 +185,36 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
         if (this.hasFinished()) {
             this.nextSerieButton.setText(getText(R.string.tournament_serie_end));
+        }
+    }
+
+    /**
+     * Take care of creating the correct bitmap and showing those on the target
+     */
+    protected void showSeriesArrow() {
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
+        Paint paint = new Paint();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+
+        this.imageBitmap = Bitmap.createBitmap(bitmap);
+
+        if (this.serie.getArrows().size() == 0) {
+            // if there is no serie, then show the empty target. This is used
+            // when undoing the first added arrow
+            this.targetImageView.setAdjustViewBounds(true);
+            this.targetImageView.setImageBitmap(this.imageBitmap);
+            
+        } else {
+            int arrowIndex = 0;
+            for (AbstractArrow serieArrow : this.serie.getArrows()) {
+                this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, true, true, arrowIndex);
+                arrowIndex += 1;
+            }
         }
     }
 
@@ -300,27 +315,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
     public void handleClick(View v) {
         final MainActivity activity = (MainActivity) this.getActivity();
         if (v.getId() == R.id.btn_arrow_undo) {
-
-            // finally reset the arrow score on the textbox
-            TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
-            scoreText.setText("");
-            scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
-
-            // remove the last added arrow
-            AbstractArrow arrowToRemove = this.serie.getArrows().get(this.serie.getArrows().size() - 1);
-            this.serie.getArrows().remove(this.serie.getArrows().size() - 1);
-            this.serie.updateTotalScore(0 - arrowToRemove.score);
-
-            // disable the buttons if they were enabled
-            this.previousSerieButton.setEnabled(false);
-            this.nextSerieButton.setEnabled(false);
-
-            // update the total score of the serie
-            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
-            // removed only arrow for the current serie so he can not undo anymore
-            if (this.serie.getArrows().size() == 0) {
-                this.arrowUndoButton.setEnabled(false);
-            }
+            this.undoLastArrow();
 
         } else if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
             ISerie transitionSerie = null;
@@ -367,6 +362,33 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         } else {
             throw new RuntimeException("Unknown click button");
         }
+    }
+
+
+    protected void undoLastArrow() {
+        TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
+        scoreText.setText("");
+        scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+
+        // remove the last added arrow
+        AbstractArrow arrowToRemove = this.serie.getArrows().get(this.serie.getArrows().size() - 1);
+        this.serie.getArrows().remove(this.serie.getArrows().size() - 1);
+        this.serie.updateTotalScore(0 - arrowToRemove.score);
+
+        // disable the buttons if they were enabled
+        this.previousSerieButton.setEnabled(false);
+        this.nextSerieButton.setEnabled(false);
+
+        // update the total score of the serie
+        this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
+
+        // removed only arrow for the current serie so he can not undo anymore
+        if (this.serie.getArrows().size() == 0) {
+            this.arrowUndoButton.setEnabled(false);
+        }
+
+        // redraw all the arrows on the target to remove the last added arrow
+        this.showSeriesArrow();
     }
 
     /**
