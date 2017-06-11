@@ -77,16 +77,20 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
 
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
 
-        this.rangeBar.setTickCount(this.tournament.series.size());
-        this.imageBitmap = Bitmap.createBitmap(bitmap);
+        if (this.tournament.series.size() > 1) {
+            this.rangeBar.setTickCount(this.tournament.series.size());
+            this.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+                @Override
+                public void onIndexChangeListener(RangeBar rangeBar, int start, int end) {
+                    showSeries(start +1 , end +1);
+                }
+            });
+        } else {
+            this.rangeBar.setVisibility(View.INVISIBLE);
+        }
 
-        //this.showSeries(1, this.tournament.series.size());
-        this.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
-            @Override
-            public void onIndexChangeListener(RangeBar rangeBar, int start, int end) {
-                showSeries(start +1 , end +1);
-            }
-        });
+
+        this.imageBitmap = Bitmap.createBitmap(bitmap);
         this.showSeries(1, this.tournament.series.size());
     }
 
