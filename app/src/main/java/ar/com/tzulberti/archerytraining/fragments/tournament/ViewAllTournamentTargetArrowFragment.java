@@ -49,9 +49,7 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
         this.seriesShowingText = (TextView) view.findViewById(R.id.tournament_series_showing);
 
         this.setObjects();
-
-        this.tournament = this.tournamentDAO.getTournamentInformation(this.getArguments().getLong("tournamentId"));
-        this.tournamentDAO.getTournamentSeriesInformation(this.tournament);
+        this.tournament = this.getTournamentArgument();
 
         this.finalImpactPaint = new Paint();
         this.finalImpactPaint.setAntiAlias(true);
