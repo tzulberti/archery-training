@@ -11,6 +11,7 @@ import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration7;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration8;
 import ar.com.tzulberti.archerytraining.database.migrations.IDatbasseMigration;
 
 /**
