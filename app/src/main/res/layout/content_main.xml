@@ -56,6 +56,14 @@
         android:onClick="goToFragment"
         />
 
+    <Button
+        android:id="@+id/main_activity_bow"
+        android:text="@string/bow"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToFragment"
+        />
+
 
 
 </LinearLayout>

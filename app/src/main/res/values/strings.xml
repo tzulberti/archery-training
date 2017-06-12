@@ -123,4 +123,9 @@
     <string name="playoff_serie_score">%1$d - %2$d</string>
     <string name="playoff_error_creating_max_value_30">The value should be 30 or smaller</string>
     <string name="playoff_error_creating_min_greater_max">The min value shoudl be smaller or equal than the max</string>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Bow option -->
+    <string name="bow">Bow</string>
+
 </resources>

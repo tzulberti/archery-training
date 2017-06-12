@@ -14,11 +14,13 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 
+import ar.com.tzulberti.archerytraining.dao.BowDAO;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.MainFragment;
+import ar.com.tzulberti.archerytraining.fragments.bow.ViewExistingBowsFragment;
 import ar.com.tzulberti.archerytraining.fragments.playoff.AddPlayoffFragment;
 import ar.com.tzulberti.archerytraining.fragments.playoff.ViewExistingPlayoffFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
@@ -35,6 +37,7 @@ public class MainActivity extends AppCompatActivity
     private SerieDataDAO serieDataDAO;
     private TournamentDAO tournamentDAO;
     private PlayoffDAO playoffDAO;
+    private BowDAO bowDAO;
     private BaseClickableFragment currentFragment;
 
     @Override
@@ -117,6 +120,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ViewExistingTournamentsFragments();
         }  else if (id == R.id.nav_playoff) {
             this.currentFragment = new ViewExistingPlayoffFragment();
+        } else if (id == R.id.nav_bow) {
+            this.currentFragment = new ViewExistingBowsFragment();
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -145,6 +150,8 @@ public class MainActivity extends AppCompatActivity
             this.currentFragment = new ViewExistingTournamentsFragments();
         } else if (id == R.id.main_activity_playoff) {
             this.currentFragment = new ViewExistingPlayoffFragment();
+        } else if (id == R.id.main_activity_bow) {
+            this.currentFragment = new ViewExistingBowsFragment();
         } else {
             throw new RuntimeException("Unknown selected menu option");
         }
@@ -168,6 +175,8 @@ public class MainActivity extends AppCompatActivity
     public TournamentDAO getTournamentDAO() { return this.tournamentDAO; }
 
     public PlayoffDAO getPlayoffDAO() { return this.playoffDAO; }
+
+    public BowDAO getBowDAO() { return this.bowDAO; }
 
     @Override
     public void onAttachFragment(Fragment fragment) {
