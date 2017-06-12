@@ -21,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String DATABASE_NAME = "archery_training.db";
 
 
-    protected static final int DATABASE_VERSION = 8;
+    protected static final int DATABASE_VERSION = 9;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -51,6 +51,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         existingMigrations.add(new DatabaseMigration5());
         existingMigrations.add(new DatabaseMigration6());
         existingMigrations.add(new DatabaseMigration7());
+        existingMigrations.add(new DatabaseMigration8());
 
         if (oldVersion > existingMigrations.get(existingMigrations.size() - 1).getCurentVersion()) {
             throw new RuntimeException("Missing database migration");
