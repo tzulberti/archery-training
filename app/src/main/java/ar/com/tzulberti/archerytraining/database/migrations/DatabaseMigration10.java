@@ -9,11 +9,11 @@ import ar.com.tzulberti.archerytraining.database.consts.SightDistanceValueConsts
  * Created by tzulberti on 6/12/17.
  */
 
-public class DatabaseMigration8 implements IDatbasseMigration {
+public class DatabaseMigration10 implements IDatbasseMigration {
 
     @Override
     public int getCurentVersion() {
-        return 8;
+        return 10;
     }
 
     @Override
