@@ -66,6 +66,7 @@ public class MainActivity extends AppCompatActivity
         this.serieDataDAO = new SerieDataDAO(this.databaseHelper);
         this.tournamentDAO = new TournamentDAO(this.databaseHelper);
         this.playoffDAO = new PlayoffDAO(this.databaseHelper);
+        this.bowDAO = new BowDAO(this.databaseHelper);
     }
 
     @Override
