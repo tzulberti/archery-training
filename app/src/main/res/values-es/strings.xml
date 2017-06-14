@@ -125,5 +125,14 @@
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Bow option -->
     <string name="bow">Arco</string>
+    <string name="bow_name">Nombre</string>
+    <string name="bow_add_sight_value">Agregar posición mira</string>
+    <string name="bow_save">Guardar</string>
+    <string name="bow_distance">Distancia</string>
+    <string name="bow_distance_delete">Borrar</string>
+    <string name="bow_sight_value">Posición mira</string>
+    
 </resources>

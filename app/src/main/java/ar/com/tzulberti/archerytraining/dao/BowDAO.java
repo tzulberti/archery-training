@@ -26,33 +26,36 @@ public class BowDAO {
     }
 
 
-    public List<Bow> getBowsInformation() {
+    public List<Bow> getBowsInformation(long bowId) {
         List<Bow> res = new ArrayList<>();
+
+        String query = "SELECT " +
+                BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + ", " +
+                BowConsts.TABLE_NAME + "." + BowConsts.NAME_COLUMN_NAME + ", " +
+                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME + ", " +
+                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME + ", " +
+                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.ID_COLUMN_NAME + "  " +
+            "FROM " +  BowConsts.TABLE_NAME + " " +
+            "LEFT JOIN " + SightDistanceValueConsts.TABLE_NAME + " " +
+                "ON " + BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " = " + SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.BOW_ID_COLUMN_NAME + " " +
+                ((bowId >= 0) ? "WHERE id = ? " :  "" )+
+            "ORDER BY " +
+                BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " DESC, " +
+                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME;
 
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor bowCursor = db.rawQuery(
-                "SELECT " +
-                        BowConsts.TABLE_NAME + "." + BowConsts.NAME_COLUMN_NAME + ", " +
-                        BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + ", " +
-                        SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME + ", " +
-                        SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME + ", " +
-                        SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.ID_COLUMN_NAME + "  " +
-                        "FROM " +  BowConsts.TABLE_NAME + " " +
-                        "LEFT JOIN " + SightDistanceValueConsts.TABLE_NAME + " " +
-                        "ON " + BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " = " + SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.BOW_ID_COLUMN_NAME + " " +
-                        "ORDER BY " +
-                            BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " DESC, " +
-                            SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME,
-                null
+                query,
+                (bowId >= 0) ? new String[]{String.valueOf(bowId)} : null
         );
 
         Bow currentBow = null;
         while (bowCursor.moveToNext()) {
-            long bowId = bowCursor.getLong(0);
-            if (currentBow == null || bowId != currentBow.id) {
+            long databaseBowId = bowCursor.getLong(0);
+            if (currentBow == null || databaseBowId != currentBow.id) {
                 currentBow = new Bow();
                 currentBow.sightDistanceValues = new ArrayList<>();
-                currentBow.id = bowId;
+                currentBow.id = databaseBowId;
                 currentBow.name = bowCursor.getString(1);
 
                 res.add(currentBow);

@@ -107,6 +107,8 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
             TableRow tr = new TableRow(context);
             tr.setPadding(0, 15, 0, 15);
             this.renderRow(data, tr, context);
+            tr.setClickable(true);
+            tr.setOnClickListener(this);
             dataContainer.addView(tr);
         }
 
