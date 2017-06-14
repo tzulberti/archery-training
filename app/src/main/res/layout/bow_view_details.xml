@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/bow_details"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:stretchColumns="*"
+    >
+
+
+    <TableRow android:id="@+id/name_row">
+        <TextView
+            android:text="@string/bow_name"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/bow_name"
+            android:gravity="right"
+            />
+    </TableRow>
+
+    <TableLayout
+        android:id="@+id/bow_distances"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:stretchColumns="*">
+
+        <TableRow>
+            <TextView
+                android:text="@string/bow_distance"
+                android:padding="3dip" />
+            <TextView
+                android:text="@string/bow_sight_value"
+                android:padding="3dip" />
+            <TextView
+                android:text="@string/bow_distance_delete"
+                android:padding="3dip" />
+        </TableRow>
+    </TableLayout>
+
+
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <Button
+            android:id="@+id/btn_add_distance"
+            android:layout_width="match_parent"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:text="@string/bow_add_sight_value"
+            />
+    </TableRow>
+
+    <TableRow
+        android:layout_width="match_parent"
+        >
+        <Button
+            android:id="@+id/btn_bow_save"
+            android:layout_width="match_parent"
+            android:onClick="onClick"
+            android:layout_weight="1"
+            android:text="@string/bow_save"
+            />
+    </TableRow>
+</TableLayout>
