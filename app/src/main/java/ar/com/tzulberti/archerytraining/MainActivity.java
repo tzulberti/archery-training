@@ -109,11 +109,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         this.currentFragment = null;
-        if (id == R.id.nav_today_add_serie) {
-            this.currentFragment = new AddSerieFragment();
-        } else if (id == R.id.nav_today_total_data) {
-            this.currentFragment = new TotayTotalsFragment();
-        } else if (id == R.id.nav_today_raw_data) {
+        if (id == R.id.nav_today_serie) {
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.nav_retentions) {
             this.currentFragment = new ConfigureRetention();
@@ -139,11 +135,7 @@ public class MainActivity extends AppCompatActivity
         int id = selectedOption.getId();
 
         this.currentFragment = null;
-        if (id == R.id.main_activity_today_add_serie) {
-            this.currentFragment = new AddSerieFragment();
-        } else if (id == R.id.main_activity_today_view_totals) {
-            this.currentFragment = new TotayTotalsFragment();
-        } else if (id == R.id.main_activity_today_raw_data) {
+        if (id == R.id.main_activity_series) {
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.main_activity_today_retentions) {
             this.currentFragment = new ConfigureRetention();

@@ -3,14 +3,8 @@
 
     <group android:checkableBehavior="single">
         <item
-            android:id="@+id/nav_today_add_serie"
-            android:title="@string/leftMenuTodayAddSerie" />
-        <item
-            android:id="@+id/nav_today_total_data"
-            android:title="@string/leftMenuTodayViewTotals" />
-        <item
-            android:id="@+id/nav_today_raw_data"
-            android:title="@string/leftMenuTodayRawData" />
+            android:id="@+id/nav_today_serie"
+            android:title="@string/series" />
     </group>
 
     <group android:checkableBehavior="single">

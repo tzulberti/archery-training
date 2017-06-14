@@ -1,13 +1,14 @@
 package ar.com.tzulberti.archerytraining.model;
 
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by tzulberti on 4/18/17.
  */
 
-public class SerieData {
+public class SerieData implements Serializable {
 
     public int id;
     public int distance;
