@@ -1,5 +1,6 @@
 package ar.com.tzulberti.archerytraining;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
@@ -29,6 +30,8 @@ import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
+import io.sentry.Sentry;
+import io.sentry.android.AndroidSentryClientFactory;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -46,6 +49,12 @@ public class MainActivity extends AppCompatActivity
         setContentView(R.layout.activity_main);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        Context ctx = this.getApplicationContext();
+        Sentry.init(
+                "https://69c3b4db545e4a45bd10bbfe386cc5f8:59cbfb7b868d4a9fa86815ce82e4817b@sentry.io/179518",
+                new AndroidSentryClientFactory(ctx)
+        );
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

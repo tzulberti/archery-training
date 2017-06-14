@@ -104,7 +104,10 @@ public class ViewTournamentArrowStatsFragment extends BaseTournamentFragment {
         for (TournamentSerie serie : tournament.series) {
             for (TournamentSerieArrow arrow : serie.arrows) {
                 String score = TournamentHelper.getUserScore(arrow.score, arrow.isX);
-                Integer existingCounts = arrowsCounter.getOrDefault(score, 0);
+                Integer existingCounts = arrowsCounter.get(score);
+                if (existingCounts == null) {
+                    existingCounts = 0;
+                }
                 arrowsCounter.put(score, existingCounts + 1);
             }
         }
@@ -126,7 +129,10 @@ public class ViewTournamentArrowStatsFragment extends BaseTournamentFragment {
             }
 
             // only add it to the chart if it has data
-            Integer counter = arrowsCounter.getOrDefault(score, 0);
+            Integer counter = arrowsCounter.get(score);
+            if (counter == null) {
+                counter = 0;
+            }
             if (counter > maxCounter) {
                 maxCounter = counter;
             }

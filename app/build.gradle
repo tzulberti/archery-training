@@ -17,7 +17,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         debug {
-            debuggable false
+            debuggable true
         }
     }
 }
@@ -35,6 +35,7 @@ dependencies {
     compile 'com.github.chrisbanes:PhotoView:2.0.0'
     compile 'com.jsibbold:zoomage:1.1.0'
     compile 'com.edmodo:rangebar:1.0.0'
+    compile 'io.sentry:sentry-android:1.0.0'
     testCompile 'com.amitshekhar.android:debug-db:1.0.0'
     testCompile 'junit:junit:4.12'
 }
