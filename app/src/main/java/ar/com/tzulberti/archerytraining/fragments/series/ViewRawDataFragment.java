@@ -133,6 +133,7 @@ public class ViewRawDataFragment extends AbstractTableDataFragment {
                     fragment = new TotayTotalsFragment();
                     break;
                 case Integer.MAX_VALUE -2:
+                    fragment = new ViewCurrentMonthTotalsFragment();
                     break;
                 case Integer.MAX_VALUE -3:
                     break;

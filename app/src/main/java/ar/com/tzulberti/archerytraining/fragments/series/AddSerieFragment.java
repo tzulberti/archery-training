@@ -100,7 +100,10 @@ public class AddSerieFragment extends BaseSeriesFragment {
     }
 
     private void showTodayArrows() {
-        long todaysTotals = this.serieDataDAO.getTodayArrows();
+        long todaysTotals = this.serieDataDAO.getTotalArrowsForDate(
+                DatetimeHelper.getTodayZeroHours(),
+                DatetimeHelper.getTomorrowZeroHours()
+        );
         this.todaysTotals.setText(String.valueOf(todaysTotals));
     }
 
