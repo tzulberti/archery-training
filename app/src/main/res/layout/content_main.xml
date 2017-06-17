@@ -6,29 +6,12 @@
     >
 
     <Button
-        android:id="@+id/main_activity_today_add_serie"
-        android:text="@string/leftMenuTodayAddSerie"
+        android:id="@+id/main_activity_series"
+        android:text="@string/series"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
         android:onClick="goToFragment"
         />
-
-    <Button
-        android:id="@+id/main_activity_today_view_totals"
-        android:text="@string/leftMenuTodayViewTotals"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:onClick="goToFragment"
-        />
-
-    <Button
-        android:id="@+id/main_activity_today_raw_data"
-        android:text="@string/leftMenuTodayRawData"
-        android:layout_height="wrap_content"
-        android:layout_width="match_parent"
-        android:onClick="goToFragment"
-        />
-
 
     <Button
         android:id="@+id/main_activity_today_retentions"

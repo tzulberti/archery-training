@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <TextView
+            android:paddingTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/series_daily_arrow_text"
+            />
+        <com.github.mikephil.charting.charts.LineChart
+            android:id="@+id/series_daily_arrows"
+            android:layout_width="match_parent"
+            android:layout_height="300dp"
+            />
+
+
+        <TextView
+            android:paddingTop="30dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/series_distance_totals_chart_description"
+            />
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/series_distance_arrows"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
+    </LinearLayout>
+</ScrollView>

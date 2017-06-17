@@ -22,11 +22,8 @@ import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.MainFragment;
 import ar.com.tzulberti.archerytraining.fragments.bow.ViewExistingBowsFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.AddPlayoffFragment;
 import ar.com.tzulberti.archerytraining.fragments.playoff.ViewExistingPlayoffFragment;
 import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
-import ar.com.tzulberti.archerytraining.fragments.series.AddSerieFragment;
-import ar.com.tzulberti.archerytraining.fragments.series.TotayTotalsFragment;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
@@ -118,11 +115,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         this.currentFragment = null;
-        if (id == R.id.nav_today_add_serie) {
-            this.currentFragment = new AddSerieFragment();
-        } else if (id == R.id.nav_today_total_data) {
-            this.currentFragment = new TotayTotalsFragment();
-        } else if (id == R.id.nav_today_raw_data) {
+        if (id == R.id.nav_today_serie) {
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.nav_retentions) {
             this.currentFragment = new ConfigureRetention();
@@ -148,11 +141,7 @@ public class MainActivity extends AppCompatActivity
         int id = selectedOption.getId();
 
         this.currentFragment = null;
-        if (id == R.id.main_activity_today_add_serie) {
-            this.currentFragment = new AddSerieFragment();
-        } else if (id == R.id.main_activity_today_view_totals) {
-            this.currentFragment = new TotayTotalsFragment();
-        } else if (id == R.id.main_activity_today_raw_data) {
+        if (id == R.id.main_activity_series) {
             this.currentFragment = new ViewRawDataFragment();
         } else if (id == R.id.main_activity_today_retentions) {
             this.currentFragment = new ConfigureRetention();

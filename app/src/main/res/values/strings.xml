@@ -7,8 +7,8 @@
     <string name="action_settings">Settings</string>
 
     <!-- Today exercise left menu options -->
-    <string name="leftMenuTodayAddSerie">Add serie</string>
-    <string name="leftMenuTodayViewTotals">See totals</string>
+
+
     <string name="leftMenuTodayRawData">Raw data</string>
     <string name="leftMenuRetentions">Retentions</string>
     <string name="leftMenuTournament">Tournament</string>
@@ -21,6 +21,15 @@
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
+    <string name="series">Series</string>
+    <string name="series_get_today_totals">See today\'s data</string>
+    <string name="series_get_current_week_totals">See current week data</string>
+    <string name="series_get_current_month_totals">See current month data</string>
+
+    <string name="series_distance_totals_chart_description"># of arrows per distance</string>
+    <string name="series_line_day_chart_description"># of arrows per day</string>
+    <string name="series_line_hour_chart_description"># of arrows per hour</string>
+
     <string name="addSerieDistance">Distance</string>
     <string name="addSerieArrowsAmount">Arrows amount</string>
     <string name="addSerieAdd">Add</string>
@@ -133,5 +142,7 @@
     <string name="bow_distance">Distance</string>
     <string name="bow_distance_delete">Delete</string>
     <string name="bow_sight_value">Sight value</string>
+
+
 
 </resources>

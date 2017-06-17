@@ -21,6 +21,15 @@
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
+    <string name="series">Series</string>
+    <string name="series_get_today_totals">Ver los totales de hoy</string>
+    <string name="series_get_current_week_totals">Ver los totales de esta semana</string>
+    <string name="series_get_current_month_totals">Ver los totales de este mes</string>
+
+    <string name="series_distance_totals_chart_description"># de flechas por distancia</string>
+    <string name="series_line_day_chart_description"># de flechas por dia</string>
+    <string name="series_line_hour_chart_description"># de flechas por hora</string>
+
     <string name="addSerieDistance">Distancia</string>
     <string name="addSerieArrowsAmount">Cantidad de flechas</string>
     <string name="addSerieAdd">Agregar</string>

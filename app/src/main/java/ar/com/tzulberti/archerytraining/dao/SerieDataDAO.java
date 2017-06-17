@@ -4,20 +4,26 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.model.ArrowsPerDayData;
 import ar.com.tzulberti.archerytraining.model.SerieData;
-import ar.com.tzulberti.archerytraining.model.TodaysTotalData;
+import ar.com.tzulberti.archerytraining.model.DistanceTotalData;
 
 /**
  * Created by tzulberti on 4/19/17.
  */
 
 public class SerieDataDAO {
+
+    public enum GroupByType implements Serializable {
+        DAILY, HOURLY
+    }
 
     private DatabaseHelper databaseHelper;
 
@@ -84,7 +90,7 @@ public class SerieDataDAO {
     /**
      * Returns the total number of arrows done today
      */
-    public long getTodayArrows() {
+    public long getTotalArrowsForDate(long minDate, long maxDate) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
                 String.format(
@@ -104,35 +110,71 @@ public class SerieDataDAO {
         return 0;
     }
 
+    public List<ArrowsPerDayData> getDailyArrowsInformation(long minDate, long maxDate, GroupByType groupByType) {
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        int modifier = 0;
+        switch (groupByType) {
+            case DAILY:
+                modifier = 86400;
+                break;
+            case HOURLY:
+                modifier = 3600;
+                break;
+        }
+
+        String sModifier = String.valueOf(modifier);
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + ", " +
+                        "SUM(" + SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + ") " +
+                "FROM  " + SerieInformationConsts.TABLE_NAME + " " +
+                "WHERE " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " >= ? " +
+                        " AND " + SerieInformationConsts.DATETIME_COLUMN_NAME + " < ? " +
+                "GROUP BY " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + " " +
+                "ORDER BY 1",
+                new String[]{String.valueOf(minDate), String.valueOf(maxDate)}
+        );
+
+        List<ArrowsPerDayData> res = new ArrayList<>();
+        while (cursor.moveToNext()) {
+            ArrowsPerDayData arrowsPerDayData = new ArrowsPerDayData();
+            arrowsPerDayData.day = DatetimeHelper.databaseValueToDate(cursor.getLong(0) * modifier);
+            arrowsPerDayData.totalArrows = cursor.getInt(1);
+            res.add(arrowsPerDayData);
+        }
+        return res;
+    }
+
     /**
      * Returns the total number of arrows shoot today for the different
      * distances
      *
      * @return the total data for today
      */
-    public List<TodaysTotalData> getTodaysTotal() {
-        List<TodaysTotalData> res = new ArrayList<TodaysTotalData>();
+    public List<DistanceTotalData> getTotalsForDistance(long startingDate, long endingDate) {
+        List<DistanceTotalData> res = new ArrayList<DistanceTotalData>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
-        String sortOrder = SerieInformationConsts.DATETIME_COLUMN_NAME + " DESC";
         Cursor cursor = db.rawQuery(
                 String.format(
                         "SELECT %s, SUM(%s), MAX(%s), COUNT(*) " +
                                 "FROM %s " +
                                 "WHERE %s >= ? AND %s < ? " +
                                 "GROUP BY %s " +
-                                "ORDER BY %s ",
+                                "ORDER BY %s DESC",
                         SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
                         SerieInformationConsts.TABLE_NAME,
                         SerieInformationConsts.DATETIME_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
                         SerieInformationConsts.DISTANCE_COLUMN_NAME,
                         SerieInformationConsts.DISTANCE_COLUMN_NAME
                 ),
-                new String[]{String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
+                new String[]{String.valueOf(startingDate), String.valueOf(endingDate)}
         );
 
         while (cursor.moveToNext()) {
-            TodaysTotalData data = new TodaysTotalData();
+            DistanceTotalData data = new DistanceTotalData();
             data.distance = cursor.getInt(0);
             data.totalArrows = cursor.getLong(1);
             data.lastUpdate = DatetimeHelper.databaseValueToDate(cursor.getLong(2));

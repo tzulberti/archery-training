@@ -71,6 +71,14 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
      */
     protected abstract void addNewValue();
 
+    /**
+     * Identifies if the user can clicks on the rows of the table
+     * @return
+     */
+    protected boolean areRowsClickable() {
+        return true;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.cleanState(container);
@@ -103,12 +111,16 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
             return;
         }
 
+        boolean areRowsClickable = this.areRowsClickable();
+
         for (Serializable data : existingData) {
             TableRow tr = new TableRow(context);
             tr.setPadding(0, 15, 0, 15);
             this.renderRow(data, tr, context);
-            tr.setClickable(true);
-            tr.setOnClickListener(this);
+            if (areRowsClickable) {
+                tr.setClickable(true);
+                tr.setOnClickListener(this);
+            }
             dataContainer.addView(tr);
         }
 
