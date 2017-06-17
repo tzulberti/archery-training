@@ -4,9 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -127,19 +125,29 @@ public class ViewRawDataFragment extends AbstractTableDataFragment {
         int id = v.getId();
         if (Integer.MAX_VALUE - 3 <= id) {
             // the user selected one of the rows to view the existing data
-            BaseClickableFragment fragment = null;
+            ViewStatsTotalsFragment fragment = new ViewStatsTotalsFragment();
+            Bundle arguments = new Bundle();
             switch (id) {
                 case Integer.MAX_VALUE -1:
-                    fragment = new TotayTotalsFragment();
+                    arguments.putLong(ViewStatsTotalsFragment.MIN_DATE_KEY, DatetimeHelper.getTodayZeroHours());
+                    arguments.putLong(ViewStatsTotalsFragment.MAX_DATE_KEY, DatetimeHelper.getTomorrowZeroHours());
+                    arguments.putSerializable(ViewStatsTotalsFragment.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.HOURLY);
                     break;
                 case Integer.MAX_VALUE -2:
-                    fragment = new ViewCurrentMonthTotalsFragment();
+                    arguments.putLong(ViewStatsTotalsFragment.MIN_DATE_KEY, DatetimeHelper.getLastWeeDate());
+                    arguments.putLong(ViewStatsTotalsFragment.MAX_DATE_KEY, DatetimeHelper.getTomorrowZeroHours());
+                    arguments.putSerializable(ViewStatsTotalsFragment.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.DAILY);
                     break;
                 case Integer.MAX_VALUE -3:
+                    arguments.putLong(ViewStatsTotalsFragment.MIN_DATE_KEY, DatetimeHelper.getFirstDateOfMonth());
+                    arguments.putLong(ViewStatsTotalsFragment.MAX_DATE_KEY, DatetimeHelper.getLastDateOfMonth());
+                    arguments.putSerializable(ViewStatsTotalsFragment.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.DAILY);
                     break;
                 default:
                     throw new RuntimeException("Missing handler for %s");
             }
+
+            fragment.setArguments(arguments);
 
             FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()

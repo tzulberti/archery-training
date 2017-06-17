@@ -4,6 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ import ar.com.tzulberti.archerytraining.model.DistanceTotalData;
  */
 
 public class SerieDataDAO {
+
+    public enum GroupByType implements Serializable {
+        DAILY, HOURLY
+    }
 
     private DatabaseHelper databaseHelper;
 
@@ -105,18 +110,29 @@ public class SerieDataDAO {
         return 0;
     }
 
-    public List<ArrowsPerDayData> getDailyArrowsInformation(long minDate, long maxDate) {
+    public List<ArrowsPerDayData> getDailyArrowsInformation(long minDate, long maxDate, GroupByType groupByType) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        int modifier = 0;
+        switch (groupByType) {
+            case DAILY:
+                modifier = 86400;
+                break;
+            case HOURLY:
+                modifier = 3600;
+                break;
+        }
+
+        String sModifier = String.valueOf(modifier);
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / 86400, " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + ", " +
                         "SUM(" + SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + ") " +
                 "FROM  " + SerieInformationConsts.TABLE_NAME + " " +
                 "WHERE " +
                         SerieInformationConsts.DATETIME_COLUMN_NAME + " >= ? " +
                         " AND " + SerieInformationConsts.DATETIME_COLUMN_NAME + " < ? " +
                 "GROUP BY " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / 86400 " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + " " +
                 "ORDER BY 1",
                 new String[]{String.valueOf(minDate), String.valueOf(maxDate)}
         );
@@ -124,7 +140,7 @@ public class SerieDataDAO {
         List<ArrowsPerDayData> res = new ArrayList<>();
         while (cursor.moveToNext()) {
             ArrowsPerDayData arrowsPerDayData = new ArrowsPerDayData();
-            arrowsPerDayData.day = DatetimeHelper.databaseValueToDate(cursor.getLong(0) * 86400);
+            arrowsPerDayData.day = DatetimeHelper.databaseValueToDate(cursor.getLong(0) * modifier);
             arrowsPerDayData.totalArrows = cursor.getInt(1);
             res.add(arrowsPerDayData);
         }

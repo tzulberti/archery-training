@@ -14,7 +14,7 @@ public class DatetimeHelper {
 
     public static final SimpleDateFormat DATETIME_FORMATTER = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-    public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm:ss");
+    public static final SimpleDateFormat TIME_FORMATTER = new SimpleDateFormat("HH:mm");
 
     public static final SimpleDateFormat DATE_FORMATTER = new SimpleDateFormat("yyyy-MM-dd");
 
@@ -63,6 +63,19 @@ public class DatetimeHelper {
         return date.getTimeInMillis() / 1000;
     }
 
+    public static long getLastWeeDate() {
+        Calendar date = new GregorianCalendar();
+        // reset hour, minutes, seconds and millis
+        date.set(Calendar.HOUR_OF_DAY, 0);
+        date.set(Calendar.MINUTE, 0);
+        date.set(Calendar.SECOND, 0);
+        date.set(Calendar.MILLISECOND, 0);
+        date.add(Calendar.DATE, -7);
+        return date.getTimeInMillis() / 1000;
+    }
+
+
+
     public static long getCurrentTime() {
         Calendar calendar = new GregorianCalendar();
         calendar.setTimeZone(TimeZone.getDefault());
@@ -71,6 +84,10 @@ public class DatetimeHelper {
 
     public static Date databaseValueToDate(long utcSeconds) {
         return new Date(utcSeconds * 1000);
+    }
+
+    public static long dateToDatabaseValue(Date datetime) {
+        return datetime.getTime() / 1000;
     }
 
 }
