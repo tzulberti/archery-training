@@ -164,4 +164,12 @@ public class ViewRawDataFragment extends AbstractTableDataFragment {
         }
     }
 
+    /**
+     * Since there is no details to show when a rows is clicked then don't make them clicable
+     * @return
+     */
+    protected boolean areRowsClickable() {
+        return false;
+    }
+
 }
