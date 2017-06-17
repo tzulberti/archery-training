@@ -22,11 +22,13 @@
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
     <string name="series">Series</string>
-    <string name="series_get_today_totals">See Todays Data</string>
-    <string name="series_get_current_week_totals">See current week Data</string>
-    <string name="series_get_current_month_totals">See current month Data</string>
+    <string name="series_get_today_totals">See today\'s data</string>
+    <string name="series_get_current_week_totals">See current week data</string>
+    <string name="series_get_current_month_totals">See current month data</string>
 
-    <string name="series_today_totals_chart_description"># of arrows per distance</string>
+    <string name="series_distance_totals_chart_description"># of arrows per distance</string>
+    <string name="series_line_day_chart_description"># of arrows per day</string>
+    <string name="series_line_hour_chart_description"># of arrows per hour</string>
 
     <string name="addSerieDistance">Distance</string>
     <string name="addSerieArrowsAmount">Arrows amount</string>
