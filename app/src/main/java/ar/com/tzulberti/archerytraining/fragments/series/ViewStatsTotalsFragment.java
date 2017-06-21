@@ -23,6 +23,7 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
@@ -66,6 +67,8 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
                 periodType
         );
 
+
+
         HorizontalBarChart horizontalBarChart = (HorizontalBarChart) view.findViewById(R.id.series_distance_arrows);
         LineChart lineChart = (LineChart) view.findViewById(R.id.series_daily_arrows);
 
@@ -89,6 +92,10 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
     }
 
     private void showArrowsPerDistance(List<DistanceTotalData> distanceTotalDatas, HorizontalBarChart horizontalBarChart) {
+        if (distanceTotalDatas == null || distanceTotalDatas.isEmpty()) {
+            // there is no information so don't show any chart
+            return;
+        }
         ArrayList<Integer> colors = new ArrayList<>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS) {
             colors.add(c);
@@ -142,6 +149,11 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
     }
 
     private void showArrowsPerDay(List<ArrowsPerDayData> arrowsPerDayDatas, LineChart lineChart, SerieDataDAO.GroupByType periodType) {
+        if (arrowsPerDayDatas == null || arrowsPerDayDatas.isEmpty()) {
+            // there is no information so don't show any chart
+            return;
+        }
+
         List<Entry> entries = new ArrayList<Entry>();
 
         int index = 0;
