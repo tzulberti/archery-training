@@ -7,8 +7,6 @@
     <string name="action_settings">Settings</string>
 
     <!-- Today exercise left menu options -->
-    <string name="leftMenuTodayAddSerie">Agregar serie</string>
-    <string name="leftMenuTodayViewTotals">Ver totales</string>
     <string name="leftMenuTodayRawData">Ver data</string>
     <string name="leftMenuRetentions">Retenciones</string>
     <string name="leftMenuTournament">Torneo</string>
