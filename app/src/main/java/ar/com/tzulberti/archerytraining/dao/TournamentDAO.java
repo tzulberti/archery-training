@@ -121,8 +121,9 @@ public class TournamentDAO {
                         "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
                    "WHERE " +
                          TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?" +
-                   "ORDER BY " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME,
-
+                   "ORDER BY " +
+                         TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
+                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME,
                 new String[]{String.valueOf(tournament.id)}
         );
 

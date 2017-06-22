@@ -338,8 +338,9 @@ public class PlayoffDAO {
                     "ON " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + " = " + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
                 "WHERE " +
                     PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
-                "ORDER BY " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME,
-
+                "ORDER BY " +
+                    PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
+                    PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME,
                 new String[]{String.valueOf(playoffId)}
         );
 
