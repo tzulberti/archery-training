@@ -41,9 +41,10 @@ public class TablesCreator {
 
     private void createSeriesTable(SQLiteDatabase db) {
         db.execSQL(String.format(
-                "CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT, %s LONG NOT NULL, %s INTEGER NOT NULL, %s INTEGER NOT NULL);",
+                "CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT, %s LONG NOT NULL, %s INTEGER NOT NULL, %s INTEGER NOT NULL, %s INTEGER);",
                 SerieInformationConsts.TABLE_NAME, SerieInformationConsts.ID_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
-                SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME
+                SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME,
+                SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME
         ));
     }
 
