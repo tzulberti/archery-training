@@ -331,13 +331,14 @@ public class PlayoffDAO {
                         PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
                         PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
                         PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " " +
-                        "FROM " +  PlayoffSerieArrowConsts.TABLE_NAME  + " " +
-                        "JOIN " + PlayoffSerieConsts.TABLE_NAME + " " +
-                        "ON " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + " = " + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
-                        "WHERE " +
-                            PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
-                        "ORDER BY " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME,
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.ID_COLUMN_NAME + " " +
+                "FROM " +  PlayoffSerieConsts.TABLE_NAME  + " " +
+                "LEFT JOIN " + PlayoffSerieArrowConsts.TABLE_NAME + " " +
+                    "ON " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + " = " + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
+                "WHERE " +
+                    PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
+                "ORDER BY " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME,
 
                 new String[]{String.valueOf(playoffId)}
         );
@@ -358,12 +359,17 @@ public class PlayoffDAO {
                 currentSerie.userTotalScore = 0;
             }
 
+            if (serieDataCursor.isNull(7)) {
+                // if the arrowData id is null, then there is no arrow data on the left JOIN
+                continue;
+            }
             PlayoffSerieArrow arrowData = new PlayoffSerieArrow();
             currentSerie.arrows.add(arrowData);
             arrowData.score = serieDataCursor.getInt(3);
             arrowData.xPosition = serieDataCursor.getInt(4);
             arrowData.yPosition = serieDataCursor.getInt(5);
             arrowData.isX = (serieDataCursor.getInt(6) == 1);
+            arrowData.id = serieDataCursor.getInt(7);
             currentSerie.userTotalScore += arrowData.score;
         }
 
