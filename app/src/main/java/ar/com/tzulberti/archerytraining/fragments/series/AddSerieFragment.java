@@ -17,7 +17,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.SerieData;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
 /**
  * Created by tzulberti on 4/20/17.
@@ -76,7 +76,8 @@ public class AddSerieFragment extends BaseSeriesFragment {
 
         this.serieDataDAO.addSerieData(
                 Integer.valueOf(distanceValue.toString()),
-                Integer.valueOf(arrowsAmount.toString())
+                Integer.valueOf(arrowsAmount.toString()),
+                null
         );
 
         // reset the input to notify the user of a change and hide the keyboard because

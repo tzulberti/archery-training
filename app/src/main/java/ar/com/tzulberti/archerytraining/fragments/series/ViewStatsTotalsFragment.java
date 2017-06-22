@@ -1,6 +1,5 @@
 package ar.com.tzulberti.archerytraining.fragments.series;
 
-import android.graphics.Paint;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,15 +22,16 @@ import com.github.mikephil.charting.utils.ColorTemplate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
+import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.TimeAxisValueFormatter;
-import ar.com.tzulberti.archerytraining.model.ArrowsPerDayData;
-import ar.com.tzulberti.archerytraining.model.DistanceTotalData;
+import ar.com.tzulberti.archerytraining.model.series.ArrowsPerDayData;
+import ar.com.tzulberti.archerytraining.model.series.ArrowsPerTrainingType;
+import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
 
 /**
  * Created by tzulberti on 6/13/17.
@@ -67,27 +67,31 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
                 periodType
         );
 
+        List<ArrowsPerTrainingType> arrowsPerTrainingTypes = this.serieDataDAO.getTotalsForTrainingType(
+                minDate,
+                maxDate
+        );
+
 
 
         HorizontalBarChart horizontalBarChart = (HorizontalBarChart) view.findViewById(R.id.series_distance_arrows);
+        HorizontalBarChart seriesPerTrainingTypeChart = (HorizontalBarChart) view.findViewById(R.id.series_per_training_type);
         LineChart lineChart = (LineChart) view.findViewById(R.id.series_daily_arrows);
 
         TextView dailyChartDescription = (TextView) view.findViewById(R.id.series_daily_arrow_text);
-        SimpleDateFormat dateFormat = null;
         switch (periodType) {
             case DAILY:
                 dailyChartDescription.setText(this.getString(R.string.series_line_day_chart_description));
-                dateFormat = DatetimeHelper.DATE_FORMATTER;
                 break;
             case HOURLY:
                 dailyChartDescription.setText(this.getString(R.string.series_line_hour_chart_description));
-                dateFormat = DatetimeHelper.TIME_FORMATTER;
                 break;
         }
 
 
         this.showArrowsPerDistance(distanceTotalDatas, horizontalBarChart);
         this.showArrowsPerDay(arrowsPerDayDatas, lineChart, periodType);
+        this.showArrowsPerTrainingType(arrowsPerTrainingTypes, seriesPerTrainingTypeChart);
         return view;
     }
 
@@ -112,6 +116,82 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
         for (DistanceTotalData data : distanceTotalDatas) {
             arrowsCounterSet.add(new BarEntry(index, data.totalArrows));
             xAxis.add(String.valueOf(data.distance));
+            index += 1;
+        }
+
+        BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
+        set1.setColors(colors);
+        BarData data = new BarData();
+        data.addDataSet(set1);
+
+        XAxis xl = horizontalBarChart.getXAxis();
+        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xl.setDrawAxisLine(true);
+        xl.setDrawGridLines(false);
+        xl.setValueFormatter(new IndexAxisValueFormatter(xAxis));
+        xl.setGranularity(1);
+        xl.setLabelCount(xAxis.size());
+
+        YAxis yl = horizontalBarChart.getAxisLeft();
+        yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yl.setDrawGridLines(false);
+        yl.setEnabled(false);
+        yl.setAxisMinimum(0f);
+
+        YAxis yr = horizontalBarChart.getAxisRight();
+        yr.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yr.setDrawGridLines(false);
+        yr.setAxisMinimum(0f);
+
+        horizontalBarChart.setData(data);
+        horizontalBarChart.getLegend().setEnabled(false);
+        horizontalBarChart.setEnabled(false);
+        horizontalBarChart.setTouchEnabled(false);
+        horizontalBarChart.setMinimumHeight(xAxis.size() * 90);
+        horizontalBarChart.getDescription().setEnabled(false);
+        horizontalBarChart.invalidate();
+    }
+
+
+    private void showArrowsPerTrainingType(List<ArrowsPerTrainingType> arrowsPerTrainingTypes, HorizontalBarChart horizontalBarChart) {
+        if (arrowsPerTrainingTypes == null || arrowsPerTrainingTypes.isEmpty()) {
+            // there is no information so don't show any chart
+            return;
+        }
+        ArrayList<Integer> colors = new ArrayList<>();
+        for (int c : ColorTemplate.VORDIPLOM_COLORS) {
+            colors.add(c);
+        }
+
+        for (int c : ColorTemplate.JOYFUL_COLORS) {
+            colors.add(c);
+        }
+
+        List<BarEntry> arrowsCounterSet = new ArrayList<>();
+        List<String> xAxis = new ArrayList<>();
+
+        int index = 0;
+        for (ArrowsPerTrainingType data : arrowsPerTrainingTypes) {
+            arrowsCounterSet.add(new BarEntry(index, data.totalArrows));
+            SerieInformationConsts.TrainingType trainingType = SerieInformationConsts.TrainingType.getFromValue(data.trainingType);
+            int trainingTypeStringKey = 0;
+            switch (trainingType) {
+                case FREE:
+                    trainingTypeStringKey = R.string.training_type_free;
+                    break;
+                case PLAYOFF:
+                    trainingTypeStringKey = R.string.training_type_playoff;
+                    break;
+                case TOURNAMENT:
+                    trainingTypeStringKey = R.string.training_type_tournament;
+                    break;
+                case RETENTIONS:
+                    trainingTypeStringKey = R.string.training_type_retentions;
+                    break;
+                default:
+                    throw new RuntimeException("Unknown training type: " + data.trainingType);
+            }
+            xAxis.add(this.getString(trainingTypeStringKey));
             index += 1;
         }
 

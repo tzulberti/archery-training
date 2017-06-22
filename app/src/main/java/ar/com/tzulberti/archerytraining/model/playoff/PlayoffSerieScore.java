@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.model;
+package ar.com.tzulberti.archerytraining.model.playoff;
 
 /**
  * Used to indicate who won the playoff serie, and the points that it should up.

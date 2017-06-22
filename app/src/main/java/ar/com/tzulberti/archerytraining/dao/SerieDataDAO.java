@@ -11,9 +11,10 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.ArrowsPerDayData;
-import ar.com.tzulberti.archerytraining.model.SerieData;
-import ar.com.tzulberti.archerytraining.model.DistanceTotalData;
+import ar.com.tzulberti.archerytraining.model.series.ArrowsPerDayData;
+import ar.com.tzulberti.archerytraining.model.series.ArrowsPerTrainingType;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
+import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
 
 /**
  * Created by tzulberti on 4/19/17.
@@ -32,12 +33,16 @@ public class SerieDataDAO {
     }
 
 
-    public long addSerieData(int distance, int arrowAmount) {
+
+    public long addSerieData(int distance, int arrowAmount, SerieInformationConsts.TrainingType trainingType) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(SerieInformationConsts.DISTANCE_COLUMN_NAME, distance);
         contentValues.put(SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, arrowAmount);
         contentValues.put(SerieInformationConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
+        if (trainingType != null) {
+            contentValues.put(SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME, trainingType.getValue());
+        }
         long id = db.insert(SerieInformationConsts.TABLE_NAME, null, contentValues);
         if (id == -1) {
             // TODO check what to do in this case
@@ -179,6 +184,34 @@ public class SerieDataDAO {
             data.totalArrows = cursor.getLong(1);
             data.lastUpdate = DatetimeHelper.databaseValueToDate(cursor.getLong(2));
             data.seriesAmount = cursor.getInt(3);
+            res.add(data);
+        }
+        return res;
+    }
+
+    public List<ArrowsPerTrainingType> getTotalsForTrainingType(long startingDate, long endingDate) {
+        List<ArrowsPerTrainingType> res = new ArrayList<>();
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+
+        Cursor cursor = db.rawQuery(
+                "SELECT " +
+                    SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + ", " +
+                    "SUM(" + SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + "), " +
+                    "COUNT(" + SerieInformationConsts.ID_COLUMN_NAME + ") " +
+                "FROM " + SerieInformationConsts.TABLE_NAME + " " +
+                "WHERE " +
+                    SerieInformationConsts.DATETIME_COLUMN_NAME + " >= ? " +
+                    "AND " + SerieInformationConsts.DATETIME_COLUMN_NAME + " < ? " +
+                "GROUP BY " + SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " " +
+                "ORDER BY " + SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " DESC",
+                new String[]{String.valueOf(startingDate), String.valueOf(endingDate)}
+        );
+
+        while (cursor.moveToNext()) {
+            ArrowsPerTrainingType data = new ArrowsPerTrainingType();
+            data.trainingType = cursor.getInt(0);
+            data.totalArrows = cursor.getInt(1);
+            data.seriesAmount = cursor.getInt(2);
             res.add(data);
         }
         return res;

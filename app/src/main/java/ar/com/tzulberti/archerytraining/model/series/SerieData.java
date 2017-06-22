@@ -1,4 +1,4 @@
-package ar.com.tzulberti.archerytraining.model;
+package ar.com.tzulberti.archerytraining.model.series;
 
 
 import java.io.Serializable;

@@ -15,6 +15,7 @@ import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
+import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
@@ -30,6 +31,8 @@ import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFragment {
 
     private PlayoffDAO playoffDAO;
+    private SerieDataDAO serieDataDAO;
+
     private EditText opponentScoreEdit;
 
     @Override
@@ -41,6 +44,7 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     protected void setDAOs() {
         MainActivity activity = (MainActivity) getActivity();
         this.playoffDAO = activity.getPlayoffDAO();
+        this.serieDataDAO = activity.getSerieDAO();
     }
 
     @Override
@@ -79,6 +83,7 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     @Override
     protected void saveSerie() {
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
+        this.serieDataDAO.addSerieData(playoffSerie.playoff.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
         this.playoffDAO.updateSerie(playoffSerie);
     }
 
