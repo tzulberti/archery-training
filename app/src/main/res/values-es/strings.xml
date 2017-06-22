@@ -16,6 +16,13 @@
     <string name="commonDelete">Borrar</string>
     <string name="common_confirmation_dialog_title">Confirmación</string>
 
+
+    <!-- training type translation -->
+    <string name="training_type_free">Libre</string>
+    <string name="training_type_playoff">Eliminatorias</string>
+    <string name="training_type_tournament">Torneos</string>
+    <string name="training_type_retentions">Retenciones</string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
@@ -27,6 +34,7 @@
     <string name="series_distance_totals_chart_description"># de flechas por distancia</string>
     <string name="series_line_day_chart_description"># de flechas por dia</string>
     <string name="series_line_hour_chart_description"># de flechas por hora</string>
+    <string name="series_by_training_type_chart_description"># de flechas por tipo de entrenamiento</string>
 
     <string name="addSerieDistance">Distancia</string>
     <string name="addSerieArrowsAmount">Cantidad de flechas</string>

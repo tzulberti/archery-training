@@ -17,10 +17,9 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
-import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.SerieData;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
 /**
  * Created by tzulberti on 4/21/17.

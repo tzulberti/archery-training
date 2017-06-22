@@ -24,23 +24,14 @@ import android.widget.TextView;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.BaseTournamentFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewAllTournamentTargetArrowFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewSerieInformationFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentArrowStatsFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentScoreSheetFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentSeriesFragment;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
-import ar.com.tzulberti.archerytraining.model.PlayoffSerieScore;
+import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
-import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
  * Show the detail of one playoff

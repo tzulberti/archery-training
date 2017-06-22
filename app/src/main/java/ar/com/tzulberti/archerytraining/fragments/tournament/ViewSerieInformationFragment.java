@@ -34,6 +34,7 @@ import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
+import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
@@ -67,7 +68,7 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
     @Override
     protected void saveSerie() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
-        this.serieDataDAO.addSerieData(tournamentSerie.tournament.distance, tournamentSerie.arrows.size());
+        this.serieDataDAO.addSerieData(tournamentSerie.tournament.distance, tournamentSerie.arrows.size(), SerieInformationConsts.TrainingType.TOURNAMENT);
         this.tournamentDAO.saveTournamentSerieInformation(tournamentSerie);
     }
 

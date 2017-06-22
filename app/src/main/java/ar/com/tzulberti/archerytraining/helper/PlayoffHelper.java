@@ -1,6 +1,6 @@
 package ar.com.tzulberti.archerytraining.helper;
 
-import ar.com.tzulberti.archerytraining.model.PlayoffSerieScore;
+import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 
 /**
  * Created by tzulberti on 6/7/17.

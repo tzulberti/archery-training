@@ -18,6 +18,12 @@
     <string name="commonDelete">Delete</string>
     <string name="common_confirmation_dialog_title">Confirmation</string>
 
+    <!-- training type translation -->
+    <string name="training_type_free">Free training</string>
+    <string name="training_type_playoff">Playoffs</string>
+    <string name="training_type_tournament">Tournament</string>
+    <string name="training_type_retentions">Retentions</string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
@@ -29,6 +35,7 @@
     <string name="series_distance_totals_chart_description"># of arrows per distance</string>
     <string name="series_line_day_chart_description"># of arrows per day</string>
     <string name="series_line_hour_chart_description"># of arrows per hour</string>
+    <string name="series_by_training_type_chart_description"># of arrows per training type</string>
 
     <string name="addSerieDistance">Distance</string>
     <string name="addSerieArrowsAmount">Arrows amount</string>
@@ -39,7 +46,6 @@
     <string name="addSerieDatetime">When</string>
     <string name="addSerieArrowsAmountTableHeader"># Arrows</string>
     <string name="addSerieTodayTotals">Today totals</string>
-
 
 
     <!-- Today totals data -->

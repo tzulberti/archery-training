@@ -40,11 +40,15 @@ public class TablesCreator {
 
 
     private void createSeriesTable(SQLiteDatabase db) {
-        db.execSQL(String.format(
-                "CREATE TABLE %s ( %s INTEGER PRIMARY KEY AUTOINCREMENT, %s LONG NOT NULL, %s INTEGER NOT NULL, %s INTEGER NOT NULL);",
-                SerieInformationConsts.TABLE_NAME, SerieInformationConsts.ID_COLUMN_NAME, SerieInformationConsts.DATETIME_COLUMN_NAME,
-                SerieInformationConsts.DISTANCE_COLUMN_NAME, SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME
-        ));
+        db.execSQL(
+                "CREATE TABLE " + SerieInformationConsts.TABLE_NAME + "( " +
+                        SerieInformationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SerieInformationConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
+                        SerieInformationConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " INTEGER NOT NULL " +
+                        ");"
+        );
     }
 
     private void createTournamentTable(SQLiteDatabase db) {
