@@ -10,6 +10,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration20;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration21;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration23;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
@@ -25,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "archery_training.db";
 
-    protected static final int DATABASE_VERSION = 23;
+    protected static final int DATABASE_VERSION = 25;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -56,6 +57,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         existingMigrations.add(new DatabaseMigration10());
         existingMigrations.add(new DatabaseMigration20());
         existingMigrations.add(new DatabaseMigration21());
+        existingMigrations.add(new DatabaseMigration23());
 
         for (IDatbasseMigration databaseMigration : existingMigrations) {
             int migrationVersion = databaseMigration.getCurentVersion();

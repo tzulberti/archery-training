@@ -40,9 +40,8 @@ public class SerieDataDAO {
         contentValues.put(SerieInformationConsts.DISTANCE_COLUMN_NAME, distance);
         contentValues.put(SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME, arrowAmount);
         contentValues.put(SerieInformationConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
-        if (trainingType != null) {
-            contentValues.put(SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME, trainingType.getValue());
-        }
+        contentValues.put(SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME, trainingType.getValue());
+
         long id = db.insert(SerieInformationConsts.TABLE_NAME, null, contentValues);
         if (id == -1) {
             // TODO check what to do in this case
