@@ -37,6 +37,9 @@
     <string name="series_line_hour_chart_description"># of arrows per hour</string>
     <string name="series_by_training_type_chart_description"># of arrows per training type</string>
 
+    <string name="accumulated_label">Accumulated</string>
+    <string name="per_time_period_label">Per time period</string>
+
     <string name="addSerieDistance">Distance</string>
     <string name="addSerieArrowsAmount">Arrows amount</string>
     <string name="addSerieAdd">Add</string>

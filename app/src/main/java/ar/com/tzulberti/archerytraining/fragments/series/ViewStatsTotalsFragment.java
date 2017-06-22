@@ -1,5 +1,6 @@
 package ar.com.tzulberti.archerytraining.fragments.series;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -235,23 +236,28 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
         }
 
         List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> accumulatedEntries = new ArrayList<>();
 
-        int index = 0;
-        List<String> xAxis = new ArrayList<>();
         long minValue = -1;
         long hoursTaken = 0;
+        long accumulated = 0;
         for (ArrowsPerDayData data : arrowsPerDayDatas) {
             long epochValue = DatetimeHelper.dateToDatabaseValue(data.day);
             if (minValue == -1) {
                 minValue = epochValue;
             }
             hoursTaken = epochValue;
+            accumulated += data.totalArrows;
             entries.add(new Entry(epochValue - minValue, data.totalArrows));
-            index += 1;
+            accumulatedEntries.add(new Entry(epochValue - minValue, accumulated));
         }
 
-        LineDataSet dataSet = new LineDataSet(entries, "");
-        LineData lineData = new LineData(dataSet);
+        LineDataSet dailyDataSet = new LineDataSet(entries, this.getString(R.string.per_time_period_label));
+        dailyDataSet.setColors(Color.RED);
+
+        LineDataSet accumulatedDataSet = new LineDataSet(accumulatedEntries, this.getString(R.string.accumulated_label));
+        accumulatedDataSet.setColors(Color.BLUE);
+        LineData lineData = new LineData(dailyDataSet, accumulatedDataSet);
 
         DateFormat dateFormat = null;
         int periodSize = 0;
@@ -284,8 +290,8 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
         yr.setEnabled(false);
 
         lineChart.setData(lineData);
-        lineChart.getLegend().setEnabled(false);
-        lineChart.setEnabled(false);
+        lineChart.getLegend().setEnabled(true);
+        lineChart.setEnabled(trtue);
         lineChart.setTouchEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.invalidate();
@@ -297,3 +303,4 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
     }
 
 }
+

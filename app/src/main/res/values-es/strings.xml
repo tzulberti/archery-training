@@ -36,6 +36,9 @@
     <string name="series_line_hour_chart_description"># de flechas por hora</string>
     <string name="series_by_training_type_chart_description"># de flechas por tipo de entrenamiento</string>
 
+    <string name="accumulated_label">Acumulado</string>
+    <string name="per_time_period_label">Por periodo de tiempo</string>
+
     <string name="addSerieDistance">Distancia</string>
     <string name="addSerieArrowsAmount">Cantidad de flechas</string>
     <string name="addSerieAdd">Agregar</string>
