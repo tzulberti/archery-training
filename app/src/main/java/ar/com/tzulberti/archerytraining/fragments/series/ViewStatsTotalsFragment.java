@@ -291,7 +291,7 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
 
         lineChart.setData(lineData);
         lineChart.getLegend().setEnabled(true);
-        lineChart.setEnabled(trtue);
+        lineChart.setEnabled(false);
         lineChart.setTouchEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.invalidate();
