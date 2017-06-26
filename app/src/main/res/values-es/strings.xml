@@ -124,7 +124,7 @@
     <string name="tournament_view_stats_datatype">Data</string>
     <string name="tournament_view_stats_min">Min</string>
     <string name="tournament_view_stats_avg">Prom</string>
-    <string name="tournament_view_stats_mean">Mean</string>
+    <string name="tournament_view_stats_median">Mediana</string>
     <string name="tournament_view_stats_max">Max</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
@@ -140,6 +140,15 @@
     <string name="playoff_serie_score">%1$d - %2$d</string>
     <string name="playoff_error_creating_max_value_30">El valor tiene que ser 30 o menos</string>
     <string name="playoff_error_creating_min_greater_max">El puntaje min tiene que ser menor o igual que el max</string>
+
+    <string name="playoff_view_stats">Ver estadisticas</string>
+    <string name="playoff_stats_show">Actualizar graficos</string>
+    <string name="playoff_stats_from">Desde</string>
+    <string name="playoff_stats_to">Hasta</string>
+    <string name="playoff_stats_arrow_stats"># de flechas por puntaje</string>
+    <string name="playoff_stats_series_stats"># de series por puntaje</string>
+    <string name="playoff_stats_arrow_table_data">Flechas</string>
+    <string name="playoff_stats_series_table_data">Series</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->

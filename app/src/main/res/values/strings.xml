@@ -124,7 +124,7 @@
     <string name="tournament_view_stats_datatype">Data</string>
     <string name="tournament_view_stats_min">Min</string>
     <string name="tournament_view_stats_avg">Avg</string>
-    <string name="tournament_view_stats_mean">Media</string>
+    <string name="tournament_view_stats_median">Median</string>
     <string name="tournament_view_stats_max">Max</string>
 
 
@@ -141,6 +141,15 @@
     <string name="playoff_serie_score">%1$d - %2$d</string>
     <string name="playoff_error_creating_max_value_30">The value should be 30 or smaller</string>
     <string name="playoff_error_creating_min_greater_max">The min value shoudl be smaller or equal than the max</string>
+    <string name="playoff_view_stats">View stats</string>
+
+    <string name="playoff_stats_show">Update charts</string>
+    <string name="playoff_stats_from">From</string>
+    <string name="playoff_stats_to">To</string>
+    <string name="playoff_stats_arrow_stats"># of arrows per score</string>
+    <string name="playoff_stats_series_stats"># of series per score</string>
+    <string name="playoff_stats_arrow_table_data">Arrows data</string>
+    <string name="playoff_stats_series_table_data">Series data</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
@@ -155,3 +164,4 @@
 
 
 </resources>
+
