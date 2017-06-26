@@ -11,6 +11,34 @@
         android:orientation="vertical">
 
 
+        <TableLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:stretchColumns="*"
+            android:id="@+id/playoff_stats_table_data">
+            <TableRow>
+                <TextView
+                    android:padding="3dip"
+                    android:text="@string/tournament_view_stats_datatype" />
+
+                <TextView
+                    android:padding="3dip"
+                    android:text="@string/tournament_view_stats_min" />
+
+                <TextView
+                    android:padding="3dip"
+                    android:text="@string/tournament_view_stats_avg" />
+
+                <TextView
+                    android:padding="3dip"
+                    android:text="@string/tournament_view_stats_median" />
+
+                <TextView
+                    android:padding="3dip"
+                    android:text="@string/tournament_view_stats_max" />
+            </TableRow>
+        </TableLayout>
+
         <TextView
             android:paddingTop="30dp"
             android:layout_width="wrap_content"

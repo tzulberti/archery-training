@@ -446,7 +446,14 @@ public class PlayoffDAO {
                 res.add(missingArrowData);
             }
         }
-        return res;
+
+        // must reverse list because if not on the chart the lower score are going
+        // to be shown on top
+        List<ArrowsPerScore> chartRes = new ArrayList<>();
+        for (ArrowsPerScore arrowsPerScore : res) {
+            chartRes.add(0, arrowsPerScore);
+        }
+        return chartRes;
     }
 
 

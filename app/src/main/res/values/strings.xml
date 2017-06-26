@@ -124,7 +124,7 @@
     <string name="tournament_view_stats_datatype">Data</string>
     <string name="tournament_view_stats_min">Min</string>
     <string name="tournament_view_stats_avg">Avg</string>
-    <string name="tournament_view_stats_mean">Media</string>
+    <string name="tournament_view_stats_median">Median</string>
     <string name="tournament_view_stats_max">Max</string>
 
 
@@ -148,6 +148,8 @@
     <string name="playoff_stats_to">To</string>
     <string name="playoff_stats_arrow_stats"># of arrows per score</string>
     <string name="playoff_stats_series_stats"># of series per score</string>
+    <string name="playoff_stats_arrow_table_data">Arrows data</string>
+    <string name="playoff_stats_series_table_data">Series data</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->

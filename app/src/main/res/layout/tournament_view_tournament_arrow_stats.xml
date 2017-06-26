@@ -31,7 +31,7 @@
 
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_mean" />
+                    android:text="@string/tournament_view_stats_median" />
 
                 <TextView
                     android:padding="3dip"

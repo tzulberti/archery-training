@@ -7,9 +7,19 @@ import java.io.Serializable;
  *
  * Created by tzulberti on 6/25/17.
  */
-public class ArrowsPerScore implements Serializable {
+public class ArrowsPerScore implements IElementByScore {
 
     public int arrowsAmount;
     public int score;
     public boolean isX;
+
+    @Override
+    public int getScore() {
+        return this.score;
+    }
+
+    @Override
+    public int getAmount() {
+        return this.arrowsAmount;
+    }
 }

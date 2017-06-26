@@ -7,8 +7,18 @@ import java.io.Serializable;
  *
  * Created by tzulberti on 6/25/17.
  */
-public class SeriesPerScore implements Serializable {
+public class SeriesPerScore implements IElementByScore {
 
     public int serieScore;
     public int seriesAmount;
+
+    @Override
+    public int getScore() {
+        return this.serieScore;
+    }
+
+    @Override
+    public int getAmount() {
+        return this.seriesAmount;
+    }
 }
