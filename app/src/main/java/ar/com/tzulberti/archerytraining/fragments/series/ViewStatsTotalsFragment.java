@@ -159,6 +159,7 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
             // there is no information so don't show any chart
             return;
         }
+
         ArrayList<Integer> colors = new ArrayList<>();
         for (int c : ColorTemplate.VORDIPLOM_COLORS) {
             colors.add(c);

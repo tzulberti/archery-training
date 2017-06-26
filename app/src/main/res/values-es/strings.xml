@@ -141,6 +141,13 @@
     <string name="playoff_error_creating_max_value_30">El valor tiene que ser 30 o menos</string>
     <string name="playoff_error_creating_min_greater_max">El puntaje min tiene que ser menor o igual que el max</string>
 
+    <string name="playoff_view_stats">Ver estadisticas</string>
+    <string name="playoff_stats_show">Actualizar graficos</string>
+    <string name="playoff_stats_from">Desde</string>
+    <string name="playoff_stats_to">Hasta</string>
+    <string name="playoff_stats_arrow_stats"># of arrows per score</string>
+    <string name="playoff_stats_series_stats"># of series per score</string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
     <!-- ///////////////////////////////////////////////////////////////////////////// -->

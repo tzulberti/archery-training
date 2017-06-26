@@ -16,6 +16,8 @@ import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
+import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
+import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
@@ -374,5 +376,101 @@ public class PlayoffDAO {
         }
 
         return playoff;
+    }
+
+
+    public List<ArrowsPerScore> getArrowsPerScore() {
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        Cursor playoffArrowsCursor = db.rawQuery(
+                "SELECT " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
+                        "COUNT(" + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.ID_COLUMN_NAME + ") " +
+                "FROM " +  PlayoffSerieArrowConsts.TABLE_NAME + " " +
+                "GROUP BY " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + " " +
+                "ORDER BY " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
+                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
+                null
+        );
+        List<ArrowsPerScore> res = new ArrayList<>();
+        int currentScore = -1;
+        while (playoffArrowsCursor.moveToNext()) {
+            ArrowsPerScore arrowsPerScore = new ArrowsPerScore();
+            arrowsPerScore.isX = (playoffArrowsCursor.getInt(0) == 1);
+            arrowsPerScore.score = playoffArrowsCursor.getInt(1);
+            arrowsPerScore.arrowsAmount = playoffArrowsCursor.getInt(2);
+
+            if (currentScore == -1) {
+                // check if the user never hit an X or he never got an 10, 9... etc
+                if (! arrowsPerScore.isX) {
+                    ArrowsPerScore missingXData = new ArrowsPerScore();
+                    missingXData.isX = true;
+                    missingXData.score = 10;
+                    missingXData.arrowsAmount = 0;
+                    res.add(missingXData);
+                }
+
+                // add the other values that it might be missing like the 10, 9, etc...
+                for (int arrowScore = 10; arrowScore > arrowsPerScore.score; arrowScore--) {
+                    ArrowsPerScore missingArrowScoreData = new ArrowsPerScore();
+                    missingArrowScoreData.isX = false;
+                    missingArrowScoreData.score = arrowScore;
+                    missingArrowScoreData.arrowsAmount = 0;
+                    res.add(missingArrowScoreData);
+                }
+
+            } else if (currentScore > arrowsPerScore.score + 1) {
+                // check that there is no missing values
+                for (int i = 1; i + arrowsPerScore.score < currentScore; i++) {
+                    ArrowsPerScore missingArrowScoreData = new ArrowsPerScore();
+                    missingArrowScoreData.isX = false;
+                    missingArrowScoreData.score = arrowsPerScore.score + i;
+                    missingArrowScoreData.arrowsAmount = 0;
+                    res.add(missingArrowScoreData);
+                }
+            }
+            currentScore = arrowsPerScore.score;
+            res.add(arrowsPerScore);
+        }
+
+        if (currentScore > 0) {
+            // the the min score was something like 3 so I have to add the missing values
+            for (int missingScore = currentScore - 1; missingScore >= 0; missingScore--) {
+                ArrowsPerScore missingArrowData = new ArrowsPerScore();
+                missingArrowData.isX = false;
+                missingArrowData.score = missingScore;
+                missingArrowData.arrowsAmount = 0;
+                res.add(missingArrowData);
+            }
+        }
+        return res;
+    }
+
+
+    public List<SeriesPerScore> getSeriesPerScore() {
+        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
+        Cursor playoffArrowsCursor = db.rawQuery(
+                "SELECT " +
+                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + ", " +
+                        "COUNT(" + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + ") " +
+                "FROM " +  PlayoffSerieConsts.TABLE_NAME + " " +
+                "GROUP BY " +
+                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " " +
+                "ORDER BY " +
+                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " DESC ",
+                null
+        );
+        List<SeriesPerScore> res = new ArrayList<>();
+        while (playoffArrowsCursor.moveToNext()) {
+            SeriesPerScore seriesPerScore = new SeriesPerScore();
+            seriesPerScore.serieScore = playoffArrowsCursor.getInt(0);
+            seriesPerScore.seriesAmount = playoffArrowsCursor.getInt(1);
+            res.add(seriesPerScore);
+        }
+
+        return res;
     }
 }
