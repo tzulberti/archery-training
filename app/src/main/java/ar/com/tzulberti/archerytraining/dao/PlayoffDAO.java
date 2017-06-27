@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
@@ -16,7 +18,6 @@ import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
-import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
@@ -29,13 +30,22 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
  * Created by tzulberti on 6/4/17.
  */
 
-public class PlayoffDAO {
-
-    private DatabaseHelper databaseHelper;
+public class PlayoffDAO extends BaseArrowSeriesDAO {
 
     public PlayoffDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
     }
+
+    @Override
+    protected BaseSerieArrowConsts getArrowsTable() {
+        return new PlayoffSerieArrowConsts();
+    }
+
+    @Override
+    protected BaseSerieConsts getSeriesTable() {
+        return new PlayoffSerieConsts();
+    }
+
 
     public Playoff createPlayoff(String name, int distance, ComputerPlayOffConfiguration computerPlayOffConfiguration) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
@@ -377,85 +387,6 @@ public class PlayoffDAO {
 
         return playoff;
     }
-
-
-    public List<ArrowsPerScore> getArrowsPerScore() {
-        SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
-        Cursor playoffArrowsCursor = db.rawQuery(
-                "SELECT " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                        "COUNT(" + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.ID_COLUMN_NAME + ") " +
-                "FROM " +  PlayoffSerieArrowConsts.TABLE_NAME + " " +
-                "GROUP BY " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + " " +
-                "ORDER BY " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
-                null
-        );
-        List<ArrowsPerScore> res = new ArrayList<>();
-        int currentScore = -1;
-        while (playoffArrowsCursor.moveToNext()) {
-            ArrowsPerScore arrowsPerScore = new ArrowsPerScore();
-            arrowsPerScore.isX = (playoffArrowsCursor.getInt(0) == 1);
-            arrowsPerScore.score = playoffArrowsCursor.getInt(1);
-            arrowsPerScore.arrowsAmount = playoffArrowsCursor.getInt(2);
-
-            if (currentScore == -1) {
-                // check if the user never hit an X or he never got an 10, 9... etc
-                if (! arrowsPerScore.isX) {
-                    ArrowsPerScore missingXData = new ArrowsPerScore();
-                    missingXData.isX = true;
-                    missingXData.score = 10;
-                    missingXData.arrowsAmount = 0;
-                    res.add(missingXData);
-                }
-
-                // add the other values that it might be missing like the 10, 9, etc...
-                for (int arrowScore = 10; arrowScore > arrowsPerScore.score; arrowScore--) {
-                    ArrowsPerScore missingArrowScoreData = new ArrowsPerScore();
-                    missingArrowScoreData.isX = false;
-                    missingArrowScoreData.score = arrowScore;
-                    missingArrowScoreData.arrowsAmount = 0;
-                    res.add(missingArrowScoreData);
-                }
-
-            } else if (currentScore > arrowsPerScore.score + 1) {
-                // check that there is no missing values
-                for (int i = 1; i + arrowsPerScore.score < currentScore; i++) {
-                    ArrowsPerScore missingArrowScoreData = new ArrowsPerScore();
-                    missingArrowScoreData.isX = false;
-                    missingArrowScoreData.score = arrowsPerScore.score + i;
-                    missingArrowScoreData.arrowsAmount = 0;
-                    res.add(missingArrowScoreData);
-                }
-            }
-            currentScore = arrowsPerScore.score;
-            res.add(arrowsPerScore);
-        }
-
-        if (currentScore > 0) {
-            // the the min score was something like 3 so I have to add the missing values
-            for (int missingScore = currentScore - 1; missingScore >= 0; missingScore--) {
-                ArrowsPerScore missingArrowData = new ArrowsPerScore();
-                missingArrowData.isX = false;
-                missingArrowData.score = missingScore;
-                missingArrowData.arrowsAmount = 0;
-                res.add(missingArrowData);
-            }
-        }
-
-        // must reverse list because if not on the chart the lower score are going
-        // to be shown on top
-        List<ArrowsPerScore> chartRes = new ArrayList<>();
-        for (ArrowsPerScore arrowsPerScore : res) {
-            chartRes.add(0, arrowsPerScore);
-        }
-        return chartRes;
-    }
-
 
     public List<SeriesPerScore> getSeriesPerScore() {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
