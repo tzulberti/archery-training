@@ -23,7 +23,7 @@ import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
 public class SerieDataDAO {
 
     public enum GroupByType implements Serializable {
-        DAILY, HOURLY
+        DAILY, HOURLY, NONE
     }
 
     private DatabaseHelper databaseHelper;
@@ -124,19 +124,22 @@ public class SerieDataDAO {
             case HOURLY:
                 modifier = 3600;
                 break;
+            case NONE:
+                modifier = 1;
+                break;
         }
 
         String sModifier = String.valueOf(modifier);
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + ", " +
-                        "SUM(" + SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + ") " +
+                    SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + ", " +
+                    "SUM(" + SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + ") " +
                 "FROM  " + SerieInformationConsts.TABLE_NAME + " " +
                 "WHERE " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " >= ? " +
-                        " AND " + SerieInformationConsts.DATETIME_COLUMN_NAME + " < ? " +
+                    SerieInformationConsts.DATETIME_COLUMN_NAME + " >= ? " +
+                    " AND " + SerieInformationConsts.DATETIME_COLUMN_NAME + " < ? " +
                 "GROUP BY " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + " " +
+                    SerieInformationConsts.DATETIME_COLUMN_NAME + " / " + sModifier + " " +
                 "ORDER BY 1",
                 new String[]{String.valueOf(minDate), String.valueOf(maxDate)}
         );
