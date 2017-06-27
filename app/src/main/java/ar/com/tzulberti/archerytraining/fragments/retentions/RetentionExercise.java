@@ -41,12 +41,16 @@ public class RetentionExercise extends BaseClickableFragment {
     private TextView textSerieInfo;
     private TextView textRepetionsInfo;
 
+    private boolean canGoBack;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         this.cleanState(container);
         View view = inflater.inflate(R.layout.retention_exercise, container, false);
         MainActivity activity = (MainActivity) getActivity();
+
+        this.canGoBack = false;
 
         Bundle arguments = this.getArguments();
         this.seriesAmount = arguments.getInt(ConfigureRetention.SERIES_AMOUNT);
@@ -74,12 +78,6 @@ public class RetentionExercise extends BaseClickableFragment {
         return view;
     }
 
-
-    public void stop(View view) {
-        this.statusText.setText(R.string.stoppedStatus);
-        this.shouldStop = true;
-        this.currentTimer.cancel();
-    }
 
 
     public void start() {
@@ -248,6 +246,25 @@ public class RetentionExercise extends BaseClickableFragment {
 
     @Override
     public void handleClick(View v) {
-        this.stop(v);
+        this.stop();
+    }
+
+    @Override
+    public boolean canGoBack() {
+        if (! this.canGoBack) {
+            // the first time, stop all the things, and then recall this method
+            // so the user can go back
+            this.stop();
+            this.canGoBack = true;
+            this.getActivity().onBackPressed();
+        }
+        return true;
+
+    }
+
+    public void stop() {
+        this.statusText.setText(R.string.stoppedStatus);
+        this.shouldStop = true;
+        this.currentTimer.cancel();
     }
 }
