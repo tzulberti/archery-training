@@ -248,6 +248,6 @@ public class RetentionExercise extends BaseClickableFragment {
 
     @Override
     public void handleClick(View v) {
-
+        this.stop(v);
     }
 }
