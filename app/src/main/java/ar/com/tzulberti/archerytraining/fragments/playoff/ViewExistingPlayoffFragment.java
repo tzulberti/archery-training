@@ -2,13 +2,10 @@ package ar.com.tzulberti.archerytraining.fragments.playoff;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -22,11 +19,10 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
-import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentSeriesFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractArrowSeriesStatsFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
@@ -53,7 +49,7 @@ public class ViewExistingPlayoffFragment extends AbstractTableDataFragment {
         trParams.span = 4;
 
         Button viewPlayoffStatsButton = new Button(context);
-        viewPlayoffStatsButton.setText(this.getString(R.string.playoff_view_stats));
+        viewPlayoffStatsButton.setText(this.getString(R.string.stats_view));
         viewPlayoffStatsButton.setId(Integer.MAX_VALUE - 1);
         viewPlayoffStatsButton.setOnClickListener(this);
         viewPlayoffStatsButton.setLayoutParams(trParams);

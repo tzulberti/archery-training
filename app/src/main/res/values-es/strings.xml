@@ -23,6 +23,21 @@
     <string name="training_type_tournament">Torneos</string>
     <string name="training_type_retentions">Retenciones</string>
 
+
+    <string name="stats_view">Ver estadisticas</string>
+    <string name="stats_show">Actualizar graficos</string>
+    <string name="stats_from">Desde</string>
+    <string name="stats_to">Hasta</string>
+    <string name="stats_arrow_stats"># de flechas por puntaje</string>
+    <string name="stats_series_stats"># de series por puntaje</string>
+    <string name="stats_arrow_table_data">Flechas</string>
+    <string name="stats_series_table_data">Series</string>
+    <string name="stats_series_table_datatype">Data</string>
+    <string name="stats_series_table_min">Min</string>
+    <string name="stats_series_table_avg">Prom</string>
+    <string name="stats_series_table_median">Mediana</string>
+    <string name="stats_series_table_max">Max</string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
@@ -141,14 +156,7 @@
     <string name="playoff_error_creating_max_value_30">El valor tiene que ser 30 o menos</string>
     <string name="playoff_error_creating_min_greater_max">El puntaje min tiene que ser menor o igual que el max</string>
 
-    <string name="playoff_view_stats">Ver estadisticas</string>
-    <string name="playoff_stats_show">Actualizar graficos</string>
-    <string name="playoff_stats_from">Desde</string>
-    <string name="playoff_stats_to">Hasta</string>
-    <string name="playoff_stats_arrow_stats"># de flechas por puntaje</string>
-    <string name="playoff_stats_series_stats"># de series por puntaje</string>
-    <string name="playoff_stats_arrow_table_data">Flechas</string>
-    <string name="playoff_stats_series_table_data">Series</string>
+
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->

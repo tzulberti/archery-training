@@ -8,6 +8,10 @@ import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
+import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
@@ -21,12 +25,21 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
  * Created by tzulberti on 5/17/17.
  */
 
-public class TournamentDAO {
+public class TournamentDAO extends BaseArrowSeriesDAO {
 
-    private DatabaseHelper databaseHelper;
 
     public TournamentDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
+    }
+
+    @Override
+    protected BaseSerieArrowConsts getArrowsTable() {
+        return new TournamentSerieArrowConsts();
+    }
+
+    @Override
+    protected BaseSerieConsts getSeriesTable() {
+        return new TournamentSerieConsts();
     }
 
     public List<Tournament> getExistingTournaments() {

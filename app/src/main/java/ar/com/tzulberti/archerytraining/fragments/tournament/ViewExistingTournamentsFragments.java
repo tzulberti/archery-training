@@ -10,17 +10,25 @@ import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.Serializable;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 
+import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
+import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
+import ar.com.tzulberti.archerytraining.fragments.playoff.ViewPlayoffSeriesFragment;
+import ar.com.tzulberti.archerytraining.fragments.playoff.ViewPlayoffStatsFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -30,95 +38,110 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration
  * Created by tzulberti on 5/17/17.
  */
 
-public class ViewExistingTournamentsFragments extends BaseTournamentFragment {
+public class ViewExistingTournamentsFragments extends AbstractTableDataFragment {
 
-    private TableLayout dataContainer;
+
+    protected TournamentDAO tournamentDAO;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.tournament_view_existing, container, false);
-        this.setObjects();
-
-        final MainActivity activity = (MainActivity) getActivity();
-
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-
-            @Override public void onClick(View view) {
-                AddTournamentFragment addTournamentFragment = new AddTournamentFragment();
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, addTournamentFragment)
-                        .commit();
-            }
-        });
-
-
-        this.dataContainer = (TableLayout) view.findViewById(R.id.tournaments_lists);
-        this.showInformation(view);
-        return view;
+    protected void setViewObjects() {
+        MainActivity activity = (MainActivity) getActivity();
+        this.tournamentDAO = activity.getTournamentDAO();
     }
 
+    @Override
+    protected void addButtonsBeforeData(TableLayout tableLayout, Context context) {
+        TableRow.LayoutParams trParams = new TableRow.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.WRAP_CONTENT
+        );
+        trParams.span = 4;
 
-    private void showInformation(View view) {
-        List<Tournament> exitingTournaments = this.tournamentDAO.getExistingTournaments();
-        Context context = getContext();
+        Button viewPlayoffStatsButton = new Button(context);
+        viewPlayoffStatsButton.setText(this.getString(R.string.stats_view));
+        viewPlayoffStatsButton.setId(Integer.MAX_VALUE - 1);
+        viewPlayoffStatsButton.setOnClickListener(this);
+        viewPlayoffStatsButton.setLayoutParams(trParams);
 
-        for (Tournament data : exitingTournaments) {
-            TableRow tr = new TableRow(context);
-            tr.setPadding(0, 15, 0, 15);
+        TableRow tr1 = new TableRow(context);
+        tr1.addView(viewPlayoffStatsButton);
+        tableLayout.addView(tr1);
+    }
 
-            ImageView imageView = new ImageView(context);
-            TextView nameText = new TextView(context);
-            TextView datetimeText = new TextView(context);
-            TextView totalScoreText = new TextView(context);
+    @Override
+    protected void addButtonsAfterData(TableLayout tableLayout, Context context) {
 
+    }
 
-            if (data.isTournament) {
-                imageView.setImageResource(R.drawable.ic_trophy);
-            } else {
-                imageView.setImageResource(R.drawable.ic_bow);
-            }
-            nameText.setText(data.name);
-            nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-
-
-            totalScoreText.setText(String.valueOf(data.totalScore) + "/" + String.valueOf(TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
-            totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-
-            datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(data.datetime));
+    @Override
+    protected void renderRow(Serializable data, TableRow tr, Context context) {
+        Tournament tournament = (Tournament) data;
+        ImageView imageView = new ImageView(context);
+        TextView nameText = new TextView(context);
+        TextView datetimeText = new TextView(context);
+        TextView totalScoreText = new TextView(context);
 
 
-            tr.addView(imageView);
-            tr.addView(nameText);
-            tr.addView(totalScoreText);
-            tr.addView(datetimeText);
-            tr.setId((int) data.id);
-            tr.setOnClickListener(this);
-
-            this.dataContainer.addView(tr);
+        if (tournament.isTournament) {
+            imageView.setImageResource(R.drawable.ic_trophy);
+        } else {
+            imageView.setImageResource(R.drawable.ic_bow);
         }
+        nameText.setText(tournament.name);
+        nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+
+        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + String.valueOf(TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
+        totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+
+        datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(tournament.datetime));
+
+
+        tr.addView(imageView);
+        tr.addView(nameText);
+        tr.addView(totalScoreText);
+        tr.addView(datetimeText);
+        tr.setId((int) tournament.id);
     }
+
+    @Override
+    protected List<? extends Serializable> getData() {
+        return this.tournamentDAO.getExistingTournaments();
+    }
+
+    @Override
+    protected void addNewValue() {
+        AddTournamentFragment addTournamentFragment = new AddTournamentFragment();
+        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
+        fragmentManager.beginTransaction()
+                .replace(R.id.container, addTournamentFragment)
+                .commit();
+    }
+
 
     @Override
     public void handleClick(View v) {
         int tournamentId = v.getId();
 
-        Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
-        this.tournamentDAO.getTournamentSeriesInformation(tournament);
+        BaseClickableFragment fragment = null;
+        if (tournamentId == (Integer.MAX_VALUE - 1)) {
+            // the user selected to view the playoff stats
+            fragment = new ViewTournamentsStatsFragment();
 
-        Bundle bundle = new Bundle();
-        bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, tournament);
+        } else {
+            Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
+            this.tournamentDAO.getTournamentSeriesInformation(tournament);
 
+            Bundle bundle = new Bundle();
+            bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, tournament);
+            fragment = new ViewTournamentSeriesFragment();
+            fragment.setArguments(bundle);
+        }
 
-        ViewTournamentSeriesFragment tournamentSeriesFragment = new ViewTournamentSeriesFragment();
-        tournamentSeriesFragment.setArguments(bundle);
 
         FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                .replace(R.id.container, tournamentSeriesFragment);
+                .replace(R.id.container, fragment);
         fragmentTransaction.addToBackStack(null);
 
         fragmentTransaction.commit();

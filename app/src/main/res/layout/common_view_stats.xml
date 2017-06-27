@@ -19,23 +19,23 @@
             <TableRow>
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_datatype" />
+                    android:text="@string/stats_series_table_datatype" />
 
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_min" />
+                    android:text="@string/stats_series_table_min" />
 
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_avg" />
+                    android:text="@string/stats_series_table_avg" />
 
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_median" />
+                    android:text="@string/stats_series_table_median" />
 
                 <TextView
                     android:padding="3dip"
-                    android:text="@string/tournament_view_stats_max" />
+                    android:text="@string/stats_series_table_max" />
             </TableRow>
         </TableLayout>
 
@@ -43,7 +43,7 @@
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/playoff_stats_arrow_stats"
+            android:text="@string/stats_arrow_stats"
             />
         <com.github.mikephil.charting.charts.HorizontalBarChart
             android:id="@+id/playoff_stats_arrow_stats"
@@ -55,7 +55,7 @@
             android:paddingTop="30dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/playoff_stats_series_stats"
+            android:text="@string/stats_series_stats"
             />
         <com.github.mikephil.charting.charts.HorizontalBarChart
             android:id="@+id/playoff_stats_series_stats"
