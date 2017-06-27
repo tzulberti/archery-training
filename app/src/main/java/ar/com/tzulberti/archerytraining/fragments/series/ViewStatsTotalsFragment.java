@@ -85,6 +85,7 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
                 dailyChartDescription.setText(this.getString(R.string.series_line_day_chart_description));
                 break;
             case HOURLY:
+            case NONE:
                 dailyChartDescription.setText(this.getString(R.string.series_line_hour_chart_description));
                 break;
         }
@@ -270,6 +271,10 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
             case HOURLY:
                 dateFormat = DatetimeHelper.TIME_FORMATTER;
                 periodSize = 3600;
+                break;
+            case NONE:
+                dateFormat = DatetimeHelper.TIME_FORMATTER;
+                periodSize = 1;
                 break;
         }
 

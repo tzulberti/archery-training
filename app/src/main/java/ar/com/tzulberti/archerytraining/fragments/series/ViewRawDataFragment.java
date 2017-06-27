@@ -130,7 +130,7 @@ public class ViewRawDataFragment extends AbstractTableDataFragment {
                 case Integer.MAX_VALUE -1:
                     arguments.putLong(ViewStatsTotalsFragment.MIN_DATE_KEY, DatetimeHelper.getTodayZeroHours());
                     arguments.putLong(ViewStatsTotalsFragment.MAX_DATE_KEY, DatetimeHelper.getTomorrowZeroHours());
-                    arguments.putSerializable(ViewStatsTotalsFragment.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.HOURLY);
+                    arguments.putSerializable(ViewStatsTotalsFragment.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.NONE);
                     break;
                 case Integer.MAX_VALUE -2:
                     arguments.putLong(ViewStatsTotalsFragment.MIN_DATE_KEY, DatetimeHelper.getLastWeeDate());
