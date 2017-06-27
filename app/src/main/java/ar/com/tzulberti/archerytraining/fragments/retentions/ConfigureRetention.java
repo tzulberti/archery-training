@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -130,8 +131,9 @@ public class ConfigureRetention extends BaseClickableFragment {
         retentionExercise.setArguments(bundle);
 
         FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, retentionExercise)
-                .commit();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
+                .replace(R.id.container, retentionExercise);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
 }
