@@ -39,6 +39,7 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
     private Bitmap imageBitmap;
 
     private Paint finalImpactPaint;
+    private Paint centerPointPaint;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -54,6 +55,10 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
         this.finalImpactPaint = new Paint();
         this.finalImpactPaint.setAntiAlias(true);
         this.finalImpactPaint.setColor(Color.LTGRAY);
+
+        this.centerPointPaint = new Paint();
+        this.centerPointPaint.setAntiAlias(true);
+        this.centerPointPaint.setColor(Color.GREEN);
 
         ViewTreeObserver vto = this.targetImageView.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -96,6 +101,9 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
 
     private void showSeries(int minSerie, int maxSerie) {
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        int numberOfArrows = 0;
+        int sumX = 0;
+        int sumY = 0;
 
         for (TournamentSerie serie : this.tournament.series) {
             if (serie.index < minSerie) {
@@ -107,16 +115,23 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
             }
 
             for (TournamentSerieArrow serieArrow : serie.arrows) {
-                this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, mutableBitmap);
+                this.addTargetImpact(serieArrow.xPosition, serieArrow.yPosition, mutableBitmap, this.finalImpactPaint);
+                sumX += serieArrow.xPosition;
+                sumY += serieArrow.yPosition;
+                numberOfArrows += 1;
             }
+        }
+        
+        if (numberOfArrows > 0) {
+            this.addTargetImpact(sumX / numberOfArrows, sumY / numberOfArrows, mutableBitmap, this.centerPointPaint);
         }
 
         this.seriesShowingText.setText(getString(R.string.tournament_serie_showing_series, minSerie, maxSerie));
     }
 
-    private void addTargetImpact(float x, float y, Bitmap mutableBitmap) {
+    private void addTargetImpact(float x, float y, Bitmap mutableBitmap, Paint impactPaint) {
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y, ViewSerieInformationFragment.ARROW_IMPACT_RADIUS, this.finalImpactPaint);
+        canvas.drawCircle(x, y, ViewSerieInformationFragment.ARROW_IMPACT_RADIUS, impactPaint);
 
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
