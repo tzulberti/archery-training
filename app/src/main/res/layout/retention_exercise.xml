@@ -64,7 +64,7 @@
             android:layout_height ="fill_parent"
             android:gravity="center"
             android:padding="3dip"
-            android:textSize="32sp"
+            android:textSize="100sp"
             android:textStyle="bold"
             android:layout_span="5" />
     </TableRow>
