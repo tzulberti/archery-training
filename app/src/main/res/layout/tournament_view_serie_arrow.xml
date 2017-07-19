@@ -155,24 +155,31 @@
 
     </LinearLayout>
 
-
-    <!--
-    <com.github.chrisbanes.photoview.PhotoView
-        android:id="@+id/photo_view"
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:src="@drawable/complete_archery_target"
-        />
-    -->
+        android:layout_height="wrap_content">
 
-    <ImageView
-        android:id="@+id/photo_view"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:src="@drawable/complete_archery_target"
-        android:scaleType="fitXY"
-        android:adjustViewBounds="true"
-        />
+        <ImageView
+            android:id="@+id/photo_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/complete_archery_target"
+            android:scaleType="fitXY"
+            android:adjustViewBounds="true"
+            />
+
+        <ImageView
+            android:id="@+id/image_zoom"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:scaleType="fitXY"
+            android:src="@drawable/complete_archery_target"
+            />
+
+
+
+    </FrameLayout>
+
     
     <LinearLayout
         android:layout_width="fill_parent"

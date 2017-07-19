@@ -6,9 +6,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
@@ -51,8 +53,10 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
     private static final int Y_PADDING = -80;
 
-
     private ImageView targetImageView;
+    private ImageView zoomImageView;
+    private Matrix matrix;
+
     private TextView[] currentScoreText;
     private TextView totalSerieScoreText;
 
@@ -123,6 +127,9 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
 
+        this.zoomImageView = (ImageView) view.findViewById(R.id.image_zoom);
+        this.zoomImageView.setScaleType(ImageView.ScaleType.MATRIX);
+
         this.currentImpactPaint = new Paint();
         this.currentImpactPaint.setAntiAlias(true);
         this.currentImpactPaint.setColor(Color.MAGENTA);
@@ -144,6 +151,8 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         this.arrowUndoButton = (Button) view.findViewById(R.id.btn_arrow_undo);
         this.nextSerieButton.setEnabled(false);
         this.previousSerieButton.setEnabled(false);
+
+        this.matrix = new Matrix();
 
         ViewTreeObserver vto = this.targetImageView.getViewTreeObserver();
         vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
@@ -232,6 +241,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         if (eventAction == MotionEvent.ACTION_DOWN || eventAction == MotionEvent.ACTION_MOVE || eventAction == MotionEvent.ACTION_UP) {
             isFinal = (eventAction == MotionEvent.ACTION_UP);
             this.addTargetImpact(event.getX() / this.imageScale, event.getY() / this.imageScale, isFinal, false, numberOfArrows);
+            this.updateImageZoom(event.getX(), event.getY() + Y_PADDING);
         }
 
         if (isFinal && this.canActivateButtons()) {
@@ -266,6 +276,14 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         }
 
         return false;
+    }
+
+    private void updateImageZoom(float x, float y) {
+        this.matrix.reset();
+        RectF src = new RectF(x + 100, y - 25, x + 150, y + 25);
+        RectF dst = new RectF(0, 0, 100, 100);
+        this.matrix.setRectToRect(src, dst, Matrix.ScaleToFit.FILL);
+        this.zoomImageView.setImageMatrix(matrix);
     }
 
 
@@ -425,11 +443,6 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
 
 
     @Override
-    public boolean onLongClick(View v) {
-        return false;
-    }
-
-    @Override
     public boolean canGoBack() {
         if (this.canActivateButtons()) {
             // if the serie is created with 6 arrows, then it doesnt has any issue
@@ -459,6 +472,11 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
                 .show();
 
         // ask the user if he is sure to go back or not
+        return false;
+    }
+
+    @Override
+    public boolean onLongClick(View v) {
         return false;
     }
 
