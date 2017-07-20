@@ -17,6 +17,7 @@ import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowCons
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
@@ -74,46 +75,39 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
     }
 
 
-    public Tournament createTournament(String name, int distance, int targetSize, boolean isOutdoor, boolean isTournament) {
+    public Tournament createTournament(String name, boolean isTournament, TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long databaseTimestamp = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TournamentConsts.DISTANCE_COLUMN_NAME, distance);
+        contentValues.put(TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
         contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
         contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
-        contentValues.put(TournamentConsts.TARGET_SIZE_COLUMN_NAME, targetSize);
-        contentValues.put(TournamentConsts.IS_OUTDOOR_COLUMN_NAME, (isOutdoor) ? 1 : 0);
         contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
         long id = db.insert(TournamentConsts.TABLE_NAME, null, contentValues);
 
         Tournament res = new Tournament(id, name, DatetimeHelper.databaseValueToDate(databaseTimestamp));
-        res.isOutdoor = isOutdoor;
         res.isTournament = isTournament;
-        res.targetSize = targetSize;
-        res.distance = distance;
+        res.tournamentConstraintId = tournamentConstraint.id;
+        res.tournamentConstraint = tournamentConstraint;
         return res;
     }
 
     public Tournament getTournamentInformation(long tournamentId) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                String.format(
-                        "SELECT %s, %s, %s, " +
-                                "%s, %s " +
-                                "FROM %s " +
-                                "WHERE %s = ?",
-                        TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME, TournamentConsts.DISTANCE_COLUMN_NAME,
-                        TournamentConsts.IS_OUTDOOR_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME,
-                        TournamentConsts.TABLE_NAME,
-                        TournamentConsts.ID_COLUMN_NAME
-                ),
+                "SELECT " +
+                        TournamentConsts.NAME_COLUMN_NAME + ", " +
+                        TournamentConsts.DATETIME_COLUMN_NAME + ", " +
+                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME + ", " +
+                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
+                "FROM " +  TournamentConsts.TABLE_NAME + " " +
+                "WHERE " + TournamentConsts.ID_COLUMN_NAME + "= ?",
                 new String[]{String.valueOf(tournamentId)}
         );
         cursor.moveToFirst();
         Tournament res = new Tournament(tournamentId, cursor.getString(0), DatetimeHelper.databaseValueToDate(cursor.getLong(1)));
-        res.distance = cursor.getInt(2);
-        res.isOutdoor = (cursor.getInt(3) == 1);
-        res.totalScore = cursor.getInt(4);
+        res.totalScore = cursor.getInt(2);
+        res.tournamentConstraintId = cursor.getInt(3);
         return res;
     }
 
@@ -198,10 +192,10 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             serieIndex = cursor.getInt(0) + 1;
         }
 
-        if (tournamet.isOutdoor && serieIndex > 12) {
+        if (tournamet.tournamentConstraint.isOutdoor && serieIndex > 12) {
             // already has the max number of series for this outdoor tournament
             return null;
-        } else if (!tournamet.isOutdoor && serieIndex > 20) {
+        } else if (!tournamet.tournamentConstraint.isOutdoor && serieIndex > 20) {
             // already has the max number of series for the indoor tournament
             return null;
         }

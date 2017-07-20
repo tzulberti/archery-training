@@ -19,6 +19,7 @@ import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
@@ -47,12 +48,12 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     }
 
 
-    public Playoff createPlayoff(String name, int distance, ComputerPlayOffConfiguration computerPlayOffConfiguration) {
+    public Playoff createPlayoff(String name, int distance, ComputerPlayOffConfiguration computerPlayOffConfiguration, TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long currentTime = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlayoffConsts.NAME_COLUMN_NAME, name);
-        contentValues.put(PlayoffConsts.DISTANCE_COLUMN_NAME, distance);
+        contentValues.put(PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
         contentValues.put(PlayoffConsts.DATETIME_COLUMN_NAME, currentTime);
         contentValues.put(PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, 0);
         contentValues.put(PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, 0);
@@ -76,7 +77,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             "SELECT " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.NAME_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DATETIME_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DISTANCE_COLUMN_NAME + ", " +
+                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + ", " +
@@ -292,7 +293,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
                                 "%s, %s " +
                                 "FROM %s " +
                                 "WHERE %s = ?",
-                        PlayoffConsts.NAME_COLUMN_NAME, PlayoffConsts.DATETIME_COLUMN_NAME, PlayoffConsts.DISTANCE_COLUMN_NAME,
+                        PlayoffConsts.NAME_COLUMN_NAME, PlayoffConsts.DATETIME_COLUMN_NAME, PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME,
                         PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME,
                         PlayoffConsts.TABLE_NAME,
                         PlayoffConsts.ID_COLUMN_NAME

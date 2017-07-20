@@ -3,7 +3,6 @@ package ar.com.tzulberti.archerytraining.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +10,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration20;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration21;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration23;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration25;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "archery_training.db";
 
-    protected static final int DATABASE_VERSION = 25;
+    protected static final int DATABASE_VERSION = 26;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -36,6 +36,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         TablesCreator tablesCreator = new TablesCreator();
         tablesCreator.createAll(db);
+
+        InsertConstantValues insertConstantValues = new InsertConstantValues();
+        insertConstantValues.insertAllFixtureData(db);
     }
 
     @Override
@@ -58,6 +61,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         existingMigrations.add(new DatabaseMigration20());
         existingMigrations.add(new DatabaseMigration21());
         existingMigrations.add(new DatabaseMigration23());
+        existingMigrations.add(new DatabaseMigration25());
 
         for (IDatbasseMigration databaseMigration : existingMigrations) {
             int migrationVersion = databaseMigration.getCurentVersion();

@@ -9,6 +9,7 @@ import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.SightDistanceValueConsts;
+import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
@@ -26,6 +27,7 @@ import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
 public class TablesCreator {
 
     public void createAll(SQLiteDatabase db) {
+        this.createTournamentConstraintTable(db);
         this.createSeriesTable(db);
         this.createTournamentTable(db);
         this.createTournamentSerieTable(db);
@@ -38,6 +40,21 @@ public class TablesCreator {
         this.createSightValueTable(db);
     }
 
+
+    private void createTournamentConstraintTable(SQLiteDatabase db) {
+        db.execSQL(
+                "CREATE TABLE " + TournamentConstraintConsts.TABLE_NAME + " (" +
+                        TournamentConstraintConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        TournamentConstraintConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        TournamentConstraintConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL, " +
+                        TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL " +
+                        ")"
+        );
+    }
 
     private void createSeriesTable(SQLiteDatabase db) {
         db.execSQL(
@@ -57,11 +74,10 @@ public class TablesCreator {
                         TournamentConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TournamentConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
                         TournamentConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        TournamentConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConsts.TARGET_SIZE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0" +
+                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0," +
+                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        "FOREIGN KEY (" + TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " )," +
                         ");"
         );
     }
@@ -101,10 +117,11 @@ public class TablesCreator {
                 "CREATE TABLE " + PlayoffConsts.TABLE_NAME + " (" +
                         PlayoffConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         PlayoffConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        PlayoffConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
                         PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
-                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0" +
+                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        "FOREIGN KEY (" + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " )," +
                 ")"
         );
     }
@@ -171,5 +188,8 @@ public class TablesCreator {
                         ")"
         );
     }
+
+
+
 }
 
