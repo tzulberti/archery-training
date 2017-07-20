@@ -38,3 +38,7 @@ captures/
 
 # Keystore files
 *.jks
+
+# Testing sqlite3 database
+testing.db
+test.db
