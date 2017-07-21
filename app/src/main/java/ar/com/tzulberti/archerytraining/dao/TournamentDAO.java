@@ -83,7 +83,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
         contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
-        long id = db.insert(TournamentConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(TournamentConsts.TABLE_NAME, null, contentValues);
 
         Tournament res = new Tournament(id, name, DatetimeHelper.databaseValueToDate(databaseTimestamp));
         res.isTournament = isTournament;
@@ -206,7 +206,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, serieIndex);
         contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, 0);
 
-        long id = db.insert(TournamentSerieConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
         TournamentSerie res = new TournamentSerie();
         res.id = id;
         res.arrows = new ArrayList<>();
@@ -265,7 +265,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
         contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.index);
         contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, tournamentSerie.totalScore);
-        tournamentSerie.id = db.insert(TournamentSerieConsts.TABLE_NAME, null, contentValues);
+        tournamentSerie.id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
 
         for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
             ContentValues contentValuesArrow = new ContentValues();
@@ -275,7 +275,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
             contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
             contentValuesArrow.put(TournamentSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-            serieArrowData.id = db.insert(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+            serieArrowData.id = db.insertOrThrow(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
         }
 
         // update the tournament information

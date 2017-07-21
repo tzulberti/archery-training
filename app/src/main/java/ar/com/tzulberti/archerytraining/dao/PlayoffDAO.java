@@ -57,14 +57,14 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         contentValues.put(PlayoffConsts.DATETIME_COLUMN_NAME, currentTime);
         contentValues.put(PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, 0);
         contentValues.put(PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, 0);
-        long playoffId = db.insert(PlayoffConsts.TABLE_NAME, null, contentValues);
+        long playoffId = db.insertOrThrow(PlayoffConsts.TABLE_NAME, null, contentValues);
 
         if (computerPlayOffConfiguration != null) {
             ContentValues computerConfiguration = new ContentValues();
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME, computerPlayOffConfiguration.maxScore);
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME, computerPlayOffConfiguration.minScore);
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME, playoffId);
-            db.insert(ComputerPlayoffConfigurationConsts.TABLE_NAME, null, computerConfiguration);
+            db.insertOrThrow(ComputerPlayoffConfigurationConsts.TABLE_NAME, null, computerConfiguration);
         }
 
         return this.getCompletePlayoffData(playoffId);
@@ -148,7 +148,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, 0);
         contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, 0);
 
-        long id = db.insert(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
         PlayoffSerie res = new PlayoffSerie();
         res.id = id;
         res.arrows = new ArrayList<>();
@@ -221,7 +221,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         contentValues.put(PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME, playoffSerie.index);
         contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, playoffSerie.userTotalScore);
         contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, playoffSerie.opponentTotalScore);
-        playoffSerie.id = db.insert(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+        playoffSerie.id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
 
         for (PlayoffSerieArrow serieArrowData : playoffSerie.arrows) {
             ContentValues contentValuesArrow = new ContentValues();
@@ -231,7 +231,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             contentValuesArrow.put(PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
             contentValuesArrow.put(PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
             contentValuesArrow.put(PlayoffSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-            serieArrowData.id = db.insert(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+            serieArrowData.id = db.insertOrThrow(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
         }
 
         // update the user and opponent total score
