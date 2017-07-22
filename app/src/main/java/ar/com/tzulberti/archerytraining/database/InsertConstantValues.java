@@ -46,7 +46,7 @@ public class InsertConstantValues {
             contentValues.put(TournamentConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME, tournamentConstraint.seriesPerRound);
             contentValues.put(TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME, tournamentConstraint.targetImage);
 
-            db.insert(TournamentConstraintConsts.TABLE_NAME, null, contentValues);
+            db.insertOrThrow(TournamentConstraintConsts.TABLE_NAME, null, contentValues);
         }
     }
 }

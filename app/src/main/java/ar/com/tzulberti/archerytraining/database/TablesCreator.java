@@ -77,7 +77,7 @@ public class TablesCreator {
                         TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0," +
                         TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        "FOREIGN KEY (" + TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " )," +
+                        "FOREIGN KEY (" + TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
                         ");"
         );
     }
@@ -121,7 +121,7 @@ public class TablesCreator {
                         PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        "FOREIGN KEY (" + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " )," +
+                        "FOREIGN KEY (" + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
                 ")"
         );
     }

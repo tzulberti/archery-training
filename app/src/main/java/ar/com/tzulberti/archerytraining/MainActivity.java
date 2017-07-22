@@ -28,6 +28,7 @@ import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 
@@ -76,6 +77,7 @@ public class MainActivity extends AppCompatActivity
         this.playoffDAO = new PlayoffDAO(this.databaseHelper);
         this.bowDAO = new BowDAO(this.databaseHelper);
         this.tournamentConstraintDAO = new TournamentConstraintDAO(this.databaseHelper);
+        AppCache.initialize(this.tournamentConstraintDAO);
     }
 
     @Override

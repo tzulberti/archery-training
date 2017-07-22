@@ -10,7 +10,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration20;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration21;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration23;
-import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration25;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration27;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "archery_training.db";
 
-    protected static final int DATABASE_VERSION = 26;
+    protected static final int DATABASE_VERSION = 28;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -44,9 +44,8 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onOpen(SQLiteDatabase db) {
         super.onOpen(db);
-        if (! db.isReadOnly()) {
-            db.setForeignKeyConstraintsEnabled(true);
-        }
+
+        db.setForeignKeyConstraintsEnabled(true);
     }
 
     @Override
@@ -61,7 +60,13 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         existingMigrations.add(new DatabaseMigration20());
         existingMigrations.add(new DatabaseMigration21());
         existingMigrations.add(new DatabaseMigration23());
-        existingMigrations.add(new DatabaseMigration25());
+        existingMigrations.add(new DatabaseMigration27());
+
+
+        // make sure to disable any FK validation because the table might
+        // create temporary table to drop the old schema table (SQLITE
+        // doesn't allows us to drop a column)
+        db.setForeignKeyConstraintsEnabled(false);
 
         for (IDatbasseMigration databaseMigration : existingMigrations) {
             int migrationVersion = databaseMigration.getCurentVersion();
@@ -74,6 +79,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 }
             }
         }
+
     }
 
 
