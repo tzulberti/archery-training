@@ -16,6 +16,7 @@ import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -47,16 +48,15 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         List<Tournament> res = new ArrayList<>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                String.format(
-                        "SELECT %s, %s, %s, " +
-                            "%s, %s " +
-                        "FROM %s " +
-                        "ORDER BY %s DESC",
-                        TournamentConsts.ID_COLUMN_NAME, TournamentConsts.NAME_COLUMN_NAME, TournamentConsts.DATETIME_COLUMN_NAME,
-                                TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME,
-                        TournamentConsts.TABLE_NAME,
-                        TournamentConsts.DATETIME_COLUMN_NAME
-                ),
+                "SELECT " +
+                        TournamentConsts.ID_COLUMN_NAME + ", " +
+                        TournamentConsts.NAME_COLUMN_NAME + ", " +
+                        TournamentConsts.DATETIME_COLUMN_NAME + ", " +
+                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME  + ", " +
+                        TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + ", " +
+                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
+                "FROM " + TournamentConsts.TABLE_NAME + " " +
+                "ORDER BY " + TournamentConsts.DATETIME_COLUMN_NAME + " DESC",
                 null
         );
 
@@ -68,8 +68,9 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             );
             tournament.totalScore = cursor.getInt(3);
             tournament.isTournament = (cursor.getInt(4) == 1);
+            tournament.tournamentConstraintId = cursor.getInt(5);
+            tournament.tournamentConstraint = AppCache.tournamentConstraintMap.get(tournament.tournamentConstraintId);
             res.add(tournament);
-
         }
         return res;
     }
@@ -108,6 +109,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         Tournament res = new Tournament(tournamentId, cursor.getString(0), DatetimeHelper.databaseValueToDate(cursor.getLong(1)));
         res.totalScore = cursor.getInt(2);
         res.tournamentConstraintId = cursor.getInt(3);
+        res.tournamentConstraint = AppCache.tournamentConstraintMap.get(res.tournamentConstraintId);
         return res;
     }
 

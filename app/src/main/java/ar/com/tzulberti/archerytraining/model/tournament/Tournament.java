@@ -46,4 +46,8 @@ public class Tournament implements ISerieContainer, Serializable {
     public int getSerieMaxPossibleScore() {
         return this.tournamentConstraint.arrowsPerSeries * 10;
     }
+
+    public int getMaxPossibleScore() {
+        return this.tournamentConstraint.arrowsPerSeries * 10 * 2 * this.tournamentConstraint.seriesPerRound;
+    }
 }

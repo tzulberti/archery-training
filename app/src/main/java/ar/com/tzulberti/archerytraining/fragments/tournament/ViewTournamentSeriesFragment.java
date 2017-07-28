@@ -26,7 +26,6 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
@@ -140,7 +139,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         int span = 1;
         if (! this.tournament.series.isEmpty()) {
             // the +2 is because the series index and the total score
-            span = TournamentConfiguration.MAX_ARROW_PER_SERIES + 2;
+            span = this.tournament.tournamentConstraint.arrowsPerSeries + 2;
         }
 
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(

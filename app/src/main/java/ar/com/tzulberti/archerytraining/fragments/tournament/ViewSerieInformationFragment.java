@@ -1,34 +1,7 @@
 package ar.com.tzulberti.archerytraining.fragments.tournament;
 
-import android.app.AlertDialog;
-import android.content.DialogInterface;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.graphics.PorterDuffColorFilter;
-import android.os.Build;
-import android.os.Bundle;
-import android.support.annotation.RequiresApi;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.ViewTreeObserver;
-import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
-
-import org.w3c.dom.Text;
-
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
@@ -37,10 +10,9 @@ import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
-import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
@@ -62,7 +34,9 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
     @Override
     protected void setAdditionalInformation(View view) {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
-        ((TextView) view.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", tournamentSerie.tournament.totalScore, TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
+        TournamentConstraint tournamentConstraint = tournamentSerie.tournament.tournamentConstraint;
+        int maxScore = 10 * tournamentConstraint.seriesPerRound * 2 * tournamentConstraint.arrowsPerSeries;
+        ((TextView) view.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", tournamentSerie.tournament.totalScore, maxScore));
     }
 
     @Override
