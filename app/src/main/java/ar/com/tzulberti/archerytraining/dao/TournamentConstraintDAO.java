@@ -5,16 +5,11 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
+
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
-import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 
 /**
@@ -45,8 +40,8 @@ public class TournamentConstraintDAO {
     }
 
 
-    public Map<Integer, TournamentConstraint> getValues() {
-        Map<Integer, TournamentConstraint> res = new HashMap<>();
+    public List<TournamentConstraint> getValues() {
+        List<TournamentConstraint> res = new ArrayList<>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(
@@ -59,13 +54,13 @@ public class TournamentConstraintDAO {
                     TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME + ", " +
                     TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME + ", " +
                     TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " " +
-                "FROM " +  TournamentConstraintConsts.TABLE_NAME,
+                "FROM " +  TournamentConstraintConsts.TABLE_NAME + " " +
+                "ORDER BY " + TournamentConstraintConsts.ID_COLUMN_NAME,
                 null
         );
 
         while (cursor.moveToNext()) {
-            res.put(
-                cursor.getInt(0),
+            res.add(
                 new TournamentConstraint(
                     cursor.getInt(0),
                     cursor.getString(1),
