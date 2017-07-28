@@ -192,14 +192,6 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             serieIndex = cursor.getInt(0) + 1;
         }
 
-        if (tournamet.tournamentConstraint.isOutdoor && serieIndex > 12) {
-            // already has the max number of series for this outdoor tournament
-            return null;
-        } else if (!tournamet.tournamentConstraint.isOutdoor && serieIndex > 20) {
-            // already has the max number of series for the indoor tournament
-            return null;
-        }
-
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamet.id);

@@ -68,7 +68,11 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
     @Override
     protected void saveSerie() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
-        this.serieDataDAO.addSerieData(tournamentSerie.tournament.distance, tournamentSerie.arrows.size(), SerieInformationConsts.TrainingType.TOURNAMENT);
+        this.serieDataDAO.addSerieData(
+            tournamentSerie.tournament.tournamentConstraint.distance,
+            tournamentSerie.arrows.size(),
+            SerieInformationConsts.TrainingType.TOURNAMENT
+        );
         this.tournamentDAO.saveTournamentSerieInformation(tournamentSerie);
     }
 
@@ -113,11 +117,13 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
 
     @Override
     protected boolean canActivateButtons() {
-        return this.serie.getArrows().size() == TournamentConfiguration.MAX_ARROW_PER_SERIES;
+        Tournament tournament = (Tournament) this.serie.getContainer();
+        return this.serie.getArrows().size() == tournament.tournamentConstraint.arrowsPerSeries;
     }
 
     @Override
     protected boolean hasFinished() {
-        return this.serie.getIndex() == TournamentConfiguration.MAX_SERIES;
+        Tournament tournament = (Tournament) this.serie.getContainer();
+        return this.serie.getIndex() == (tournament.tournamentConstraint.seriesPerRound * 2);
     }
 }

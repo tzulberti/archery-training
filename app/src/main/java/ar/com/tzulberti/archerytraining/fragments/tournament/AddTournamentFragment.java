@@ -7,14 +7,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.apache.commons.lang3.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
@@ -24,13 +31,13 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 public class AddTournamentFragment extends BaseTournamentFragment {
 
+
     private static final int[] REQUIRED_VALUES = {
             R.id.name,
-            R.id.distance,
-            R.id.target_size
     };
 
     private View fragmentView;
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -38,6 +45,15 @@ public class AddTournamentFragment extends BaseTournamentFragment {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.tournament_add_new, container, false);
         this.setObjects();
+
+        Spinner tournamentConstrainsSpinner = (Spinner) view.findViewById(R.id.tournament_constrains);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                this.getContext(),
+                android.R.layout.simple_spinner_item,
+                AppCache.tournamentTypes
+        );
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tournamentConstrainsSpinner.setAdapter(dataAdapter);
 
         return view;
     }
@@ -60,13 +76,15 @@ public class AddTournamentFragment extends BaseTournamentFragment {
             }
         }
 
+        Spinner tournamentTypes = (Spinner) v.findViewById(R.id.tournament_constrains);
+        TournamentConstraint tournamentConstraint = AppCache.tournamentConstraintSpinnerMap.get(tournamentTypes.getSelectedItem());
+
         Tournament tournament = this.tournamentDAO.createTournament(
                 ((EditText) v.findViewById(R.id.name)).getText().toString(),
-                Integer.valueOf(((EditText) v.findViewById(R.id.distance)).getText().toString()),
-                Integer.valueOf(((EditText) v.findViewById(R.id.target_size)).getText().toString()),
-                ((CheckBox) v.findViewById(R.id.is_outdoor)).isChecked(),
-                ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked()
+                ((CheckBox) v.findViewById(R.id.is_tournament)).isChecked(),
+                tournamentConstraint
         );
+
 
         
         View view = this.getActivity().getCurrentFocus();

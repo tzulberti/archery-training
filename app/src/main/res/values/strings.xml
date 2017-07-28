@@ -110,11 +110,10 @@
     <string name="tournament_start">Start</string>
     <string name="tournament_stop">End</string>
 
-    <string name="tournament_distance">Distance</string>
+
     <string name="tournament_default_name">Training</string>
-    <string name="tournament_target_size">Target size</string>
-    <string name="tournament_is_outdoor">Is outdoor?</string>
     <string name="tournament_is_tournament">Is tournament?</string>
+    <string name="tournament_type">Tournament Type</string>
 
 
 

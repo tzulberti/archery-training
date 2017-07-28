@@ -114,11 +114,15 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
         computerPlayOffConfiguration.minScore = bundle.getInt(MIN_SCORE);
 
         // Create the playoff
+        Playoff playoff = null;
+        // TODO XXX PENDING
+        /*
         Playoff playoff = this.playoffDAO.createPlayoff(
                 this.getString(R.string.playoff_computer_name),
                 bundle.getInt(DISTANCE),
                 computerPlayOffConfiguration
                 );
+        */
 
         // Hide the keyboard when starting a new playoff
         View view = this.getActivity().getCurrentFocus();

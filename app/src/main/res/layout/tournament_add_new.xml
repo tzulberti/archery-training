@@ -17,45 +17,22 @@
     </TableRow>
 
 
-    <TableRow android:layout_width="match_parent">
+    <TableRow android:layout_width="match_parent" android:paddingTop="10dp">
 
         <TextView
             android:padding="3dip"
-            android:text="@string/tournament_distance" />
+            android:text="@string/tournament_type" />
 
-        <EditText
-            android:id="@+id/distance"
-            android:gravity="right"
-            android:text="70"
-            android:inputType="number" />
+        <Spinner
+            android:id="@+id/tournament_constrains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            />
+
     </TableRow>
 
-    <TableRow android:layout_width="match_parent">
 
-        <TextView
-            android:padding="3dip"
-            android:text="@string/tournament_target_size" />
-
-        <EditText
-            android:id="@+id/target_size"
-            android:gravity="right"
-            android:text="122"
-            android:inputType="number" />
-    </TableRow>
-
-    <TableRow android:layout_width="match_parent" android:visibility="invisible">
-
-        <TextView
-            android:padding="3dip"
-            android:text="@string/tournament_is_outdoor" />
-
-        <CheckBox
-            android:gravity="right"
-            android:checked="true"
-            android:id="@+id/is_outdoor"/>
-    </TableRow>
-
-    <TableRow android:layout_width="match_parent">
+    <TableRow android:layout_width="match_parent" android:paddingTop="10dp">
 
         <TextView
             android:padding="3dip"
