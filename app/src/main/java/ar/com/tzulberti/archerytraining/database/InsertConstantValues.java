@@ -30,10 +30,10 @@ public class InsertConstantValues {
         constraints.add(new TournamentConstraint(3, "FITA 70x70 - 50m", 50, 6, 6, 1, "complete_archery_target.png", false));
         constraints.add(new TournamentConstraint(4, "FITA 70x70 - 30m", 30, 6, 6, 1, "complete_archery_target.png", false));
         constraints.add(new TournamentConstraint(5, "FITA 70x70 - 20m", 20, 6, 6, 1, "complete_archery_target.png", false));
-        constraints.add(new TournamentConstraint(6, "Indoor - 18m - Triple Spot", 18, 10, 10, 6, "triple_spot_target.png", true));
-        constraints.add(new TournamentConstraint(7, "Indoor - 18m - 40cm", 18, 10, 10, 1, "complete_archery_target.png", true));
-        constraints.add(new TournamentConstraint(8, "Indoor - 18m - 60cm", 18, 10, 10, 1, "complete_archery_target.png", true));
-        constraints.add(new TournamentConstraint(9, "Indoor - 18m - 80cm", 18, 10, 10, 1, "complete_archery_target.png", true));
+        constraints.add(new TournamentConstraint(6, "Indoor - 18m - Triple Spot", 18, 10, 3, 6, "triple_spot_target.png", true));
+        constraints.add(new TournamentConstraint(7, "Indoor - 18m - 40cm", 18, 10, 3, 1, "complete_archery_target.png", true));
+        constraints.add(new TournamentConstraint(8, "Indoor - 18m - 60cm", 18, 10, 3, 1, "complete_archery_target.png", true));
+        constraints.add(new TournamentConstraint(9, "Indoor - 18m - 80cm", 18, 10, 3, 1, "complete_archery_target.png", true));
 
         for (TournamentConstraint tournamentConstraint : constraints) {
             ContentValues contentValues = new ContentValues();
