@@ -122,7 +122,8 @@ public class DatabaseMigration27 implements  IDatbasseMigration {
             );
         }
         // copy all the existing data
-        db.execSQL("INSERT INTO "  + tableName +  "(" + StringUtils.join(columnsToCopy, ", ") + ") SELECT " + StringUtils.join(columnsToCopy, ", ") + " FROM " + tableName + "_old");
+        db.execSQL("INSERT INTO "  + tableName +  "(" + StringUtils.join(columnsToCopy, ", ") + ") " +
+            "SELECT " + StringUtils.join(columnsToCopy, ", ") + " FROM " + tableName + "_old ORDER BY " + PlayoffConsts.ID_COLUMN_NAME);
         db.execSQL("DROP TABLE " + tableName + "_old");
     }
 }

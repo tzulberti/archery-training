@@ -100,13 +100,13 @@ public class TablesCreator {
                 "CREATE TABLE " + TournamentSerieArrowConsts.TABLE_NAME + " (" +
                         TournamentSerieArrowConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
-                        "FOREIGN KEY (" + TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + ") REFERENCES " + TournamentSerieConsts.TABLE_NAME + " ( " +  TournamentSerieConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + ") REFERENCES " + TournamentSerieConsts.TABLE_NAME + " ( " +  TournamentSerieConsts.ID_COLUMN_NAME + " ) " +
                         ");"
         );
     }

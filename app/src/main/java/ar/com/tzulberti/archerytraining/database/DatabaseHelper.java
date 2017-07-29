@@ -11,6 +11,7 @@ import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration20;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration21;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration23;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration27;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration29;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration4;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration5;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration6;
@@ -26,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "archery_training.db";
 
-    protected static final int DATABASE_VERSION = 28;
+    protected static final int DATABASE_VERSION = 30;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -61,7 +62,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         existingMigrations.add(new DatabaseMigration21());
         existingMigrations.add(new DatabaseMigration23());
         existingMigrations.add(new DatabaseMigration27());
-
+        existingMigrations.add(new DatabaseMigration29());
 
         // make sure to disable any FK validation because the table might
         // create temporary table to drop the old schema table (SQLITE
@@ -84,3 +85,4 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
 
 }
+
