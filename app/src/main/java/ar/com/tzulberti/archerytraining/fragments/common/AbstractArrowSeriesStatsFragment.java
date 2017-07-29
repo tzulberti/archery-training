@@ -2,9 +2,13 @@ package ar.com.tzulberti.archerytraining.fragments.common;
 
 import android.content.Context;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -26,10 +30,12 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BaseArrowSeriesDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.playoff.BasePlayoffFragment;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.IElementByScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 
 
 /**
@@ -38,9 +44,12 @@ import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
  * Created by tzulberti on 6/25/17.
  */
 
-public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFragment {
+public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFragment implements AdapterView.OnItemSelectedListener {
 
     protected BaseArrowSeriesDAO baseArrowSeriesDAO;
+    protected HorizontalBarChart seriesStatsHorizontalBarChart;
+    protected HorizontalBarChart arrowsStatsHorizontalBarChart;
+    protected TableLayout tableStats;
 
     /**
      * Sets the DAO used to get the information from the database
@@ -54,20 +63,48 @@ public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFrag
         this.setBaseArrowSeriesDAO();
         View view = inflater.inflate(R.layout.common_view_stats, container, false);
 
-        List<SeriesPerScore> seriesPerScoreList = this.baseArrowSeriesDAO.getSeriesPerScore();
-        this.showSeriesPerScore(seriesPerScoreList, (HorizontalBarChart) view.findViewById(R.id.playoff_stats_series_stats));
+        Spinner tournamentConstrainsSpinner = (Spinner) view.findViewById(R.id.tournament_constrains);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                this.getContext(),
+                android.R.layout.simple_spinner_item,
+                AppCache.tournamentTypes
+        );
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        tournamentConstrainsSpinner.setAdapter(dataAdapter);
+        tournamentConstrainsSpinner.setOnItemSelectedListener(this);
 
-        List<ArrowsPerScore> arrowsPerScores = this.baseArrowSeriesDAO.getArrowsPerScore();
-        this.showArrowsPerScore(arrowsPerScores, (HorizontalBarChart) view.findViewById(R.id.playoff_stats_arrow_stats));
+        this.tableStats = (TableLayout) view.findViewById(R.id.playoff_stats_table_data);
+        this.arrowsStatsHorizontalBarChart = (HorizontalBarChart) view.findViewById(R.id.playoff_stats_arrow_stats);
+        this.seriesStatsHorizontalBarChart = (HorizontalBarChart) view.findViewById(R.id.playoff_stats_series_stats);
 
 
-        this.showTableStats(arrowsPerScores, seriesPerScoreList, (TableLayout) view.findViewById(R.id.playoff_stats_table_data));
         return view;
+    }
+
+    public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+        // An item was selected. You can retrieve the selected item using
+        // parent.getItemAtPosition(pos)
+        TournamentConstraint tournamentConstraint = AppCache.tournamentConstraintSpinnerMap.get(AppCache.tournamentTypes.get(pos));
+        this.showCharts(tournamentConstraint);
+    }
+
+    public void onNothingSelected(AdapterView<?> parent) {
+    }
+
+    private void showCharts(TournamentConstraint tournamentConstraint) {
+        List<SeriesPerScore> seriesPerScoreList = this.baseArrowSeriesDAO.getSeriesPerScore(tournamentConstraint);
+        this.showSeriesPerScore(seriesPerScoreList, this.seriesStatsHorizontalBarChart);
+
+        List<ArrowsPerScore> arrowsPerScores = this.baseArrowSeriesDAO.getArrowsPerScore(tournamentConstraint);
+        this.showArrowsPerScore(arrowsPerScores, this.arrowsStatsHorizontalBarChart);
+
+        this.showTableStats(arrowsPerScores, seriesPerScoreList, this.tableStats );
     }
 
 
     private void showSeriesPerScore(List<SeriesPerScore> seriesPerScores, HorizontalBarChart horizontalBarChart) {
         if (seriesPerScores == null || seriesPerScores.isEmpty()) {
+            horizontalBarChart.clear();
             return;
         }
 
@@ -125,6 +162,10 @@ public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFrag
 
 
     private void showArrowsPerScore(List<ArrowsPerScore> arrowsPerScores, HorizontalBarChart horizontalBarChart) {
+        if (arrowsPerScores == null || arrowsPerScores.isEmpty()) {
+            horizontalBarChart.clear();
+            return;
+        }
         List<BarEntry> arrowsCounterSet = new ArrayList<>();
         List<String> xAxis = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
@@ -174,10 +215,18 @@ public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFrag
 
 
     private void showTableStats(List<ArrowsPerScore> arrowsPerScores, List<SeriesPerScore> seriesPerScores, TableLayout tableLayout) {
+        // remove all the rows all the previous data if there is any
+        int count = tableLayout.getChildCount();
+        for (int i = 1; i < count; i++) {
+            View child = tableLayout.getChildAt(i);
+            if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
+        }
+
         if (arrowsPerScores == null || arrowsPerScores.isEmpty() || seriesPerScores == null || seriesPerScores.isEmpty()) {
             return;
         }
         Context context = this.getContext();
+
         TableRow arrowsStats = new TableRow(context);
         TextView arrowsStatsLabel = new TextView(context);
         arrowsStatsLabel.setText(R.string.stats_arrow_table_data);

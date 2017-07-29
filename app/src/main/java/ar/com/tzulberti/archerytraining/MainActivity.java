@@ -18,6 +18,7 @@ import android.view.View;
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
+import ar.com.tzulberti.archerytraining.dao.TournamentConstraintDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.MainFragment;
@@ -27,6 +28,7 @@ import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
 import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 
@@ -38,6 +40,7 @@ public class MainActivity extends AppCompatActivity
     private TournamentDAO tournamentDAO;
     private PlayoffDAO playoffDAO;
     private BowDAO bowDAO;
+    private TournamentConstraintDAO tournamentConstraintDAO;
     private BaseClickableFragment currentFragment;
 
     @Override
@@ -73,6 +76,8 @@ public class MainActivity extends AppCompatActivity
         this.tournamentDAO = new TournamentDAO(this.databaseHelper);
         this.playoffDAO = new PlayoffDAO(this.databaseHelper);
         this.bowDAO = new BowDAO(this.databaseHelper);
+        this.tournamentConstraintDAO = new TournamentConstraintDAO(this.databaseHelper);
+        AppCache.initialize(this.tournamentConstraintDAO);
     }
 
     @Override

@@ -42,7 +42,7 @@ public class SerieDataDAO {
         contentValues.put(SerieInformationConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME, trainingType.getValue());
 
-        long id = db.insert(SerieInformationConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(SerieInformationConsts.TABLE_NAME, null, contentValues);
         if (id == -1) {
             // TODO check what to do in this case
         }

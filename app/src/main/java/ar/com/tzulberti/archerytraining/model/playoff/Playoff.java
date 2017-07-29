@@ -6,6 +6,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 
 /**
  * Created by tzulberti on 6/3/17.
@@ -15,10 +16,11 @@ public class Playoff implements ISerieContainer, Serializable{
 
     public long id;
     public Date datetime;
-    public int distance;
     public String name;
     public int userPlayoffScore;
     public int opponentPlayoffScore;
+    public int tournamentConstraintId;
+    public TournamentConstraint tournamentConstraint;
 
     public ComputerPlayOffConfiguration computerPlayOffConfiguration;
     public List<PlayoffSerie> series;

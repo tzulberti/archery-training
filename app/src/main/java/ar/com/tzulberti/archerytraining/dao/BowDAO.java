@@ -77,7 +77,7 @@ public class BowDAO {
 
         ContentValues contentValues = new ContentValues();
         contentValues.put(BowConsts.NAME_COLUMN_NAME, name);
-        long bowId = db.insert(BowConsts.TABLE_NAME, null, contentValues);
+        long bowId = db.insertOrThrow(BowConsts.TABLE_NAME, null, contentValues);
 
         Bow res = new Bow();
         res.name = name;
@@ -89,7 +89,7 @@ public class BowDAO {
             contentValuesSightDistance.put(SightDistanceValueConsts.BOW_ID_COLUMN_NAME, res.id);
             contentValuesSightDistance.put(SightDistanceValueConsts.DISTANCE_COLUMN_NAME, sightDistanceValue.distance);
             contentValuesSightDistance.put(SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME, sightDistanceValue.sightValue);
-            long sightId = db.insert(SightDistanceValueConsts.TABLE_NAME, null, contentValuesSightDistance);
+            long sightId = db.insertOrThrow(SightDistanceValueConsts.TABLE_NAME, null, contentValuesSightDistance);
             sightDistanceValue.id = sightId;
         }
 

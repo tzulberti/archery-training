@@ -7,6 +7,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -17,13 +18,12 @@ public class Tournament implements ISerieContainer, Serializable {
     public long id;
     public String name;
     public Date datetime;
-    public int distance;
-    public int targetSize;
-    public boolean isOutdoor;
     public boolean isTournament;
     public int totalScore;
+    public int tournamentConstraintId;
 
     public List<TournamentSerie> series;
+    public TournamentConstraint tournamentConstraint;
 
     public Tournament(long id, String name, Date datetime) {
         this.id = id;
@@ -31,6 +31,8 @@ public class Tournament implements ISerieContainer, Serializable {
         this.datetime = datetime;
         this.series = new ArrayList<>();
     }
+
+
 
     @Override
     public List<? extends ISerie> getSeries() {
@@ -42,10 +44,10 @@ public class Tournament implements ISerieContainer, Serializable {
 
     @Override
     public int getSerieMaxPossibleScore() {
-        if (this.isOutdoor) {
-            return 60;
-        } else {
-            return 30;
-        }
+        return this.tournamentConstraint.arrowsPerSeries * 10;
+    }
+
+    public int getMaxPossibleScore() {
+        return this.tournamentConstraint.arrowsPerSeries * 10 * 2 * this.tournamentConstraint.seriesPerRound;
     }
 }

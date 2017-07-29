@@ -2,14 +2,11 @@ package ar.com.tzulberti.archerytraining.fragments.tournament;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -27,12 +24,8 @@ import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.ViewPlayoffSeriesFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.ViewPlayoffStatsFragment;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 
 /**
  * Created by tzulberti on 5/17/17.
@@ -91,7 +84,7 @@ public class ViewExistingTournamentsFragments extends AbstractTableDataFragment 
         nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
 
-        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + String.valueOf(TournamentConfiguration.MAX_SCORE_FOR_TOURNAMENT));
+        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + tournament.getMaxPossibleScore());
         totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(tournament.datetime));

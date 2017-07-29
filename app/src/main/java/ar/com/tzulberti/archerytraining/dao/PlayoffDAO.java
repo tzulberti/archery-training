@@ -11,14 +11,17 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
 import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 
+import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
@@ -46,24 +49,27 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         return new PlayoffSerieConsts();
     }
 
+    @Override
+    protected BaseSerieContainerConsts getContainerTable() {return new PlayoffConsts();}
 
-    public Playoff createPlayoff(String name, int distance, ComputerPlayOffConfiguration computerPlayOffConfiguration) {
+
+    public Playoff createPlayoff(String name, ComputerPlayOffConfiguration computerPlayOffConfiguration, TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long currentTime = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
         contentValues.put(PlayoffConsts.NAME_COLUMN_NAME, name);
-        contentValues.put(PlayoffConsts.DISTANCE_COLUMN_NAME, distance);
+        contentValues.put(PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
         contentValues.put(PlayoffConsts.DATETIME_COLUMN_NAME, currentTime);
         contentValues.put(PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, 0);
         contentValues.put(PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, 0);
-        long playoffId = db.insert(PlayoffConsts.TABLE_NAME, null, contentValues);
+        long playoffId = db.insertOrThrow(PlayoffConsts.TABLE_NAME, null, contentValues);
 
         if (computerPlayOffConfiguration != null) {
             ContentValues computerConfiguration = new ContentValues();
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME, computerPlayOffConfiguration.maxScore);
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME, computerPlayOffConfiguration.minScore);
             computerConfiguration.put(ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME, playoffId);
-            db.insert(ComputerPlayoffConfigurationConsts.TABLE_NAME, null, computerConfiguration);
+            db.insertOrThrow(ComputerPlayoffConfigurationConsts.TABLE_NAME, null, computerConfiguration);
         }
 
         return this.getCompletePlayoffData(playoffId);
@@ -76,7 +82,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             "SELECT " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.NAME_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DATETIME_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DISTANCE_COLUMN_NAME + ", " +
+                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
                 PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + ", " +
@@ -94,7 +100,8 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             res.add(playoff);
             playoff.name = playoffCursor.getString(0);
             playoff.datetime = DatetimeHelper.databaseValueToDate(playoffCursor.getLong(1));
-            playoff.distance = playoffCursor.getInt(2);
+            playoff.tournamentConstraintId = playoffCursor.getInt(2);
+            playoff.tournamentConstraint = AppCache.tournamentConstraintMap.get(playoff.tournamentConstraintId);
             playoff.userPlayoffScore = playoffCursor.getInt(3);
             playoff.opponentPlayoffScore = playoffCursor.getInt(4);
             playoff.id = playoffCursor.getInt(5);
@@ -147,7 +154,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, 0);
         contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, 0);
 
-        long id = db.insert(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
         PlayoffSerie res = new PlayoffSerie();
         res.id = id;
         res.arrows = new ArrayList<>();
@@ -220,7 +227,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         contentValues.put(PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME, playoffSerie.index);
         contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, playoffSerie.userTotalScore);
         contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, playoffSerie.opponentTotalScore);
-        playoffSerie.id = db.insert(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+        playoffSerie.id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
 
         for (PlayoffSerieArrow serieArrowData : playoffSerie.arrows) {
             ContentValues contentValuesArrow = new ContentValues();
@@ -230,7 +237,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             contentValuesArrow.put(PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
             contentValuesArrow.put(PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
             contentValuesArrow.put(PlayoffSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-            serieArrowData.id = db.insert(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+            serieArrowData.id = db.insertOrThrow(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
         }
 
         // update the user and opponent total score
@@ -287,16 +294,16 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     public Playoff getCompletePlayoffData(long playoffId) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor playoffCursor = db.rawQuery(
-                String.format(
-                        "SELECT %s, %s, %s, " +
-                                "%s, %s " +
-                                "FROM %s " +
-                                "WHERE %s = ?",
-                        PlayoffConsts.NAME_COLUMN_NAME, PlayoffConsts.DATETIME_COLUMN_NAME, PlayoffConsts.DISTANCE_COLUMN_NAME,
-                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME,
-                        PlayoffConsts.TABLE_NAME,
-                        PlayoffConsts.ID_COLUMN_NAME
-                ),
+                "SELECT " +
+                        PlayoffConsts.NAME_COLUMN_NAME + ", " +
+                        PlayoffConsts.DATETIME_COLUMN_NAME + ", " +
+                        PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
+                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
+                        PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " " +
+                "FROM " +
+                    PlayoffConsts.TABLE_NAME + " " +
+                "WHERE "  +
+                    PlayoffConsts.ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(playoffId)}
         );
         playoffCursor.moveToFirst();
@@ -304,7 +311,8 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         playoff.id = playoffId;
         playoff.name = playoffCursor.getString(0);
         playoff.datetime = DatetimeHelper.databaseValueToDate(playoffCursor.getLong(1));
-        playoff.distance = playoffCursor.getInt(2);
+        playoff.tournamentConstraintId = playoffCursor.getInt(2);
+        playoff.tournamentConstraint = AppCache.tournamentConstraintMap.get(playoff.tournamentConstraintId);
         playoff.userPlayoffScore = playoffCursor.getInt(3);
         playoff.opponentPlayoffScore = playoffCursor.getInt(4);
 

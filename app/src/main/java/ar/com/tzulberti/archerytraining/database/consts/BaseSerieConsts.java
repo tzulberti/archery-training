@@ -12,4 +12,11 @@ public abstract class BaseSerieConsts {
     public abstract String getScoreColumnName();
 
     public abstract String getTableName();
+
+    /**
+     * All the series belongs to a container (tournament, etc...) so this
+     * returns the column that references that table
+     * @return
+     */
+    public abstract String getContainerIdColumnName();
 }

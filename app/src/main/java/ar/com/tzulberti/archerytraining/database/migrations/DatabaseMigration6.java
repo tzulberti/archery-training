@@ -38,7 +38,7 @@ public class DatabaseMigration6 implements IDatbasseMigration {
                 "CREATE TABLE " + PlayoffConsts.TABLE_NAME + " (" +
                         PlayoffConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         PlayoffConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        PlayoffConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        "distance INTEGER NOT NULL, " +
                         PlayoffConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
                         PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0" +

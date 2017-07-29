@@ -7,14 +7,13 @@
 
     <TableRow>
         <TextView
-            android:text="@string/playoff_distance"
-            android:padding="3dip" />
+            android:padding="3dip"
+            android:text="@string/tournament_type" />
 
-        <EditText
-            android:id="@+id/distance"
-            android:gravity="right"
-            android:inputType="number"
-            android:text="70"
+        <Spinner
+            android:id="@+id/tournament_constrains"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
     </TableRow>
 

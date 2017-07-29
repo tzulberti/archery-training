@@ -15,4 +15,7 @@ public class PlayoffSerieArrowConsts  extends  BaseSerieArrowConsts {
     public String getTableName() {
         return TABLE_NAME;
     }
+
+    @Override
+    public String getSerieColumnName() {return SERIE_ID_COLUMN_NAME;}
 }

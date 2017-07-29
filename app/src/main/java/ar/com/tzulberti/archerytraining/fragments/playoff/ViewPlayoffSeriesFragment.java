@@ -31,7 +31,6 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
 
 /**
  * Show the detail of one playoff
@@ -157,7 +156,7 @@ public class ViewPlayoffSeriesFragment extends BasePlayoffFragment {
         int span = 1;
         if (! this.playoff.series.isEmpty()) {
             // the +2 is because the series index and the total score
-            span = TournamentConfiguration.MAX_ARROW_PER_SERIES + 2;
+            span = this.playoff.tournamentConstraint.arrowsPerSeries + 2;
         }
 
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(

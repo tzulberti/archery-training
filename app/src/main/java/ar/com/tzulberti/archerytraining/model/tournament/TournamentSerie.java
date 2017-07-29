@@ -26,9 +26,7 @@ public class TournamentSerie implements ISerie, Serializable {
 
 
     public boolean isCompleted() {
-        if (this.tournament.isOutdoor && this.arrows.size() == 6) {
-            return true;
-        } else if (this.arrows.size() == 3) {
+        if (this.tournament.tournamentConstraint.arrowsPerSeries == this.arrows.size()) {
             return true;
         } else {
             return false;

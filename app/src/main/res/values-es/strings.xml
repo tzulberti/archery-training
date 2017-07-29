@@ -110,11 +110,9 @@
     <string name="tournament_start">Empezar</string>
     <string name="tournament_stop">Terminar</string>
 
-    <string name="tournament_distance">Distancia</string>
     <string name="tournament_default_name">Entrenamiento</string>
-    <string name="tournament_target_size">Tamaño del blanco</string>
-    <string name="tournament_is_outdoor">¿Es outdoor?</string>
     <string name="tournament_is_tournament">¿Es torneo?</string>
+    <string name="tournament_type">Tipo de torneo</string>
 
 
 

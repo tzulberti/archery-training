@@ -11,7 +11,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -27,14 +26,9 @@ import java.util.Comparator;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewSerieInformationFragment;
-import ar.com.tzulberti.archerytraining.fragments.tournament.ViewTournamentSeriesFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentConfiguration;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
  * Created by tzulberti on 6/3/17.
