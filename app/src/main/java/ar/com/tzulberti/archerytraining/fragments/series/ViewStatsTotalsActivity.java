@@ -28,6 +28,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.TimeAxisValueFormatter;
 import ar.com.tzulberti.archerytraining.model.series.ArrowsPerDayData;
@@ -38,7 +39,7 @@ import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
  * Created by tzulberti on 6/13/17.
  */
 
-public class ViewStatsTotalsFragment extends BaseSeriesFragment {
+public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
 
     public static final String PERIOD_TO_GROUP_BY_KEY = "period";
     public static final String MIN_DATE_KEY = "min_date";
@@ -46,16 +47,15 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.series_period_data);
 
-        View view = inflater.inflate(R.layout.series_period_data, container, false);
-        this.setObjects();
 
-        Bundle arguments = this.getArguments();
-        long minDate = arguments.getLong(MIN_DATE_KEY);
-        long maxDate = arguments.getLong(MAX_DATE_KEY);
-        SerieDataDAO.GroupByType periodType = (SerieDataDAO.GroupByType) arguments.getSerializable(PERIOD_TO_GROUP_BY_KEY);
+        long minDate = this.getIntent().getLongExtra(MIN_DATE_KEY, 0);
+        long maxDate = this.getIntent().getLongExtra(MAX_DATE_KEY, 0);
+        SerieDataDAO.GroupByType periodType = (SerieDataDAO.GroupByType) this.getIntent().getSerializableExtra(PERIOD_TO_GROUP_BY_KEY);
 
         List<DistanceTotalData> distanceTotalDatas = this.serieDataDAO.getTotalsForDistance(
                 minDate,
@@ -75,11 +75,11 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
 
 
 
-        HorizontalBarChart horizontalBarChart = (HorizontalBarChart) view.findViewById(R.id.series_distance_arrows);
-        HorizontalBarChart seriesPerTrainingTypeChart = (HorizontalBarChart) view.findViewById(R.id.series_per_training_type);
-        LineChart lineChart = (LineChart) view.findViewById(R.id.series_daily_arrows);
+        HorizontalBarChart horizontalBarChart = (HorizontalBarChart) this.findViewById(R.id.series_distance_arrows);
+        HorizontalBarChart seriesPerTrainingTypeChart = (HorizontalBarChart) this.findViewById(R.id.series_per_training_type);
+        LineChart lineChart = (LineChart) this.findViewById(R.id.series_daily_arrows);
 
-        TextView dailyChartDescription = (TextView) view.findViewById(R.id.series_daily_arrow_text);
+        TextView dailyChartDescription = (TextView) this.findViewById(R.id.series_daily_arrow_text);
         switch (periodType) {
             case DAILY:
                 dailyChartDescription.setText(this.getString(R.string.series_line_day_chart_description));
@@ -94,7 +94,6 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
         this.showArrowsPerDistance(distanceTotalDatas, horizontalBarChart);
         this.showArrowsPerDay(arrowsPerDayDatas, lineChart, periodType);
         this.showArrowsPerTrainingType(arrowsPerTrainingTypes, seriesPerTrainingTypeChart);
-        return view;
     }
 
     private void showArrowsPerDistance(List<DistanceTotalData> distanceTotalDatas, HorizontalBarChart horizontalBarChart) {
@@ -301,11 +300,6 @@ public class ViewStatsTotalsFragment extends BaseSeriesFragment {
         lineChart.setTouchEnabled(false);
         lineChart.getDescription().setEnabled(false);
         lineChart.invalidate();
-    }
-
-    @Override
-    public void handleClick(View v) {
-
     }
 
 }

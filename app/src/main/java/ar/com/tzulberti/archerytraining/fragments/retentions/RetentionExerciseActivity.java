@@ -1,10 +1,12 @@
 package ar.com.tzulberti.archerytraining.fragments.retentions;
 
+import android.content.Intent;
 import android.content.res.Resources;
-import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.speech.tts.TextToSpeech;
+import android.support.v4.view.GravityCompat;
+import android.support.v4.widget.DrawerLayout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,12 +15,13 @@ import android.widget.TextView;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 
 /**
  * Created by tzulberti on 4/24/17.
  */
 
-public class RetentionExercise extends BaseClickableFragment {
+public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
 
     private final static int MIN_WARNING_START = 1;
 
@@ -45,27 +48,27 @@ public class RetentionExercise extends BaseClickableFragment {
 
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        View view = inflater.inflate(R.layout.retention_exercise, container, false);
-        MainActivity activity = (MainActivity) getActivity();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.retention_exercise);
 
         this.canGoBack = false;
 
-        Bundle arguments = this.getArguments();
-        this.seriesAmount = arguments.getInt(ConfigureRetention.SERIES_AMOUNT);
-        this.seriesSleepTime = arguments.getInt(ConfigureRetention.SERIES_SLEEP_TIME);
-        this.repetitionsAmount = arguments.getInt(ConfigureRetention.REPETITIONS_AMOUNT);
-        this.repetitionsDuration = arguments.getInt(ConfigureRetention.REPETITIONS_DURATION);
-        this.startIn = arguments.getInt(ConfigureRetention.START_IN);
+        Intent arguments = this.getIntent();
+        this.seriesAmount = arguments.getIntExtra(ConfigureRetentionActivity.SERIES_AMOUNT, 0);
+        this.seriesSleepTime = arguments.getIntExtra(ConfigureRetentionActivity.SERIES_SLEEP_TIME, 0);
+        this.repetitionsAmount = arguments.getIntExtra(ConfigureRetentionActivity.REPETITIONS_AMOUNT, 0);
+        this.repetitionsDuration = arguments.getIntExtra(ConfigureRetentionActivity.REPETITIONS_DURATION, 0);
+        this.startIn = arguments.getIntExtra(ConfigureRetentionActivity.START_IN, 0);
 
-        this.timeLeftText = (TextView) view.findViewById(R.id.textTimeLeft);
-        this.statusText = (TextView) view.findViewById(R.id.textStatus);
-        this.textSerieInfo = (TextView) view.findViewById(R.id.textSerieInfo);
-        this.textRepetionsInfo = (TextView) view.findViewById(R.id.textRepetionsInfo);
+        this.timeLeftText = (TextView) this.findViewById(R.id.textTimeLeft);
+        this.statusText = (TextView) this.findViewById(R.id.textStatus);
+        this.textSerieInfo = (TextView) this.findViewById(R.id.textSerieInfo);
+        this.textRepetionsInfo = (TextView) this.findViewById(R.id.textRepetionsInfo);
 
         this.shouldStop = false;
-        this.textToSpeech = new TextToSpeech(activity.getApplicationContext(), new TextToSpeech.OnInitListener() {
+        this.textToSpeech = new TextToSpeech(this.getApplicationContext(), new TextToSpeech.OnInitListener() {
             @Override
             public void onInit(int status) {
                 if (status != TextToSpeech.SUCCESS) {
@@ -74,8 +77,6 @@ public class RetentionExercise extends BaseClickableFragment {
                 start();
             }
         });
-
-        return view;
     }
 
 
@@ -244,19 +245,26 @@ public class RetentionExercise extends BaseClickableFragment {
         }
     }
 
-    @Override
-    public void handleClick(View v) {
+
+    public void stop(View v) {
         this.stop();
     }
 
     @Override
+    public void onBackPressed() {
+        if (this.canGoBack()) {
+            super.onBackPressed();
+        }
+    }
+
+
     public boolean canGoBack() {
         if (! this.canGoBack) {
             // the first time, stop all the things, and then recall this method
             // so the user can go back
             this.stop();
             this.canGoBack = true;
-            this.getActivity().onBackPressed();
+            this.onBackPressed();
         }
         return true;
 

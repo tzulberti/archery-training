@@ -23,7 +23,7 @@ import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -67,8 +67,8 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
                     }
 
                     Bundle bundle = new Bundle();
-                    bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
-                    ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+                    bundle.putSerializable(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
+                    ViewSerieInformationActivity viewSerieInformationFragment = new ViewSerieInformationActivity();
                     viewSerieInformationFragment.setArguments(bundle);
 
                     FragmentManager fragmentManager = activity.getSupportFragmentManager();
@@ -93,8 +93,8 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
             TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
-            ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+            bundle.putSerializable(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
+            ViewSerieInformationActivity viewSerieInformationFragment = new ViewSerieInformationActivity();
             viewSerieInformationFragment.setArguments(bundle);
 
             FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
@@ -208,7 +208,7 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2 || id == Integer.MAX_VALUE -3 ) {
             // selected the option to view all impacts for the current tournament
             Bundle bundle = new Bundle();
-            bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, this.tournament);
+            bundle.putSerializable(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.tournament);
 
             BaseTournamentFragment fragment = null;
             if (id == Integer.MAX_VALUE - 1) {
@@ -250,8 +250,8 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
         } else {
             TournamentSerie tournamentSerie = this.tournament.series.get(v.getId() - 1);
             Bundle bundle = new Bundle();
-            bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
-            ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+            bundle.putSerializable(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
+            ViewSerieInformationActivity viewSerieInformationFragment = new ViewSerieInformationActivity();
             viewSerieInformationFragment.setArguments(bundle);
             FragmentManager fragmentManager = activity.getSupportFragmentManager();
             FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()

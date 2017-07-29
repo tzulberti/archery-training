@@ -2,6 +2,7 @@ package ar.com.tzulberti.archerytraining.fragments.common;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -10,11 +11,9 @@ import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
+import android.support.v7.app.AppCompatActivity;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -23,9 +22,7 @@ import android.widget.TextView;
 import java.util.Collections;
 import java.util.Comparator;
 
-import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
@@ -34,7 +31,7 @@ import ar.com.tzulberti.archerytraining.model.base.ISerie;
  * Created by tzulberti on 6/3/17.
  */
 
-public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment implements View.OnTouchListener, View.OnLongClickListener {
+public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingActivity implements View.OnTouchListener, View.OnLongClickListener {
 
     public static final String SERIE_ARGUMENT_KEY = "serie";
     public static final String CONTAINER_ARGUMENT_KEY = "container";
@@ -75,7 +72,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
      * Shows additional information on the view (for example, the tournament score, or the playoff
      * score)
      */
-    protected abstract void setAdditionalInformation(View view);
+    protected abstract void setAdditionalInformation();
 
     /**
      * Saves the serie information using the different datos
@@ -101,19 +98,15 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
      */
     protected abstract void addArrowData(float x, float y, int score, boolean isX);
 
-    /**
-     * Set the daos that the instance is going to use
-     */
-    protected abstract void setDAOs();
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        this.serie = (ISerie) getArguments().getSerializable(SERIE_ARGUMENT_KEY);
-        View view = inflater.inflate(this.getLayoutResource(), container, false);
-        this.setDAOs();
-        this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(this.getLayoutResource());
+        this.serie = (ISerie)this.getIntent().getSerializableExtra(SERIE_ARGUMENT_KEY);
+
+        this.createDAOs();
+        this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
 
@@ -126,16 +119,16 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         this.finalImpactPaint.setColor(Color.LTGRAY);
 
         this.currentScoreText = new TextView[6];
-        this.currentScoreText[0] = (TextView) view.findViewById(R.id.current_score1);
-        this.currentScoreText[1] = (TextView) view.findViewById(R.id.current_score2);
-        this.currentScoreText[2] = (TextView) view.findViewById(R.id.current_score3);
-        this.currentScoreText[3] = (TextView) view.findViewById(R.id.current_score4);
-        this.currentScoreText[4] = (TextView) view.findViewById(R.id.current_score5);
-        this.currentScoreText[5] = (TextView) view.findViewById(R.id.current_score6);
+        this.currentScoreText[0] = (TextView) this.findViewById(R.id.current_score1);
+        this.currentScoreText[1] = (TextView) this.findViewById(R.id.current_score2);
+        this.currentScoreText[2] = (TextView) this.findViewById(R.id.current_score3);
+        this.currentScoreText[3] = (TextView) this.findViewById(R.id.current_score4);
+        this.currentScoreText[4] = (TextView) this.findViewById(R.id.current_score5);
+        this.currentScoreText[5] = (TextView) this.findViewById(R.id.current_score6);
 
-        this.nextSerieButton = (Button) view.findViewById(R.id.btn_serie_next);
-        this.previousSerieButton = (Button) view.findViewById(R.id.btn_serie_previous);
-        this.arrowUndoButton = (Button) view.findViewById(R.id.btn_arrow_undo);
+        this.nextSerieButton = (Button) this.findViewById(R.id.btn_serie_next);
+        this.previousSerieButton = (Button) this.findViewById(R.id.btn_serie_previous);
+        this.arrowUndoButton = (Button) this.findViewById(R.id.btn_arrow_undo);
         this.nextSerieButton.setEnabled(false);
         this.previousSerieButton.setEnabled(false);
 
@@ -150,12 +143,10 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
             }
         });
 
-        ((TextView) view.findViewById(R.id.serie_index)).setText(getString(R.string.tournament_serie_current_serie, this.serie.getIndex()));
-        this.setAdditionalInformation(view);
+        ((TextView) this.findViewById(R.id.serie_index)).setText(getString(R.string.tournament_serie_current_serie, this.serie.getIndex()));
+        this.setAdditionalInformation();
 
-        this.totalSerieScoreText = (TextView) view.findViewById(R.id.total_serie_score);
-
-        return view;
+        this.totalSerieScoreText = (TextView) this.findViewById(R.id.total_serie_score);
     }
 
     protected void initializeValues() {
@@ -305,61 +296,17 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
     }
 
 
-    @Override
-    public void handleClick(View v) {
-        final MainActivity activity = (MainActivity) this.getActivity();
-        if (v.getId() == R.id.btn_arrow_undo) {
-            this.undoLastArrow();
+    public void goToPreviousSerie(View v) {
+        // -2 is required because the first index is 1.
+        ISerie transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex() - 2);
 
-        } else if (v.getId() == R.id.btn_serie_previous || v.getId() == R.id.btn_serie_next) {
-            ISerie transitionSerie = null;
-            if (v.getId() == R.id.btn_serie_previous) {
-                // -2 is required because the first index is 1.
-                transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex() - 2);
-            } else {
-                if (this.hasFinished()) {
-
-                    // return to the tournament view because all the series for the tournament have been loaded
-                    Bundle bundle = new Bundle();
-                    bundle.putSerializable(CONTAINER_ARGUMENT_KEY, this.serie.getContainer());
-
-                    BaseClickableFragment containerDetailsFragment = this.getContainerDetailsFragment();
-                    containerDetailsFragment.setArguments(bundle);
-
-                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                    fragmentManager.beginTransaction()
-                            .replace(R.id.container, containerDetailsFragment)
-                            .commit();
-                    return;
-
-                } else if (this.serie.getContainer().getSeries().size() > this.serie.getIndex()) {
-                    // same here... there isn't any need to add +1 because the serie already starts at 1
-                    transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex());
-
-                } else {
-                    // creating a new serie for the tournament
-                    transitionSerie = this.createNewSerie();
-                }
-            }
-
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(SERIE_ARGUMENT_KEY, transitionSerie);
-
-
-            AbstractSerieArrowsFragment serieDetailsFragment = this.getSerieDetailsFragment();
-            serieDetailsFragment.setArguments(bundle);
-
-            FragmentManager fragmentManager = activity.getSupportFragmentManager();
-            fragmentManager.beginTransaction()
-                    .replace(R.id.container, serieDetailsFragment)
-                    .commit();
-        } else {
-            throw new RuntimeException("Unknown click button");
-        }
+        Intent intent = new Intent(this, AbstractSerieArrowsActivity.class);
+        intent.putExtra(AbstractSerieArrowsActivity.SERIE_ARGUMENT_KEY, transitionSerie);
+        startActivity(intent);
     }
 
 
-    protected void undoLastArrow() {
+    public void undoLastArrow(View v) {
         TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
         scoreText.setText("");
         scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
@@ -385,18 +332,41 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         this.showSeriesArrow();
     }
 
+    public void goToNextOrEnd(View v) {
+        ISerie transitionSerie = null;
+
+        if (this.hasFinished()) {
+            Intent intent = new Intent(this, this.getContainerDetailsFragment());
+            intent.putExtra(CONTAINER_ARGUMENT_KEY, this.serie.getContainer());
+            startActivity(intent);
+            return;
+
+        } else if (this.serie.getContainer().getSeries().size() > this.serie.getIndex()) {
+            // same here... there isn't any need to add +1 because the serie already starts at 1
+            transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex());
+
+        } else {
+            // creating a new serie for the tournament
+            transitionSerie = this.createNewSerie();
+        }
+
+        Intent intent = new Intent(this, AbstractSerieArrowsActivity.class);
+        intent.putExtra(AbstractSerieArrowsActivity.SERIE_ARGUMENT_KEY, transitionSerie);
+        startActivity(intent);
+    }
+
     /**
      * Used to shown the container details when the user alread finished loading
      * all the possible series
      */
-    protected abstract BaseClickableFragment getContainerDetailsFragment();
+    protected abstract Class<? extends AppCompatActivity> getContainerDetailsFragment();
 
     /**
      * Used to show the previous or next serie.
      *
      * @return the fragment to be shown
      */
-    protected abstract AbstractSerieArrowsFragment getSerieDetailsFragment();
+    protected abstract AbstractSerieArrowsActivity getSerieDetailsFragment();
 
     /**
      * Creates the new serie on the database
@@ -423,7 +393,16 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
         return false;
     }
 
+
     @Override
+    public void onBackPressed() {
+        if (this.canGoBack()) {
+            super.onBackPressed();
+        } else {
+            super.onBackPressed();
+        }
+    }
+
     public boolean canGoBack() {
         if (this.canActivateButtons()) {
             // if the serie is created with 6 arrows, then it doesnt has any issue
@@ -436,9 +415,9 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
             return true;
         }
 
-        final AbstractSerieArrowsFragment self = this;
+        final AbstractSerieArrowsActivity self = this;
 
-        new AlertDialog.Builder(this.getContext())
+        new AlertDialog.Builder(this)
                 .setTitle(R.string.common_confirmation_dialog_title)
                 .setMessage(R.string.tournament_view_serie_creating_back)
                 .setIcon(android.R.drawable.ic_dialog_alert)
@@ -447,7 +426,7 @@ public abstract class AbstractSerieArrowsFragment extends BaseClickableFragment 
                     public void onClick(DialogInterface dialog, int whichButton) {
                         self.canGoBack = true;
                         self.deleteSerie();
-                        self.getActivity().onBackPressed();
+                        self.onBackPressed();
                     }})
                 .setNegativeButton(android.R.string.no, null)
                 .show();

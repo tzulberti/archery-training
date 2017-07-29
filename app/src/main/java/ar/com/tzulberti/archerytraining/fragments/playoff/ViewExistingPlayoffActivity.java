@@ -1,9 +1,6 @@
 package ar.com.tzulberti.archerytraining.fragments.playoff;
 
-import android.content.Context;
-import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
+import android.content.Intent;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -16,13 +13,10 @@ import android.widget.TextView;
 import java.io.Serializable;
 import java.util.List;
 
-import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
-import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractArrowSeriesStatsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
@@ -30,47 +24,42 @@ import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
  * Created by tzulberti on 6/4/17.
  */
 
-public class ViewExistingPlayoffFragment extends AbstractTableDataFragment {
+public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
 
     protected PlayoffDAO playoffDAO;
 
-    @Override
-    protected void setViewObjects() {
-        MainActivity activity = (MainActivity) getActivity();
-        this.playoffDAO = activity.getPlayoffDAO();
-    }
 
     @Override
-    protected void addButtonsBeforeData(TableLayout tableLayout, Context context) {
+    protected void addButtonsBeforeData(TableLayout tableLayout) {
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
         trParams.span = 4;
 
-        Button viewPlayoffStatsButton = new Button(context);
+        Button viewPlayoffStatsButton = new Button(this);
         viewPlayoffStatsButton.setText(this.getString(R.string.stats_view));
         viewPlayoffStatsButton.setId(Integer.MAX_VALUE - 1);
         viewPlayoffStatsButton.setOnClickListener(this);
         viewPlayoffStatsButton.setLayoutParams(trParams);
 
-        TableRow tr1 = new TableRow(context);
+        TableRow tr1 = new TableRow(this);
         tr1.addView(viewPlayoffStatsButton);
         tableLayout.addView(tr1);
     }
 
     @Override
-    protected void addButtonsAfterData(TableLayout tableLayout, Context context) {
+    protected void addButtonsAfterData(TableLayout tableLayout) {
 
     }
 
     @Override
-    protected void renderRow(Serializable data, TableRow tr, Context context) {
+    protected void renderRow(Serializable data, TableRow tr) {
         Playoff playoff = (Playoff) data;
-        ImageView imageView = new ImageView(context);
-        TextView nameText = new TextView(context);
-        TextView datetimeText = new TextView(context);
-        TextView totalScoreText = new TextView(context);
+        ImageView imageView = new ImageView(this);
+        TextView nameText = new TextView(this);
+        TextView datetimeText = new TextView(this);
+        TextView totalScoreText = new TextView(this);
 
         if (playoff.computerPlayOffConfiguration == null) {
             imageView.setImageResource(R.drawable.ic_standing_man);
@@ -92,6 +81,8 @@ public class ViewExistingPlayoffFragment extends AbstractTableDataFragment {
         tr.setId((int) playoff.id);
     }
 
+
+
     @Override
     protected List<? extends Serializable> getData() {
         return this.playoffDAO.getPlayoffs();
@@ -99,40 +90,31 @@ public class ViewExistingPlayoffFragment extends AbstractTableDataFragment {
 
     @Override
     protected void addNewValue() {
-        AddPlayoffFragment addPlayoffFragment = new AddPlayoffFragment();
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, addPlayoffFragment)
-                .commit();
+        Intent intent = new Intent(this, AddPlayoffActivity.class);
+        startActivity(intent);
     }
+
 
 
     @Override
-    public void handleClick(View v) {
+    public void onClick(View v) {
         int playoffId = v.getId();
-        BaseClickableFragment fragment = null;
+        Class activity = null;
+
+
+        Intent intent = null;
         if (playoffId == (Integer.MAX_VALUE - 1)) {
             // the user selected to view the playoff stats
-            fragment = new ViewPlayoffStatsFragment();
-
+            intent = new Intent(this, ViewPlayoffStatsActivity.class);
         } else {
+
             // the user selected to view one playoff
             Playoff playoff = this.playoffDAO.getCompletePlayoffData(playoffId);
 
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, playoff);
-
-            fragment = new ViewPlayoffSeriesFragment();
-            fragment.setArguments(bundle);
+            intent = new Intent(this, ViewPlayoffSeriesActivity.class);
+            intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, playoff);
         }
 
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                .replace(R.id.container, fragment);
-        fragmentTransaction.addToBackStack(null);
-
-        fragmentTransaction.commit();
-
+        startActivity(intent);
     }
-
 }

@@ -1,34 +1,29 @@
 package ar.com.tzulberti.archerytraining.fragments.playoff;
 
-import android.util.Log;
+import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
 import org.apache.commons.lang3.StringUtils;
-import org.w3c.dom.Text;
 
 import java.util.Random;
-import java.util.StringTokenizer;
 
-import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
-import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
-import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * Created by tzulberti on 6/4/17.
  */
 
-public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFragment {
+public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActivity {
 
     private PlayoffDAO playoffDAO;
     private SerieDataDAO serieDataDAO;
@@ -40,24 +35,18 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
         return R.layout.playoff_view_serie_arrows;
     }
 
-    @Override
-    protected void setDAOs() {
-        MainActivity activity = (MainActivity) getActivity();
-        this.playoffDAO = activity.getPlayoffDAO();
-        this.serieDataDAO = activity.getSerieDAO();
-    }
 
     @Override
-    protected void setAdditionalInformation(View view) {
+    protected void setAdditionalInformation() {
         Playoff playoff = (Playoff) this.serie.getContainer();
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-        this.opponentScoreEdit = (EditText) view.findViewById(R.id.opponent_score);
+        this.opponentScoreEdit = (EditText) this.findViewById(R.id.opponent_score);
 
         if (playoff.computerPlayOffConfiguration != null) {
             this.opponentScoreEdit.setVisibility(View.GONE);
 
 
-            TextView computerScoreText = (TextView) view.findViewById(R.id.computer_score);
+            TextView computerScoreText = (TextView) this.findViewById(R.id.computer_score);
             int computerScore = -1;
             if (playoffSerie.opponentTotalScore > 0) {
                 // the user already saved the playoff serie so used the saved value
@@ -71,7 +60,7 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
             computerScoreText.setText(String.valueOf(computerScore));
 
         } else {
-            view.findViewById(R.id.computer_score).setVisibility(View.GONE);
+            this.findViewById(R.id.computer_score).setVisibility(View.GONE);
             if (playoffSerie.opponentTotalScore > 0 ) {
                 this.opponentScoreEdit.setText(String.valueOf(playoffSerie.opponentTotalScore));
             } else {
@@ -105,13 +94,13 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     }
 
     @Override
-    protected BaseClickableFragment getContainerDetailsFragment() {
-        return new ViewPlayoffSeriesFragment();
+    protected Class<? extends AppCompatActivity> getContainerDetailsFragment() {
+        return ViewPlayoffSeriesActivity.class;
     }
 
     @Override
-    protected AbstractSerieArrowsFragment getSerieDetailsFragment() {
-        return new ViewPlayoffSerieInformationFragment();
+    protected AbstractSerieArrowsActivity getSerieDetailsFragment() {
+        return new ViewPlayoffSerieInformationActivity();
     }
 
     @Override

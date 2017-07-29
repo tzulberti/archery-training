@@ -1,18 +1,16 @@
 package ar.com.tzulberti.archerytraining.fragments.common;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
-import android.util.TypedValue;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
+import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 import java.io.Serializable;
 import java.util.List;
@@ -20,43 +18,33 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.AddPlayoffFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.ViewPlayoffSeriesFragment;
-import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
-import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
+import ar.com.tzulberti.archerytraining.model.bow.Bow;
 
 /**
  * Used to show existing values as a table, and to do some action over those
  *
  * Created by tzulberti on 6/12/17.
  */
-public abstract class AbstractTableDataFragment extends BaseClickableFragment{
-
-    /**
-     * Used to set the objects (dao or arguments) used to show the data later on
-     */
-    protected abstract void setViewObjects();
+public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActivity implements View.OnClickListener {
 
     /**
      * Used to add the buttons before the table with all the data is being shown
      * @param tableLayout the container which will contain all the data
-     * @param context used to create new view elements
      */
-    protected abstract void addButtonsBeforeData(TableLayout tableLayout, Context context);
+    protected abstract void addButtonsBeforeData(TableLayout tableLayout);
 
     /**
      * Used to add the buttons after the table with all the data is being shown
      * @param tableLayout the container which will contain all the data
-     * @param context used to create new view elements
      */
-    protected abstract void addButtonsAfterData(TableLayout tableLayout, Context context);
+    protected abstract void addButtonsAfterData(TableLayout tableLayout);
 
 
     /**
      * Renders the data into a table rows
      * @param data the current value to be render
      */
-    protected abstract void renderRow(Serializable data, TableRow tr, Context context);
+    protected abstract void renderRow(Serializable data, TableRow tr);
 
     /**
      * Get all the information that is going to be shown
@@ -79,17 +67,16 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
         return true;
     }
 
+
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        this.setViewObjects();
-        // Inflate the layout for this fragment
-        View view = inflater.inflate(R.layout.common_show_existing_values, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.common_show_existing_values);
 
-        final MainActivity activity = (MainActivity) getActivity();
 
-        FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        final AbstractTableDataFragment self = this;
+        FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
+        final AbstractTableDataActivity self = this;
         fab.setOnClickListener(new View.OnClickListener() {
 
             @Override public void onClick(View view) {
@@ -97,16 +84,14 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
             }
         });
 
-        this.showInformation(view, (TableLayout) view.findViewById(R.id.existing_data));
-        return view;
+        this.showInformation((TableLayout) this.findViewById(R.id.existing_data));
     }
 
 
-    private void showInformation(View view, TableLayout dataContainer) {
+    private void showInformation(TableLayout dataContainer) {
         List<? extends Serializable> existingData = this.getData();
-        Context context = getContext();
 
-        this.addButtonsBeforeData(dataContainer, context);
+        this.addButtonsBeforeData(dataContainer);
         if (existingData == null) {
             return;
         }
@@ -114,9 +99,9 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
         boolean areRowsClickable = this.areRowsClickable();
 
         for (Serializable data : existingData) {
-            TableRow tr = new TableRow(context);
+            TableRow tr = new TableRow(this);
             tr.setPadding(0, 15, 0, 15);
-            this.renderRow(data, tr, context);
+            this.renderRow(data, tr);
             if (areRowsClickable) {
                 tr.setClickable(true);
                 tr.setOnClickListener(this);
@@ -124,7 +109,7 @@ public abstract class AbstractTableDataFragment extends BaseClickableFragment{
             dataContainer.addView(tr);
         }
 
-        this.addButtonsAfterData(dataContainer, context);
+        this.addButtonsAfterData(dataContainer);
     }
 
 }

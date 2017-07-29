@@ -1,21 +1,17 @@
 package ar.com.tzulberti.archerytraining.fragments.bow;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.InputType;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TableLayout;
 import android.widget.TableRow;
-import android.widget.TextView;
 
 
 import org.apache.commons.lang3.StringUtils;
@@ -23,6 +19,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.model.bow.Bow;
 import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
 
@@ -31,7 +28,7 @@ import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
  * Created by tzulberti on 6/12/17.
  */
 
-public class ViewBowFragment extends BaseBowFragment {
+public class ViewBowActivity extends BaseArcheryTrainingActivity implements View.OnClickListener{
 
     public static final String BOW_ARGUMENT_KEY = "bow";
 
@@ -40,29 +37,28 @@ public class ViewBowFragment extends BaseBowFragment {
     private Bow existingBow;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        this.setObjects();
-        View view = inflater.inflate(R.layout.bow_view_details, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.bow_view_details);
 
-        this.bowDistances = (TableLayout) view.findViewById(R.id.bow_distances);
-        this.bowNameText = (EditText) view.findViewById(R.id.bow_name);
 
-        Bundle arguments = this.getArguments();
-        if (arguments != null && arguments.containsKey(BOW_ARGUMENT_KEY)) {
-            this.existingBow = (Bow) arguments.getSerializable(BOW_ARGUMENT_KEY);
+        this.bowDistances = (TableLayout) findViewById(R.id.bow_distances);
+        this.bowNameText = (EditText) findViewById(R.id.bow_name);
+
+        Intent intent = this.getIntent();
+        if (intent != null && intent.hasExtra(BOW_ARGUMENT_KEY)) {
+            this.existingBow = (Bow) intent.getSerializableExtra(BOW_ARGUMENT_KEY);
             this.renderBowInformation();
         } else {
             this.existingBow = null;
         }
-        return view;
     }
 
     private void renderBowInformation() {
-        Context context = this.getContext();
         this.bowNameText.setText(this.existingBow.name);
         for (SightDistanceValue sightDistanceValue : this.existingBow.sightDistanceValues) {
-            this.addSightDistanceValue(sightDistanceValue.sightValue, sightDistanceValue.distance, context);
+            this.addSightDistanceValue(sightDistanceValue.sightValue, sightDistanceValue.distance, this);
         }
     }
 
@@ -89,21 +85,6 @@ public class ViewBowFragment extends BaseBowFragment {
         tr.addView(deleteDistanceInfo);
 
         this.bowDistances.addView(tr);
-    }
-
-    @Override
-    public void handleClick(View v) {
-        if (v.getId() == R.id.btn_add_distance) {
-            this.addSightDistanceValue(-1, -1, this.getContext());
-
-
-        } else if (v.getId() == R.id.btn_bow_save) {
-            this.saveData();
-        } else {
-            // the user selected to delete the row with the sight value for a given distance
-            TableRow tr = (TableRow) v.getParent();
-            this.bowDistances.removeView(tr);
-        }
     }
 
     /**
@@ -157,11 +138,21 @@ public class ViewBowFragment extends BaseBowFragment {
         this.bowDAO.createBow(newBow.name, newBow.sightDistanceValues);
 
 
-        ViewExistingBowsFragment existingBowsFragment = new ViewExistingBowsFragment();
-        FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction()
-                .replace(R.id.container, existingBowsFragment);
+        Intent intent = new Intent(this, ViewExistingBowsActivity.class);
+        startActivity(intent);
+    }
 
-        fragmentTransaction.commit();
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_add_distance) {
+            this.addSightDistanceValue(-1, -1, this);
+
+        } else if (v.getId() == R.id.btn_bow_save) {
+            this.saveData();
+        } else {
+            // the user selected to delete the row with the sight value for a given distance
+            TableRow tr = (TableRow) v.getParent();
+            this.bowDistances.removeView(tr);
+        }
     }
 }

@@ -1,13 +1,10 @@
 package ar.com.tzulberti.archerytraining.fragments.playoff;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.v4.app.FragmentManager;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -17,9 +14,9 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.HashMap;
 import java.util.Map;
 
-import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
@@ -28,7 +25,7 @@ import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 /**
  * Created by tzulberti on 6/2/17.
  */
-public class AddPlayoffFragment extends BasePlayoffFragment {
+public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
 
     public static final String MIN_SCORE = "ar.com.tzulberti.archerytraining.minscore";
     public static final String MAX_SCORE = "ar.com.tzulberti.archerytraining.maxscore";
@@ -38,18 +35,16 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
     private Spinner tournamentConstrainsSpinner;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        this.setObjects();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.playoff_add_new);
 
-        View view = inflater.inflate(R.layout.playoff_add_new, container, false);
-        MainActivity activity = (MainActivity) getActivity();
-
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
         this.inputMapping = new HashMap<>();
-        this.inputMapping.put(MIN_SCORE, (EditText) view.findViewById(R.id.min_socre));
-        this.inputMapping.put(MAX_SCORE, (EditText) view.findViewById(R.id.max_socre));
+        this.inputMapping.put(MIN_SCORE, (EditText) this.findViewById(R.id.min_socre));
+        this.inputMapping.put(MAX_SCORE, (EditText) this.findViewById(R.id.max_socre));
 
         for (Map.Entry<String, EditText> info : inputMapping.entrySet()) {
             int existingValue = sharedPref.getInt(info.getKey(), -1);
@@ -58,25 +53,24 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
             }
         }
 
-        this.tournamentConstrainsSpinner = (Spinner) view.findViewById(R.id.tournament_constrains);
+        this.tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
-                this.getContext(),
+                this,
                 android.R.layout.simple_spinner_item,
                 AppCache.tournamentTypes
         );
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         this.tournamentConstrainsSpinner.setAdapter(dataAdapter);
 
-        return view;
     }
 
-    @Override
-    public void handleClick(View v) {
+
+
+    public void addPlayoff(View v) {
         Map<String, Integer> constructorKwargs = new HashMap<>();
 
-        MainActivity activity = (MainActivity) getActivity();
 
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Bundle bundle = new Bundle();
 
@@ -136,23 +130,11 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
 
 
         // Hide the keyboard when starting a new playoff
-        View view = this.getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        this.hideKeyboard();
 
-        Bundle arguments = new Bundle();
-        arguments.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, playoff);
-        arguments.putInt("creating", 1);
-
-        ViewPlayoffSeriesFragment viewPlayoffSeriesFragment = new ViewPlayoffSeriesFragment();
-        viewPlayoffSeriesFragment.setArguments(arguments);
-
-        FragmentManager fragmentManager = activity.getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, viewPlayoffSeriesFragment)
-                .commit();
+        Intent intent = new Intent(this, ViewPlayoffSeriesActivity.class);
+        intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, playoff);
+        startActivity(intent);
     }
 
 }

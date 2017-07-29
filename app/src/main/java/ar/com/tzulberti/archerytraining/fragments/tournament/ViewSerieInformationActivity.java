@@ -9,7 +9,7 @@ import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -20,7 +20,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
  * Created by tzulberti on 4/25/17.
  */
 
-public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
+public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
 
 
     private TournamentDAO tournamentDAO;
@@ -99,8 +99,8 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
     }
 
     @Override
-    protected AbstractSerieArrowsFragment getSerieDetailsFragment() {
-        return new ViewSerieInformationFragment();
+    protected AbstractSerieArrowsActivity getSerieDetailsFragment() {
+        return new ViewSerieInformationActivity();
     }
 
     @Override

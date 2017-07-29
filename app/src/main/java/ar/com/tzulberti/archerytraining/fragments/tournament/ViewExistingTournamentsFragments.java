@@ -22,8 +22,8 @@ import ar.com.tzulberti.archerytraining.R;
 
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
-import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataFragment;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
@@ -31,7 +31,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
  * Created by tzulberti on 5/17/17.
  */
 
-public class ViewExistingTournamentsFragments extends AbstractTableDataFragment {
+public class ViewExistingTournamentsFragments extends AbstractTableDataActivity {
 
 
     protected TournamentDAO tournamentDAO;
@@ -104,10 +104,10 @@ public class ViewExistingTournamentsFragments extends AbstractTableDataFragment 
 
     @Override
     protected void addNewValue() {
-        AddTournamentFragment addTournamentFragment = new AddTournamentFragment();
+        AddTournamentActivity addTournamentActivity = new AddTournamentActivity();
         FragmentManager fragmentManager = this.getActivity().getSupportFragmentManager();
         fragmentManager.beginTransaction()
-                .replace(R.id.container, addTournamentFragment)
+                .replace(R.id.container, addTournamentActivity)
                 .commit();
     }
 
@@ -119,14 +119,14 @@ public class ViewExistingTournamentsFragments extends AbstractTableDataFragment 
         BaseClickableFragment fragment = null;
         if (tournamentId == (Integer.MAX_VALUE - 1)) {
             // the user selected to view the playoff stats
-            fragment = new ViewTournamentsStatsFragment();
+            fragment = new ViewTournamentsStatsActivity();
 
         } else {
             Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
             this.tournamentDAO.getTournamentSeriesInformation(tournament);
 
             Bundle bundle = new Bundle();
-            bundle.putSerializable(AbstractSerieArrowsFragment.CONTAINER_ARGUMENT_KEY, tournament);
+            bundle.putSerializable(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, tournament);
             fragment = new ViewTournamentSeriesFragment();
             fragment.setArguments(bundle);
         }

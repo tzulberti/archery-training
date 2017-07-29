@@ -17,6 +17,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
@@ -24,7 +25,7 @@ import ar.com.tzulberti.archerytraining.model.series.SerieData;
  * Created by tzulberti on 4/20/17.
  */
 
-public class AddSerieFragment extends BaseSeriesFragment {
+public class AddSerieActivity extends BaseArcheryTrainingActivity {
 
     private static final int MAX_VALUES_TO_SHOW = 3;
     private EditText distanceText;
@@ -35,23 +36,22 @@ public class AddSerieFragment extends BaseSeriesFragment {
     private TextView todaysTotals;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        View view = inflater.inflate(R.layout.add_serie, container, false);
-        this.setObjects();
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.add_serie);
 
-        this.distanceText = (EditText) view.findViewById(R.id.distance);
-        this.arrowAmountText = (EditText) view.findViewById(R.id.arrowsAmount);
+        this.distanceText = (EditText) this.findViewById(R.id.distance);
+        this.arrowAmountText = (EditText) this.findViewById(R.id.arrowsAmount);
 
-        this.lastDistance = (TextView) view.findViewById(R.id.lastDistance);
-        this.lastArrowsAmount = (TextView) view.findViewById(R.id.lastArrowsAmount);
-        this.lastDatetime = (TextView) view.findViewById(R.id.lastDatetime);
-        this.todaysTotals = (TextView) view.findViewById(R.id.todayTotals);
+        this.lastDistance = (TextView) this.findViewById(R.id.lastDistance);
+        this.lastArrowsAmount = (TextView) this.findViewById(R.id.lastArrowsAmount);
+        this.lastDatetime = (TextView) this.findViewById(R.id.lastDatetime);
+        this.todaysTotals = (TextView) this.findViewById(R.id.todayTotals);
 
         this.showLastSerie();
         this.showTodayArrows();
 
-        return view;
     }
 
 
@@ -59,10 +59,8 @@ public class AddSerieFragment extends BaseSeriesFragment {
      * When the user select the option to add, so it will add the new serie to the
      * database
      *
-     * @param view
      */
-    @Override
-    public void handleClick(View v) {
+    public void addNewSerie(View v) {
         CharSequence distanceValue = this.distanceText.getText().toString();
         if (StringUtils.isBlank(distanceValue)) {
             this.distanceText.setError(getText(R.string.commonRequiredValidationError));
@@ -84,14 +82,10 @@ public class AddSerieFragment extends BaseSeriesFragment {
         // reset the input to notify the user of a change and hide the keyboard because
         // if not the snackbar isn't shown
         this.arrowAmountText.setText("");
-        View view = this.getActivity().getCurrentFocus();
-        if (view != null) {
-            InputMethodManager imm = (InputMethodManager) this.getActivity().getSystemService(Context.INPUT_METHOD_SERVICE);
-            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-        }
+        this.hideKeyboard();
 
         Snackbar.make(
-                this.getView(),
+                this.findViewById(R.id.serie_add_table_layout),
                 this.getString(R.string.addSerieAdded, Integer.valueOf(arrowsAmount.toString())),
                 Snackbar.LENGTH_SHORT
         )

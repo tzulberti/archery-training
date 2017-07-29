@@ -11,15 +11,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.SeekBar;
 import android.widget.TextView;
 
 
 import com.edmodo.rangebar.RangeBar;
 
-import org.w3c.dom.Text;
-
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.fragments.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -28,7 +27,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
  * Created by tzulberti on 5/25/17.
  */
 
-public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment {
+public class ViewAllTournamentTargetArrowFragment extends BaseArcheryTrainingActivity {
 
     private Tournament tournament;
 
@@ -42,15 +41,17 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
     private Paint centerPointPaint;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        this.cleanState(container);
-        View view = inflater.inflate(R.layout.tournament_view_tournament_series_on_target, container, false);
-        this.targetImageView = (ImageView) view.findViewById(R.id.photo_view);
-        this.rangeBar = (RangeBar) view.findViewById(R.id.tournament_series_rangebar);
-        this.seriesShowingText = (TextView) view.findViewById(R.id.tournament_series_showing);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        setContentView(R.layout.tournament_view_tournament_series_on_target);
 
-        this.setObjects();
-        this.tournament = this.getTournamentArgument();
+
+        this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
+        this.rangeBar = (RangeBar) this.findViewById(R.id.tournament_series_rangebar);
+        this.seriesShowingText = (TextView) this.findViewById(R.id.tournament_series_showing);
+
+        this.tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
 
         this.finalImpactPaint = new Paint();
         this.finalImpactPaint.setAntiAlias(true);
@@ -131,7 +132,7 @@ public class ViewAllTournamentTargetArrowFragment extends BaseTournamentFragment
 
     private void addTargetImpact(float x, float y, Bitmap mutableBitmap, Paint impactPaint) {
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y, ViewSerieInformationFragment.ARROW_IMPACT_RADIUS, impactPaint);
+        canvas.drawCircle(x, y, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS, impactPaint);
 
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);

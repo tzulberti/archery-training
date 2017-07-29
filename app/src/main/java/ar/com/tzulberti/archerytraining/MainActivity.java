@@ -2,17 +2,11 @@ package ar.com.tzulberti.archerytraining;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
@@ -22,18 +16,17 @@ import ar.com.tzulberti.archerytraining.dao.TournamentConstraintDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.fragments.BaseClickableFragment;
 import ar.com.tzulberti.archerytraining.fragments.MainFragment;
-import ar.com.tzulberti.archerytraining.fragments.bow.ViewExistingBowsFragment;
-import ar.com.tzulberti.archerytraining.fragments.playoff.ViewExistingPlayoffFragment;
-import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetention;
-import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataFragment;
+import ar.com.tzulberti.archerytraining.fragments.bow.ViewExistingBowsActivity;
+import ar.com.tzulberti.archerytraining.fragments.playoff.ViewExistingPlayoffActivity;
+import ar.com.tzulberti.archerytraining.fragments.retentions.ConfigureRetentionActivity;
+import ar.com.tzulberti.archerytraining.fragments.series.ViewRawDataActivity;
 import ar.com.tzulberti.archerytraining.fragments.tournament.ViewExistingTournamentsFragments;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import io.sentry.Sentry;
 import io.sentry.android.AndroidSentryClientFactory;
 
-public class MainActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+public class MainActivity extends AppCompatActivity {
 
     private DatabaseHelper databaseHelper;
     private SerieDataDAO serieDataDAO;
@@ -47,8 +40,6 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         Context ctx = this.getApplicationContext();
         Sentry.init(
@@ -56,14 +47,6 @@ public class MainActivity extends AppCompatActivity
                 new AndroidSentryClientFactory(ctx)
         );
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
-        toggle.syncState();
-
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
 
         this.currentFragment = new MainFragment();
         FragmentManager fragmentManager = getSupportFragmentManager();
@@ -95,67 +78,31 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+
+    public SerieDataDAO getSerieDAO() {
+        return this.serieDataDAO;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
+    public TournamentDAO getTournamentDAO() { return this.tournamentDAO; }
 
-        return super.onOptionsItemSelected(item);
-    }
+    public PlayoffDAO getPlayoffDAO() { return this.playoffDAO; }
 
+    public BowDAO getBowDAO() { return this.bowDAO; }
 
-    @SuppressWarnings("StatementWithEmptyBody")
-    @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
-        // Handle navigation view item clicks here.
-        int id = item.getItemId();
-
-        this.currentFragment = null;
-        if (id == R.id.nav_today_serie) {
-            this.currentFragment = new ViewRawDataFragment();
-        } else if (id == R.id.nav_retentions) {
-            this.currentFragment = new ConfigureRetention();
-        } else if (id == R.id.nav_tournament) {
-            this.currentFragment = new ViewExistingTournamentsFragments();
-        }  else if (id == R.id.nav_playoff) {
-            this.currentFragment = new ViewExistingPlayoffFragment();
-        } else if (id == R.id.nav_bow) {
-            this.currentFragment = new ViewExistingBowsFragment();
-        }
-
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
-
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        fragmentManager.beginTransaction()
-                .replace(R.id.container, this.currentFragment)
-                .commit();
-        return true;
-    }
-
-    public void goToFragment(View selectedOption) {
+    public void goToMainOption(View selectedOption) {
         int id = selectedOption.getId();
 
         this.currentFragment = null;
         if (id == R.id.main_activity_series) {
-            this.currentFragment = new ViewRawDataFragment();
+            this.currentFragment = new ViewRawDataActivity();
         } else if (id == R.id.main_activity_today_retentions) {
-            this.currentFragment = new ConfigureRetention();
+            this.currentFragment = new ConfigureRetentionActivity();
         } else if (id == R.id.main_activity_today_tournament) {
             this.currentFragment = new ViewExistingTournamentsFragments();
         } else if (id == R.id.main_activity_playoff) {
-            this.currentFragment = new ViewExistingPlayoffFragment();
+            this.currentFragment = new ViewExistingPlayoffActivity();
         } else if (id == R.id.main_activity_bow) {
-            this.currentFragment = new ViewExistingBowsFragment();
+            this.currentFragment = new ViewExistingBowsActivity();
         } else {
             throw new RuntimeException("Unknown selected menu option");
         }
@@ -169,30 +116,6 @@ public class MainActivity extends AppCompatActivity
 
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
-    }
-
-
-    public SerieDataDAO getSerieDAO() {
-        return this.serieDataDAO;
-    }
-
-    public TournamentDAO getTournamentDAO() { return this.tournamentDAO; }
-
-    public PlayoffDAO getPlayoffDAO() { return this.playoffDAO; }
-
-    public BowDAO getBowDAO() { return this.bowDAO; }
-
-    @Override
-    public void onAttachFragment(Fragment fragment) {
-        if (fragment == null) {
-            this.currentFragment = null;
-        } else {
-            this.currentFragment = (BaseClickableFragment) fragment;
-        }
-    }
-
-    public void onClick(View v) {
-        this.currentFragment.handleClick(v);
     }
 
 }
