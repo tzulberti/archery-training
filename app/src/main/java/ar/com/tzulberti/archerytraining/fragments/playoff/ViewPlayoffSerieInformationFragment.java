@@ -83,7 +83,7 @@ public class ViewPlayoffSerieInformationFragment extends AbstractSerieArrowsFrag
     @Override
     protected void saveSerie() {
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-        this.serieDataDAO.addSerieData(playoffSerie.playoff.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
+        this.serieDataDAO.addSerieData(playoffSerie.playoff.tournamentConstraint.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
         this.playoffDAO.updateSerie(playoffSerie);
     }
 

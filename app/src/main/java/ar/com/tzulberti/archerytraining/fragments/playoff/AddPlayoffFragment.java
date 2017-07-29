@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
 
 import org.apache.commons.lang3.StringUtils;
 
@@ -18,6 +20,8 @@ import java.util.Map;
 import ar.com.tzulberti.archerytraining.MainActivity;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.fragments.common.AbstractSerieArrowsFragment;
+import ar.com.tzulberti.archerytraining.helper.AppCache;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
@@ -26,11 +30,12 @@ import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
  */
 public class AddPlayoffFragment extends BasePlayoffFragment {
 
-    public static final String DISTANCE = "ar.com.tzulberti.archerytraining.distance";
     public static final String MIN_SCORE = "ar.com.tzulberti.archerytraining.minscore";
     public static final String MAX_SCORE = "ar.com.tzulberti.archerytraining.maxscore";
 
+
     private Map<String, EditText> inputMapping;
+    private Spinner tournamentConstrainsSpinner;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -43,7 +48,6 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
 
         this.inputMapping = new HashMap<>();
-        this.inputMapping.put(DISTANCE, (EditText) view.findViewById(R.id.distance));
         this.inputMapping.put(MIN_SCORE, (EditText) view.findViewById(R.id.min_socre));
         this.inputMapping.put(MAX_SCORE, (EditText) view.findViewById(R.id.max_socre));
 
@@ -53,6 +57,15 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
                 info.getValue().setText(String.valueOf(existingValue));
             }
         }
+
+        this.tournamentConstrainsSpinner = (Spinner) view.findViewById(R.id.tournament_constrains);
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+                this.getContext(),
+                android.R.layout.simple_spinner_item,
+                AppCache.tournamentTypes
+        );
+        dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        this.tournamentConstrainsSpinner.setAdapter(dataAdapter);
 
         return view;
     }
@@ -114,15 +127,13 @@ public class AddPlayoffFragment extends BasePlayoffFragment {
         computerPlayOffConfiguration.minScore = bundle.getInt(MIN_SCORE);
 
         // Create the playoff
-        Playoff playoff = null;
-        // TODO XXX PENDING
-        /*
+        TournamentConstraint tournamentConstraint = AppCache.tournamentConstraintSpinnerMap.get(this.tournamentConstrainsSpinner.getSelectedItem());
         Playoff playoff = this.playoffDAO.createPlayoff(
                 this.getString(R.string.playoff_computer_name),
-                bundle.getInt(DISTANCE),
-                computerPlayOffConfiguration
+                computerPlayOffConfiguration,
+                tournamentConstraint
                 );
-        */
+
 
         // Hide the keyboard when starting a new playoff
         View view = this.getActivity().getCurrentFocus();

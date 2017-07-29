@@ -16,10 +16,10 @@ public class Playoff implements ISerieContainer, Serializable{
 
     public long id;
     public Date datetime;
-    public int distance;
     public String name;
     public int userPlayoffScore;
     public int opponentPlayoffScore;
+    public int tournamentConstraintId;
     public TournamentConstraint tournamentConstraint;
 
     public ComputerPlayOffConfiguration computerPlayOffConfiguration;
