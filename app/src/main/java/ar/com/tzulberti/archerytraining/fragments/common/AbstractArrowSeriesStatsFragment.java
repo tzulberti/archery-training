@@ -104,6 +104,7 @@ public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFrag
 
     private void showSeriesPerScore(List<SeriesPerScore> seriesPerScores, HorizontalBarChart horizontalBarChart) {
         if (seriesPerScores == null || seriesPerScores.isEmpty()) {
+            horizontalBarChart.clear();
             return;
         }
 
@@ -161,6 +162,10 @@ public abstract class AbstractArrowSeriesStatsFragment extends BaseClickableFrag
 
 
     private void showArrowsPerScore(List<ArrowsPerScore> arrowsPerScores, HorizontalBarChart horizontalBarChart) {
+        if (arrowsPerScores == null || arrowsPerScores.isEmpty()) {
+            horizontalBarChart.clear();
+            return;
+        }
         List<BarEntry> arrowsCounterSet = new ArrayList<>();
         List<String> xAxis = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
