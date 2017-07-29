@@ -50,7 +50,8 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
 
 
         for (TournamentSerie tournamentSerie : tournament.series) {
-            if (tournamentSerie.index == 1 || tournamentSerie.index == 7) {
+            boolean startingRound = tournamentSerie.index == 1 || tournamentSerie.index == (tournament.tournamentConstraint.seriesPerRound + 1);
+            if (startingRound) {
                 int roundIndex = (tournamentSerie.index == 1) ? 1 : 2;
                 TableRow tr = new TableRow(context);
                 tr.setPadding(0, 25, 0, 10);
@@ -78,7 +79,7 @@ public class ViewTournamentScoreSheetFragment extends BaseTournamentFragment {
 
 
             TextView accumulatedRoundScoreText = new TextView(context);
-            if (tournamentSerie.index == 1 || tournamentSerie.index == 7) {
+            if (startingRound) {
                 accumulatedRoundScoreText.setText("-");
             } else {
                 accumulatedRoundScoreText.setText(String.valueOf(tournamentSerie.totalScore + roundAccumulatedScore));

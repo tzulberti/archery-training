@@ -37,6 +37,25 @@ public class ViewSerieInformationFragment extends AbstractSerieArrowsFragment {
         TournamentConstraint tournamentConstraint = tournamentSerie.tournament.tournamentConstraint;
         int maxScore = 10 * tournamentConstraint.seriesPerRound * 2 * tournamentConstraint.arrowsPerSeries;
         ((TextView) view.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", tournamentSerie.tournament.totalScore, maxScore));
+
+        // check the number of text scrore that shoudl be hiddeen taken into account
+        // the number of arrows per score
+        for (int i = tournamentConstraint.arrowsPerSeries + 1; i < 7; i++) {
+            int id = 0;
+
+            switch (i) {
+                case 4:
+                    id = R.id.current_score4;
+                    break;
+                case 5:
+                    id = R.id.current_score5;
+                    break;
+                case 6:
+                    id = R.id.current_score6;
+                    break;
+            }
+            view.findViewById(id).setVisibility(View.GONE);
+        }
     }
 
     @Override
