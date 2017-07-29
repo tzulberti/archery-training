@@ -13,4 +13,6 @@ public abstract class BaseSerieArrowConsts {
     public static final String IS_X_COLUMN_NAME = "is_x";
 
     public abstract String getTableName();
+
+    public abstract String getSerieColumnName();
 }

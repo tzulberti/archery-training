@@ -20,4 +20,7 @@ public class TournamentSerieConsts extends  BaseSerieConsts {
     public String getTableName() {
         return TABLE_NAME;
     }
+
+    @Override
+    public String getContainerIdColumnName() { return TOURNAMENT_ID_COLUMN_NAME; }
 }

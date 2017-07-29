@@ -2,6 +2,7 @@ package ar.com.tzulberti.archerytraining.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,10 +10,12 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
+import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
 
 /**
  * Created by tzulberti on 6/26/17.
@@ -26,6 +29,11 @@ public abstract class BaseArrowSeriesDAO  {
         this.databaseHelper = databaseHelper;
     }
 
+    /**
+     * Returns the table that contains the series information and that it
+     * has a FK to the tournament constraints table
+     */
+    protected abstract BaseSerieContainerConsts getContainerTable();
 
     /**
      * Returns the table that has the arrows score data
@@ -37,23 +45,32 @@ public abstract class BaseArrowSeriesDAO  {
      * The table that has the series score data
      * @return
      */
-    protected abstract  BaseSerieConsts getSeriesTable();
+    protected abstract BaseSerieConsts getSeriesTable();
 
 
-    public List<SeriesPerScore> getSeriesPerScore() {
+    public List<SeriesPerScore> getSeriesPerScore(TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         BaseSerieConsts serieConsts = this.getSeriesTable();
+        BaseSerieContainerConsts baseSerieContainerConsts = this.getContainerTable();
 
-        Cursor playoffArrowsCursor = db.rawQuery(
+        String query =
                 "SELECT " +
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + ", " +
                     "COUNT(" + serieConsts.getTableName() + "." + serieConsts.ID_COLUMN_NAME + ") " +
                 "FROM " +  serieConsts.getTableName() + " " +
+                "JOIN " + baseSerieContainerConsts.getTableName() + " " +
+                    "ON " + baseSerieContainerConsts.getTableName() + "." + BaseSerieContainerConsts.ID_COLUMN_NAME + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
+                "WHERE " +
+                    BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
                 "GROUP BY " +
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + " " +
                 "ORDER BY " +
-                    serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + " DESC ",
-                null
+                    serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + " DESC ";
+
+
+        Cursor playoffArrowsCursor = db.rawQuery(
+                query,
+                new String[]{String.valueOf(tournamentConstraint.id)}
         );
         List<SeriesPerScore> res = new ArrayList<>();
         while (playoffArrowsCursor.moveToNext()) {
@@ -67,22 +84,32 @@ public abstract class BaseArrowSeriesDAO  {
     }
 
 
-    public List<ArrowsPerScore> getArrowsPerScore() {
+    public List<ArrowsPerScore> getArrowsPerScore(TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         BaseSerieArrowConsts serieArrowConsts = this.getArrowsTable();
+        BaseSerieConsts serieConsts = this.getSeriesTable();
+        BaseSerieContainerConsts baseSerieContainerConsts = this.getContainerTable();
+
         Cursor playoffArrowsCursor = db.rawQuery(
                 "SELECT " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + ", " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME + ", " +
                         "COUNT(" + serieArrowConsts.getTableName() + "." + serieArrowConsts.ID_COLUMN_NAME + ") " +
                 "FROM " +  serieArrowConsts.getTableName() + " " +
+                "JOIN " + serieConsts.getTableName() + " " +
+                    "ON " + serieArrowConsts.getTableName() + "." + serieArrowConsts.getSerieColumnName() + " = " + serieConsts.getTableName() + "." + BaseSerieConsts.ID_COLUMN_NAME + " " +
+                "JOIN " + baseSerieContainerConsts.getTableName() + " " +
+                    "ON " + baseSerieContainerConsts.getTableName() + "." + BaseSerieContainerConsts.ID_COLUMN_NAME + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
+                "WHERE " +
+                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
                 "GROUP BY " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + ", " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME + " " +
                 "ORDER BY " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
                         serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
-                null
+
+                new String[]{String.valueOf(tournamentConstraint.id)}
         );
         List<ArrowsPerScore> res = new ArrayList<>();
         int currentScore = -1;

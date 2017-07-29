@@ -11,6 +11,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
 import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
@@ -46,6 +47,9 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     protected BaseSerieConsts getSeriesTable() {
         return new PlayoffSerieConsts();
     }
+
+    @Override
+    protected BaseSerieContainerConsts getContainerTable() {return new PlayoffConsts();}
 
 
     public Playoff createPlayoff(String name, int distance, ComputerPlayOffConfiguration computerPlayOffConfiguration, TournamentConstraint tournamentConstraint) {

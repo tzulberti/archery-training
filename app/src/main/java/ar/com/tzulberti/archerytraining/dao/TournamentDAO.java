@@ -10,6 +10,8 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
+import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
@@ -44,6 +46,9 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         return new TournamentSerieConsts();
     }
 
+    @Override
+    protected BaseSerieContainerConsts getContainerTable() {return new TournamentConsts();}
+
     public List<Tournament> getExistingTournaments() {
         List<Tournament> res = new ArrayList<>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
@@ -54,7 +59,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                         TournamentConsts.DATETIME_COLUMN_NAME + ", " +
                         TournamentConsts.TOTAL_SCORE_COLUMN_NAME  + ", " +
                         TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + ", " +
-                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
+                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
                 "FROM " + TournamentConsts.TABLE_NAME + " " +
                 "ORDER BY " + TournamentConsts.DATETIME_COLUMN_NAME + " DESC",
                 null
@@ -80,7 +85,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long databaseTimestamp = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
+        contentValues.put(BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
         contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
         contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
@@ -100,7 +105,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                         TournamentConsts.NAME_COLUMN_NAME + ", " +
                         TournamentConsts.DATETIME_COLUMN_NAME + ", " +
                         TournamentConsts.TOTAL_SCORE_COLUMN_NAME + ", " +
-                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
+                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
                 "FROM " +  TournamentConsts.TABLE_NAME + " " +
                 "WHERE " + TournamentConsts.ID_COLUMN_NAME + "= ?",
                 new String[]{String.valueOf(tournamentId)}
