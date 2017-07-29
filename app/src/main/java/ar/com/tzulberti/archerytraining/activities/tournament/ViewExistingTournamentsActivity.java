@@ -2,6 +2,7 @@ package ar.com.tzulberti.archerytraining.activities.tournament;
 
 import android.content.Intent;
 
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -107,6 +108,7 @@ public class ViewExistingTournamentsActivity extends AbstractTableDataActivity {
         } else {
             Tournament tournament = this.tournamentDAO.getTournamentInformation(tournamentId);
             this.tournamentDAO.getTournamentSeriesInformation(tournament);
+
 
             intent = new Intent(this, ViewTournamentSeriesActivity.class);
             intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, tournament);

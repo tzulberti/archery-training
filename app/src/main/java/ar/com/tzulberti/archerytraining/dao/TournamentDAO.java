@@ -3,6 +3,7 @@ package ar.com.tzulberti.archerytraining.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -117,25 +118,25 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
     public List<TournamentSerie> getTournamentSeriesInformation(Tournament tournament) {
 
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
-        Cursor cursor = db.rawQuery(
-                   "SELECT " +
-                        TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + ", " +
-                        TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME + " " +
-                   "FROM " +  TournamentSerieConsts.TABLE_NAME  + " " +
-                   "LEFT JOIN " + TournamentSerieArrowConsts.TABLE_NAME + " " +
-                        "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " " +
-                   "WHERE " +
-                         TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?" +
-                   "ORDER BY " +
-                         TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
-                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME,
-                new String[]{String.valueOf(tournament.id)}
-        );
+        String query = "SELECT " +
+                TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + ", " +
+                TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME + " " +
+            "FROM " +  TournamentSerieConsts.TABLE_NAME  + " " +
+            "LEFT JOIN " + TournamentSerieArrowConsts.TABLE_NAME + " " +
+                "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " " +
+            "WHERE " +
+                TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " = ? " +
+            "ORDER BY " +
+                TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME;
+
+        Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(tournament.id)});
+
 
         List<TournamentSerie> res = new ArrayList<>();
         TournamentSerie currentSerie = null;
@@ -158,15 +159,16 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                 // the left join so the serie is empyt
                 continue;
             }
-            TournamentSerieArrow arrowData = new TournamentSerieArrow();
-            currentSerie.arrows.add(arrowData);
-            arrowData.score = cursor.getInt(2);
-            currentSerie.totalScore += arrowData.score;
 
+            TournamentSerieArrow arrowData = new TournamentSerieArrow();
+            arrowData.score = cursor.getInt(2);
             arrowData.xPosition = cursor.getInt(3);
             arrowData.yPosition = cursor.getInt(4);
             arrowData.isX = (cursor.getInt(5) == 1);
             arrowData.id = cursor.getInt(6);
+
+            currentSerie.arrows.add(arrowData);
+            currentSerie.totalScore += arrowData.score;
         }
 
         return res;
@@ -184,9 +186,11 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
     public TournamentSerie createNewSerie(Tournament tournamet) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT max(" + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ") " +
-                        "FROM " + TournamentSerieConsts.TABLE_NAME + " " +
-                        "WHERE " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?",
+                "SELECT " +
+                    "MAX(" + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ") " +
+                "FROM " + TournamentSerieConsts.TABLE_NAME + " " +
+                "WHERE " +
+                    TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(tournamet.id)}
         );
         boolean hasData = cursor.moveToNext();

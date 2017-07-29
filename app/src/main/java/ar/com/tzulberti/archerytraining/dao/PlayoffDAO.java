@@ -259,7 +259,6 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         // update the current instance of the tournament information
         playoffSerie.playoff.opponentPlayoffScore += updatePlayoffSerieScore.opponentPoints;
         playoffSerie.playoff.userPlayoffScore += updatePlayoffSerieScore.userPoints;
-        Log.e("foobar", String.format("%s - %s", playoffSerie.playoff.opponentPlayoffScore, playoffSerie.playoff.userPlayoffScore));
     }
 
     public void deletePlayoff(long playoffId) {

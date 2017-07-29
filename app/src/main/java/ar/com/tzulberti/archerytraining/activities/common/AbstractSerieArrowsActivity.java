@@ -350,7 +350,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
             transitionSerie = this.createNewSerie();
         }
 
-        Intent intent = new Intent(this, AbstractSerieArrowsActivity.class);
+        Intent intent = new Intent(this, this.getClass());
         intent.putExtra(AbstractSerieArrowsActivity.SERIE_ARGUMENT_KEY, transitionSerie);
         startActivity(intent);
     }
@@ -397,8 +397,6 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     @Override
     public void onBackPressed() {
         if (this.canGoBack()) {
-            super.onBackPressed();
-        } else {
             super.onBackPressed();
         }
     }

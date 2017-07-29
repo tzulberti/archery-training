@@ -8,6 +8,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -26,6 +27,7 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
+ * Foobar
  * Created by tzulberti on 5/19/17.
  */
 
@@ -40,11 +42,9 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         this.createDAOs();
         setContentView(R.layout.tournament_view_series);
 
-
         this.tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
 
         final ViewTournamentSeriesActivity self = this;
-
 
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
         if (this.tournament.series.size() == (this.tournament.tournamentConstraint.seriesPerRound * 2)) {
@@ -94,7 +94,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
 
             TextView serieIndexText = new TextView(this);
             serieIndexText.setText(getString(R.string.tournament_serie_current_serie, data.index));
-            serieIndexText.setGravity(Gravity.LEFT);
+            serieIndexText.setGravity(Gravity.START);
 
             tr.addView(serieIndexText);
 
@@ -104,6 +104,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
                 arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
                 arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
                 arrowScoreText.setBackgroundResource(R.drawable.rounded);
+
                 arrowScoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(arrowData.score), PorterDuff.Mode.SRC_IN));
                 arrowScoreText.setPadding(10, 0, 10, 0);
                 arrowScoreText.setGravity(Gravity.CENTER);
