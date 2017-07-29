@@ -3,7 +3,6 @@ package ar.com.tzulberti.archerytraining.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,9 +10,6 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
@@ -132,7 +128,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                         TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME + " " +
                    "FROM " +  TournamentSerieConsts.TABLE_NAME  + " " +
                    "LEFT JOIN " + TournamentSerieArrowConsts.TABLE_NAME + " " +
-                        "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
+                        "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " " +
                    "WHERE " +
                          TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?" +
                    "ORDER BY " +
@@ -231,7 +227,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         // delete the arrow information is there is any
         int deletedArrows = db.delete(
                 TournamentSerieArrowConsts.TABLE_NAME,
-                TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ?",
+                TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + "= ?",
                 new String[]{String.valueOf(tournamentSerie.id)}
         );
 
@@ -269,7 +265,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
             ContentValues contentValuesArrow = new ContentValues();
             contentValuesArrow.put(TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
-            contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME, tournamentSerie.id);
+            contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.id);
             contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
             contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
             contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
@@ -322,7 +318,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         db.delete(
                 TournamentSerieArrowConsts.TABLE_NAME,
-                TournamentSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ? ",
+                TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(tournamentSerieId)}
         );
 
