@@ -12,15 +12,75 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity
-            android:name="ar.com.tzulberti.archerytraining.MainActivity"
-            android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar"
+            android:name="ar.com.tzulberti.archerytraining.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <!-- Tournament activities -->
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.MainActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.AddTournamentActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewAllTournamentTargetArrowActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentArrowStatsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentScoreSheetActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentSeriesActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentsStatsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+
+
     </application>
 
 
