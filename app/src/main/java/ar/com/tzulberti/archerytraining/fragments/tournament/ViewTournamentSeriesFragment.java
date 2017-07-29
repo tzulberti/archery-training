@@ -52,27 +52,32 @@ public class ViewTournamentSeriesFragment extends BaseTournamentFragment {
 
 
         FloatingActionButton fab = (FloatingActionButton) view.findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        if (this.tournament.series.size() == (this.tournament.tournamentConstraint.seriesPerRound * 2)) {
+            fab.setVisibility(View.GONE);
+        } else {
+            fab.setOnClickListener(new View.OnClickListener() {
 
-            @Override public void onClick(View view) {
-                // make sure that the user can add another serie to this tournament
-                TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
-                if (tournamentSerie == null) {
-                    // TODO show message to the user
-                    return ;
+                @Override
+                public void onClick(View view) {
+                    // make sure that the user can add another serie to this tournament
+                    TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
+                    if (tournamentSerie == null) {
+                        // TODO show message to the user
+                        return;
+                    }
+
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
+                    ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
+                    viewSerieInformationFragment.setArguments(bundle);
+
+                    FragmentManager fragmentManager = activity.getSupportFragmentManager();
+                    fragmentManager.beginTransaction()
+                            .replace(R.id.container, viewSerieInformationFragment)
+                            .commit();
                 }
-
-                Bundle bundle = new Bundle();
-                bundle.putSerializable(ViewSerieInformationFragment.SERIE_ARGUMENT_KEY, tournamentSerie);
-                ViewSerieInformationFragment viewSerieInformationFragment = new ViewSerieInformationFragment();
-                viewSerieInformationFragment.setArguments(bundle);
-
-                FragmentManager fragmentManager = activity.getSupportFragmentManager();
-                fragmentManager.beginTransaction()
-                        .replace(R.id.container, viewSerieInformationFragment)
-                        .commit();
-            }
-        });
+            });
+        }
 
 
         this.dataContainer = (TableLayout) view.findViewById(R.id.tournament_series_list);
