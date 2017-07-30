@@ -119,6 +119,45 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.com.tzulberti.archerytraining.activities.retentions.ConfigureRetentionActivity" />
         </activity>
+
+        <!-- Playoff -->
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.MainActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.AddPlayoffActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.ViewPlayoffSerieInformationActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.ViewPlayoffSeriesActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.ViewPlayoffStatsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
+        </activity>
+
+        
     </application>
 
 

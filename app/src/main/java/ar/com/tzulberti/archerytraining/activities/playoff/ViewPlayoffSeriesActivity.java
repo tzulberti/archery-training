@@ -56,7 +56,7 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
 
 
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        if (this.playoff.series.size() < 5 || this.playoff.opponentPlayoffScore >= 6 || this.playoff.userPlayoffScore >= 6) {
+        if (this.playoff.series.size() >= 5 || this.playoff.opponentPlayoffScore >= 6 || this.playoff.userPlayoffScore >= 6) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setOnClickListener(new View.OnClickListener() {

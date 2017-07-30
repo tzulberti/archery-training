@@ -26,8 +26,6 @@ import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
 public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
 
-    protected PlayoffDAO playoffDAO;
-
 
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {

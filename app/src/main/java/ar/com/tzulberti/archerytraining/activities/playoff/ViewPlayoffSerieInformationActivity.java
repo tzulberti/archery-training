@@ -25,9 +25,6 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
 
 public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActivity {
 
-    private PlayoffDAO playoffDAO;
-    private SerieDataDAO serieDataDAO;
-
     private EditText opponentScoreEdit;
 
     @Override

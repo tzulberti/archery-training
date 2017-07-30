@@ -133,6 +133,7 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         this.hideKeyboard();
 
         Intent intent = new Intent(this, ViewPlayoffSeriesActivity.class);
+        intent.putExtra("creating", true);
         intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, playoff);
         startActivity(intent);
     }
