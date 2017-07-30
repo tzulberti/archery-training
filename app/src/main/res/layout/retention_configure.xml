@@ -71,7 +71,7 @@
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
-            android:onClick="onClick"
+            android:onClick="startRetentions"
             android:layout_weight="1"
             android:text="@string/buttonStart"
             />
