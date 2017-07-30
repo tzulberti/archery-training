@@ -49,7 +49,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:onClick="onClick"
+            android:onClick="createTournament"
             android:text="@string/tournament_start" />
     </TableRow>
 

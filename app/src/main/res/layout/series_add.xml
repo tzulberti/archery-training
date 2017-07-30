@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/serie_add_table_layout"
+    android:stretchColumns="*">
+
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieDistance" />
+
+        <EditText
+            android:id="@+id/distance"
+            android:gravity="right"
+            android:inputType="number" />
+
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieArrowsAmount" />
+
+        <EditText
+            android:id="@+id/arrowsAmount"
+            android:gravity="right"
+            android:inputType="number" />
+    </TableRow>
+
+
+    <TableRow android:layout_width="match_parent">
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:onClick="addNewSerie"
+            android:text="@string/addSerieAdd" />
+    </TableRow>
+
+    <TableRow android:layout_width="match_parent">
+
+        <TextView
+            android:layout_weight="1"
+            android:padding="3dip"
+            android:text="@string/addSerieLastSerie"
+            android:textAlignment="center" />
+    </TableRow>
+
+
+    <TableRow>
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieDistance" />
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieArrowsAmountTableHeader" />
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieDatetime" />
+    </TableRow>
+
+
+    <TableRow>
+
+        <TextView
+            android:id="@+id/lastDistance"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/lastArrowsAmount"
+            android:padding="3dip" />
+
+        <TextView
+            android:id="@+id/lastDatetime"
+            android:padding="3dip" />
+    </TableRow>
+
+    <TableRow>
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieTodayTotals" />
+
+        <TextView
+            android:id="@+id/todayTotals"
+            android:padding="3dip" />
+    </TableRow>
+</TableLayout>
+
+
+

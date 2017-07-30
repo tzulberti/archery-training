@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    >
+
+    <Button
+        android:id="@+id/main_activity_series"
+        android:text="@string/series"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToMainOption"
+        />
+
+    <Button
+        android:id="@+id/main_activity_today_retentions"
+        android:text="@string/leftMenuRetentions"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToMainOption"
+        />
+
+
+    <Button
+        android:id="@+id/main_activity_today_tournament"
+        android:text="@string/leftMenuTournament"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToMainOption"
+        />
+
+
+    <Button
+        android:id="@+id/main_activity_playoff"
+        android:text="@string/playoff"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToMainOption"
+        />
+
+    <Button
+        android:id="@+id/main_activity_bow"
+        android:text="@string/bow"
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:onClick="goToMainOption"
+        />
+
+
+
+</LinearLayout>
+
