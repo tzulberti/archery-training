@@ -157,7 +157,23 @@
                 android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
         </activity>
 
-        
+
+        <!-- Retentions -->
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.MainActivity" />
+        </activity>
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.bow.ViewBowActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity" />
+        </activity>
+
     </application>
 
 

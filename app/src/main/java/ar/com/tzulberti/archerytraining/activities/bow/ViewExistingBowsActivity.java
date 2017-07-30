@@ -20,8 +20,6 @@ import ar.com.tzulberti.archerytraining.model.bow.Bow;
 
 public class ViewExistingBowsActivity extends AbstractTableDataActivity {
 
-    private BowDAO bowDAO;
-
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {
 
