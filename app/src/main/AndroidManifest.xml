@@ -52,13 +52,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
         </activity>
-        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentArrowStatsActivity"
-            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
-            <!-- The meta-data tag is required if you support API level 15 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
-        </activity>
         <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentScoreSheetActivity"
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
@@ -175,6 +168,9 @@
                 android:value="ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity" />
         </activity>
 
+        <!-- Common activities -->
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity">
+        </activity>
     </application>
 
 
