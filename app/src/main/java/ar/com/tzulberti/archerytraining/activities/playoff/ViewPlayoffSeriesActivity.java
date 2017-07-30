@@ -27,7 +27,6 @@ import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsAct
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 
 import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
-import ar.com.tzulberti.archerytraining.activities.tournament.ViewAllTournamentTargetArrowActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentScoreSheetActivity;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
@@ -143,7 +142,7 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
         }
 
         int span = 1;
-        if (! this.playoff.series.isEmpty()) {
+        if (!this.playoff.series.isEmpty()) {
             // the +2 is because the series index and the total score
             span = this.playoff.tournamentConstraint.arrowsPerSeries + 2;
         }
@@ -155,20 +154,9 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
         trParams.span = span;
 
 
+        boolean buttonsEnabled = !this.playoff.series.isEmpty();
 
-        boolean buttonsEnabled = ! this.playoff.series.isEmpty();
         /*
-        // add the buttons to delete/view charts for the tournament
-        TableRow tr1 = new TableRow(context);
-        Button viewChartsButton = new Button(context);
-        viewChartsButton.setId(Integer.MAX_VALUE - 1);
-        viewChartsButton.setText(R.string.tournament_view_all_impacts);
-        viewChartsButton.setLayoutParams(trParams);
-        viewChartsButton.setOnClickListener(this);
-        viewChartsButton.setEnabled(buttonsEnabled);
-        tr1.addView(viewChartsButton);
-        this.dataContainer.addView(tr1);
-
         TableRow tr2 = new TableRow(context);
         Button viewScoreSheetButton = new Button(context);
         viewScoreSheetButton.setId(Integer.MAX_VALUE - 2);
@@ -182,7 +170,7 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
 
         TableRow tr3 = new TableRow(this);
         Button viewTournamentArrowStats = new Button(this);
-        viewTournamentArrowStats.setId(Integer.MAX_VALUE - 3);
+        viewTournamentArrowStats.setId(Integer.MAX_VALUE - 2);
         viewTournamentArrowStats.setText(R.string.tournament_view_arrow_stats);
         viewTournamentArrowStats.setLayoutParams(trParams);
         viewTournamentArrowStats.setOnClickListener(this);
@@ -209,15 +197,12 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2 || id == Integer.MAX_VALUE -3 ) {
+        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2) {
             Intent intent = null;
             if (id == Integer.MAX_VALUE - 1) {
-                intent = new Intent(this, ViewAllTournamentTargetArrowActivity.class);
-
-            } else if (id == Integer.MAX_VALUE - 2) {
                 intent = new Intent(this, ViewTournamentScoreSheetActivity.class);
 
-            } else if (id == Integer.MAX_VALUE - 3) {
+            } else if (id == Integer.MAX_VALUE - 2) {
                 intent = new Intent(this, ContainerStatsActivity.class);
             }
 

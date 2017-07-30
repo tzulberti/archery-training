@@ -1,11 +1,22 @@
 package ar.com.tzulberti.archerytraining.activities.common;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewTreeObserver;
+import android.widget.ImageView;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import com.edmodo.rangebar.RangeBar;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -26,6 +37,7 @@ import java.util.List;
 import java.util.Map;
 
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
@@ -38,6 +50,18 @@ import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
  */
 public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
+    private ImageView targetImageView;
+    private RangeBar rangeBar;
+    private TextView seriesShowingText;
+
+    private Bitmap imageBitmap;
+
+    private Paint finalImpactPaint;
+    private Paint centerPointPaint;
+
+    private ISerieContainer container;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,31 +69,122 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         setContentView(R.layout.common_view_container_arrow_stats);
 
 
-        ISerieContainer container = (ISerieContainer) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
+        this.container = (ISerieContainer) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
+        this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
+        this.rangeBar = (RangeBar) this.findViewById(R.id.tournament_series_rangebar);
+        this.seriesShowingText = (TextView) this.findViewById(R.id.tournament_series_showing);
 
-        this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), container);
-        this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), container);
-        this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), container);
+
+        this.finalImpactPaint = new Paint();
+        this.finalImpactPaint.setAntiAlias(true);
+        this.finalImpactPaint.setColor(Color.LTGRAY);
+
+        this.centerPointPaint = new Paint();
+        this.centerPointPaint.setAntiAlias(true);
+        this.centerPointPaint.setColor(Color.GREEN);
+
+
+        ViewTreeObserver vto = this.targetImageView.getViewTreeObserver();
+        vto.addOnPreDrawListener(new ViewTreeObserver.OnPreDrawListener() {
+
+            @Override
+            public boolean onPreDraw() {
+                targetImageView.getViewTreeObserver().removeOnPreDrawListener(this);
+                initializeValues();
+                return true;
+            }
+        });
     }
 
 
-    private void renderSeriesChart(LineChart lineChart, ISerieContainer container) {
+    protected void initializeValues() {
+        BitmapFactory.Options myOptions = new BitmapFactory.Options();
+        myOptions.inScaled = false;
+        myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
+
+        if (this.container.getSeries().size() > 1) {
+            this.rangeBar.setTickCount(this.container.getSeries().size());
+            this.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
+                @Override
+                public void onIndexChangeListener(RangeBar rangeBar, int start, int end) {
+                    showSeries(start +1 , end +1);
+                }
+            });
+        } else {
+            this.rangeBar.setVisibility(View.INVISIBLE);
+        }
+
+        this.imageBitmap = Bitmap.createBitmap(bitmap);
+        this.showSeries(1, this.container.getSeries().size());
+    }
+
+
+    private void showSeries(int minSerie, int maxSerie) {
+        List<ISerie> series = new ArrayList<>();
+
+        for (ISerie serie : this.container.getSeries()) {
+            if (minSerie <= serie.getIndex() && serie.getIndex() <= maxSerie) {
+                series.add(serie);
+            }
+        }
+
+        Log.e("foobar", String.format("MinSerie: %s, MaxSerie: %s, LegSeries: %s", minSerie, maxSerie, series.size()));
+        this.showTargetImpacts(series);
+        this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), series);
+        this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), series);
+        this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), series);
+
+        this.seriesShowingText.setText(getString(R.string.common_container_stats_showing_series, minSerie, maxSerie));
+    }
+
+    private void showTargetImpacts(List<ISerie> series) {
+        Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
+        int numberOfArrows = 0;
+        int sumX = 0;
+        int sumY = 0;
+
+        for (ISerie serie : series) {
+            for (AbstractArrow arrow : serie.getArrows()) {
+                this.addTargetImpact(arrow.xPosition, arrow.yPosition, mutableBitmap, this.finalImpactPaint);
+                sumX += arrow.xPosition;
+                sumY += arrow.yPosition;
+                numberOfArrows += 1;
+            }
+        }
+
+        if (numberOfArrows > 0) {
+            this.addTargetImpact(sumX / numberOfArrows, sumY / numberOfArrows, mutableBitmap, this.centerPointPaint);
+        }
+    }
+
+
+    private void addTargetImpact(float x, float y, Bitmap mutableBitmap, Paint impactPaint) {
+        Canvas canvas = new Canvas(mutableBitmap);
+        canvas.drawCircle(x, y, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS, impactPaint);
+
+        this.targetImageView.setAdjustViewBounds(true);
+        this.targetImageView.setImageBitmap(mutableBitmap);
+    }
+
+
+    private void renderSeriesChart(LineChart lineChart, List<ISerie> series) {
         List<Entry> entries = new ArrayList<>();
 
-        for (ISerie serie : container.getSeries()) {
+        for (ISerie serie : series) {
             entries.add(new Entry(serie.getIndex(), serie.getTotalScore()));
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Label");
         LineData lineData = new LineData(dataSet);
 
-
         XAxis xl = lineChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
         xl.setGranularity(1);
-        xl.setLabelCount(container.getSeries().size());
+        xl.setLabelCount(series.size());
 
         YAxis yl = lineChart.getAxisLeft();
         yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
@@ -88,9 +203,9 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         lineChart.invalidate();
     }
 
-    private void renderArrowsChart(HorizontalBarChart horizontalBarChart, ISerieContainer container) {
+    private void renderArrowsChart(HorizontalBarChart horizontalBarChart, List<ISerie> series) {
         Map<String, Integer> arrowsCounter = new HashMap<>();
-        for (ISerie serie : container.getSeries()) {
+        for (ISerie serie : series) {
             for (AbstractArrow arrow : serie.getArrows()) {
                 String score = TournamentHelper.getUserScore(arrow.score, arrow.isX);
                 Integer existingCounts = arrowsCounter.get(score);
@@ -165,10 +280,18 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
     }
 
 
-    private void showTableValues(TableLayout tableLayout, ISerieContainer container) {
+    private void showTableValues(TableLayout tableLayout, List<ISerie> series) {
         List<Integer> allArrowScore = new ArrayList<>();
         List<Integer> allSeriesScores = new ArrayList<>();
-        for (ISerie serie : container.getSeries()) {
+
+        // remove all the rows from the table with the exception of the header
+        int count = tableLayout.getChildCount();
+        for (int i = 1; i < count; i++) {
+            View child = tableLayout.getChildAt(i);
+            if (child instanceof TableRow) ((ViewGroup) child).removeAllViews();
+        }
+
+        for (ISerie serie : series) {
             for (AbstractArrow arrow : serie.getArrows()) {
                 allArrowScore.add(arrow.score);
             }

@@ -15,7 +15,7 @@
     <string name="commonRequiredValidationError">Requerido</string>
     <string name="commonDelete">Borrar</string>
     <string name="common_confirmation_dialog_title">Confirmación</string>
-
+    <string name="common_container_stats_showing_series">Serie %1$d a %2$d</string>
 
     <!-- training type translation -->
     <string name="training_type_free">Libre</string>
@@ -123,9 +123,7 @@
     <string name="tournament_serie_previous">Anterior</string>
     <string name="tournament_serie_undo">Deshacer</string>
     <string name="tournament_serie_end">Terminar</string>
-    <string name="tournament_serie_showing_series">Serie %1$d to %2$d</string>
     <string name="tournament_confirm_delete_tournament">¿Queres borrar este torneo?</string>
-    <string name="tournament_view_all_impacts">Ver todos los impactos</string>
     <string name="tournament_view_score_sheet">Ver planilla</string>
     <string name="tournament_view_arrow_stats">Ver estadisticas</string>
     <string name="tournament_view_tournament_delete">Borrar</string>
