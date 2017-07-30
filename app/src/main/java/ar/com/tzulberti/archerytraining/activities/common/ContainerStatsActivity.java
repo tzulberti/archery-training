@@ -1,12 +1,10 @@
-package ar.com.tzulberti.archerytraining.activities.tournament;
-
+package ar.com.tzulberti.archerytraining.activities.common;
 
 import android.content.Context;
 import android.os.Bundle;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
-
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
@@ -28,39 +26,38 @@ import java.util.List;
 import java.util.Map;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
-import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
-import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
+import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
+import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 
 /**
- * Created by tzulberti on 5/30/17.
+ * Used to show the stats for one tournamnent/playoff
+ *
+ * Created by tzulberti on 7/30/17.
  */
-
-public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivity {
+public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.createDAOs();
-        setContentView(R.layout.tournament_view_tournament_arrow_stats);
+        setContentView(R.layout.common_view_container_arrow_stats);
 
 
-        Tournament tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
+        ISerieContainer container = (ISerieContainer) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
 
-        this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), tournament);
-        this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), tournament);
-        this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), tournament);
+        this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), container);
+        this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), container);
+        this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), container);
     }
 
 
-    private void renderSeriesChart(LineChart lineChart, Tournament tournament) {
-        List<Entry> entries = new ArrayList<Entry>();
+    private void renderSeriesChart(LineChart lineChart, ISerieContainer container) {
+        List<Entry> entries = new ArrayList<>();
 
-        for (TournamentSerie serie : tournament.series) {
-            entries.add(new Entry(serie.index, serie.totalScore));
+        for (ISerie serie : container.getSeries()) {
+            entries.add(new Entry(serie.getIndex(), serie.getTotalScore()));
         }
 
         LineDataSet dataSet = new LineDataSet(entries, "Label");
@@ -72,7 +69,7 @@ public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivit
         xl.setDrawAxisLine(true);
         xl.setDrawGridLines(false);
         xl.setGranularity(1);
-        xl.setLabelCount(tournament.series.size());
+        xl.setLabelCount(container.getSeries().size());
 
         YAxis yl = lineChart.getAxisLeft();
         yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
@@ -91,10 +88,10 @@ public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivit
         lineChart.invalidate();
     }
 
-    private void renderArrowsChart(HorizontalBarChart horizontalBarChart, Tournament tournament) {
+    private void renderArrowsChart(HorizontalBarChart horizontalBarChart, ISerieContainer container) {
         Map<String, Integer> arrowsCounter = new HashMap<>();
-        for (TournamentSerie serie : tournament.series) {
-            for (TournamentSerieArrow arrow : serie.arrows) {
+        for (ISerie serie : container.getSeries()) {
+            for (AbstractArrow arrow : serie.getArrows()) {
                 String score = TournamentHelper.getUserScore(arrow.score, arrow.isX);
                 Integer existingCounts = arrowsCounter.get(score);
                 if (existingCounts == null) {
@@ -110,8 +107,8 @@ public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivit
 
         int maxCounter = 0;
         for (int i = 0; i < 12; i++) {
-            String score = null;
-            Integer color = null;
+            String score;
+            Integer color;
             if (i == 11) {
                 score = TournamentHelper.getUserScore(10, true);
                 color = TournamentHelper.getBackground(10);
@@ -168,14 +165,14 @@ public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivit
     }
 
 
-    private void showTableValues(TableLayout tableLayout, Tournament tournament) {
+    private void showTableValues(TableLayout tableLayout, ISerieContainer container) {
         List<Integer> allArrowScore = new ArrayList<>();
         List<Integer> allSeriesScores = new ArrayList<>();
-        for (TournamentSerie serie : tournament.series) {
-            for (TournamentSerieArrow arrow : serie.arrows) {
+        for (ISerie serie : container.getSeries()) {
+            for (AbstractArrow arrow : serie.getArrows()) {
                 allArrowScore.add(arrow.score);
             }
-            allSeriesScores.add(serie.totalScore);
+            allSeriesScores.add(serie.getTotalScore());
         }
 
         TableRow trArrows = new TableRow(this);
@@ -229,5 +226,4 @@ public class ViewTournamentArrowStatsActivity extends BaseArcheryTrainingActivit
         tr.addView(meanTextView);
         tr.addView(maxTextView);
     }
-
 }
