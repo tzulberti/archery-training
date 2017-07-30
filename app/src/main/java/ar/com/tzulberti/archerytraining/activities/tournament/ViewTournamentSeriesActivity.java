@@ -8,7 +8,6 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
-import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -21,13 +20,14 @@ import android.widget.TextView;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
+import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
- * Foobar
+ * For one tournament shows all the series and the different options
  * Created by tzulberti on 5/19/17.
  */
 
@@ -118,7 +118,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
             totalScoreText.setGravity(Gravity.CENTER);
 
             tr.addView(totalScoreText);
-            tr.setId((int) data.index);
+            tr.setId(data.index);
             tr.setOnClickListener(this);
 
             this.dataContainer.addView(tr);
@@ -189,9 +189,6 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
 
         if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2 || id == Integer.MAX_VALUE -3 ) {
             // selected the option to view all impacts for the current tournament
-            Bundle bundle = new Bundle();
-            bundle.putSerializable(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.tournament);
-
             Intent intent = null;
             if (id == Integer.MAX_VALUE - 1) {
                 intent = new Intent(this, ViewAllTournamentTargetArrowActivity.class);
@@ -200,7 +197,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
                 intent = new Intent(this, ViewTournamentScoreSheetActivity.class);
 
             } else if (id == Integer.MAX_VALUE - 3) {
-                intent = new Intent(this, ViewTournamentArrowStatsActivity.class);
+                intent = new Intent(this, ContainerStatsActivity.class);
             }
 
             intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.tournament);

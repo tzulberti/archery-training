@@ -40,7 +40,7 @@ import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
  * Created by tzulberti on 6/25/17.
  */
 
-public abstract class AbstractArrowSeriesStatsActivity extends BaseArcheryTrainingActivity implements AdapterView.OnItemSelectedListener {
+public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainingActivity implements AdapterView.OnItemSelectedListener {
 
     protected BaseArrowSeriesDAO baseArrowSeriesDAO;
     protected HorizontalBarChart seriesStatsHorizontalBarChart;
