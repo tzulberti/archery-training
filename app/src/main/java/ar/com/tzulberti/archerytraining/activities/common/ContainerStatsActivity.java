@@ -7,7 +7,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -58,6 +57,7 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
     private Paint finalImpactPaint;
     private Paint centerPointPaint;
+    private Paint impactsAreaPaint;
 
     private ISerieContainer container;
 
@@ -82,6 +82,14 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         this.centerPointPaint = new Paint();
         this.centerPointPaint.setAntiAlias(true);
         this.centerPointPaint.setColor(Color.GREEN);
+
+
+        this.impactsAreaPaint = new Paint();
+        this.impactsAreaPaint.setStrokeWidth(3);
+        this.impactsAreaPaint.setStyle(Paint.Style.STROKE);
+        this.impactsAreaPaint.setColor(Color.GREEN);
+        this.impactsAreaPaint.setAlpha(255);
+        this.impactsAreaPaint.setAntiAlias(true);
 
 
         ViewTreeObserver vto = this.targetImageView.getViewTreeObserver();
@@ -130,7 +138,6 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
             }
         }
 
-        Log.e("foobar", String.format("MinSerie: %s, MaxSerie: %s, LegSeries: %s", minSerie, maxSerie, series.size()));
         this.showTargetImpacts(series);
         this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), series);
         this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), series);
@@ -145,9 +152,10 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         int sumX = 0;
         int sumY = 0;
 
+
         for (ISerie serie : series) {
             for (AbstractArrow arrow : serie.getArrows()) {
-                this.addTargetImpact(arrow.xPosition, arrow.yPosition, mutableBitmap, this.finalImpactPaint);
+                this.addTargetImpact(arrow.xPosition, arrow.yPosition, mutableBitmap, this.finalImpactPaint, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS);
                 sumX += arrow.xPosition;
                 sumY += arrow.yPosition;
                 numberOfArrows += 1;
@@ -155,14 +163,29 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         }
 
         if (numberOfArrows > 0) {
-            this.addTargetImpact(sumX / numberOfArrows, sumY / numberOfArrows, mutableBitmap, this.centerPointPaint);
+            float maxDistance = 0;
+            float centerX = sumX / numberOfArrows;
+            float centerY = sumY / numberOfArrows;
+
+            this.addTargetImpact(centerX, centerY, mutableBitmap, this.centerPointPaint, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS);
+
+            for (ISerie serie : series) {
+                for (AbstractArrow arrow : serie.getArrows()) {
+                    double currentArrowDistance = Math.sqrt(Math.pow(arrow.xPosition - centerX, 2) + Math.pow(arrow.yPosition - centerY, 2));
+                    if (currentArrowDistance > maxDistance) {
+                        maxDistance = (float) currentArrowDistance;
+                    }
+                }
+            }
+
+            this.addTargetImpact(centerX, centerY, mutableBitmap, this.impactsAreaPaint, maxDistance);
         }
     }
 
 
-    private void addTargetImpact(float x, float y, Bitmap mutableBitmap, Paint impactPaint) {
+    private void addTargetImpact(float x, float y, Bitmap mutableBitmap, Paint impactPaint, float radiusSize) {
         Canvas canvas = new Canvas(mutableBitmap);
-        canvas.drawCircle(x, y, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS, impactPaint);
+        canvas.drawCircle(x, y, radiusSize, impactPaint);
 
         this.targetImageView.setAdjustViewBounds(true);
         this.targetImageView.setImageBitmap(mutableBitmap);
