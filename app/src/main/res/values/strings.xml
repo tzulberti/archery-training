@@ -17,6 +17,7 @@
     <string name="commonRequiredValidationError">Required</string>
     <string name="commonDelete">Delete</string>
     <string name="common_confirmation_dialog_title">Confirmation</string>
+    <string name="common_container_stats_showing_series">Serie %1$d to %2$d</string>
 
     <!-- training type translation -->
     <string name="training_type_free">Free training</string>
@@ -124,9 +125,7 @@
     <string name="tournament_serie_previous">Previous</string>
     <string name="tournament_serie_undo">Undo</string>
     <string name="tournament_serie_end">End</string>
-    <string name="tournament_serie_showing_series">Serie %1$d to %2$d</string>
     <string name="tournament_confirm_delete_tournament">Do you want to delete this tournament?</string>
-    <string name="tournament_view_all_impacts">View all impacts</string>
     <string name="tournament_view_score_sheet">View score sheet</string>
     <string name="tournament_view_arrow_stats">View stats</string>
     <string name="tournament_view_tournament_delete">Delete</string>
