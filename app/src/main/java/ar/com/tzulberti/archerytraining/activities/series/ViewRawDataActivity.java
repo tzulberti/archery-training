@@ -26,9 +26,6 @@ public class ViewRawDataActivity extends AbstractTableDataActivity {
 
     private static final int MAX_VALUES_TO_SHOW = 20;
 
-    private SerieDataDAO serieDataDAO;
-
-
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(

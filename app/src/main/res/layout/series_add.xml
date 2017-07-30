@@ -38,7 +38,7 @@
             android:id="@+id/button"
             android:layout_width="match_parent"
             android:layout_weight="1"
-            android:onClick="onClick"
+            android:onClick="addNewSerie"
             android:text="@string/addSerieAdd" />
     </TableRow>
 
