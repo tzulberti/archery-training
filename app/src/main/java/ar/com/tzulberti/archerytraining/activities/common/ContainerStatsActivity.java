@@ -321,6 +321,10 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
             allSeriesScores.add(serie.getTotalScore());
         }
 
+        if (allArrowScore.isEmpty()) {
+            return;
+        }
+
         TableRow trArrows = new TableRow(this);
         TextView arrowsText = new TextView(this);
         arrowsText.setText(getText(R.string.tournament_view_stats_arrow));
