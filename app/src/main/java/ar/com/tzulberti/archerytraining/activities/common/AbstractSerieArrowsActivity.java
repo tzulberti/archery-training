@@ -309,7 +309,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     public void undoLastArrow(View v) {
         TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
         scoreText.setText("");
-        scoreText.getBackground().setColorFilter(new PorterDuffColorFilter(Color.WHITE, PorterDuff.Mode.SRC_IN));
+        scoreText.setBackgroundResource(R.drawable.rounded);
 
         // remove the last added arrow
         AbstractArrow arrowToRemove = this.serie.getArrows().get(this.serie.getArrows().size() - 1);
