@@ -300,7 +300,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         // -2 is required because the first index is 1.
         ISerie transitionSerie = this.serie.getContainer().getSeries().get(this.serie.getIndex() - 2);
 
-        Intent intent = new Intent(this, AbstractSerieArrowsActivity.class);
+        Intent intent = new Intent(this, this.getClass());
         intent.putExtra(AbstractSerieArrowsActivity.SERIE_ARGUMENT_KEY, transitionSerie);
         startActivity(intent);
     }
