@@ -16,4 +16,5 @@ public class TournamentConstraintConsts {
     public static final String MIN_SCORE_COLUMN_NAME = "min_score";
     public static final String TARGET_IMAGE_COLUMN_NAME = "target_image";
     public static final String IS_OUTDOOR_COLUMN_NAME = "is_outdoor";
+    public static final String STRING_XML_KEY = "string_xml_key";
 }

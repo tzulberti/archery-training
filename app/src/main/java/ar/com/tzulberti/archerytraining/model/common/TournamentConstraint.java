@@ -16,8 +16,10 @@ public class TournamentConstraint implements Serializable {
     public int minScore;
     public String targetImage;
     public boolean isOutdoor;
+    public String stringXMLKey;
+    public String translatedName;
 
-    public TournamentConstraint(int id, String name, int distance, int seriesPerRound, int arrowsPerSeries, int minScore, String targetImage, boolean isOutdoor) {
+    public TournamentConstraint(int id, String name, int distance, int seriesPerRound, int arrowsPerSeries, int minScore, String targetImage, boolean isOutdoor, String stringXMLKey) {
         this.id = id;
         this.name = name;
         this.distance = distance;
@@ -26,5 +28,6 @@ public class TournamentConstraint implements Serializable {
         this.minScore = minScore;
         this.targetImage = targetImage;
         this.isOutdoor = isOutdoor;
+        this.stringXMLKey = stringXMLKey;
     }
 }

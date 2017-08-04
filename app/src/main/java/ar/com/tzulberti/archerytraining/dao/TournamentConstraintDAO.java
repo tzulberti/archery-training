@@ -53,7 +53,8 @@ public class TournamentConstraintDAO {
                     TournamentConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + ", " +
                     TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME + ", " +
                     TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " " +
+                    TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + ", " +
+                    TournamentConstraintConsts.STRING_XML_KEY + " " +
                 "FROM " +  TournamentConstraintConsts.TABLE_NAME + " " +
                 "ORDER BY " + TournamentConstraintConsts.ID_COLUMN_NAME,
                 null
@@ -69,7 +70,8 @@ public class TournamentConstraintDAO {
                     cursor.getInt(4),
                     cursor.getInt(5),
                     cursor.getString(6),
-                    cursor.getInt(7) == 1
+                    cursor.getInt(7) == 1,
+                    cursor.getString(8)
                 )
             );
         }

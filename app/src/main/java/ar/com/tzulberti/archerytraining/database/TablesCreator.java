@@ -51,7 +51,8 @@ public class TablesCreator {
                         TournamentConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL, " +
-                        TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL " +
+                        TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.STRING_XML_KEY + " STRING NOT NULL " +
                         ")"
         );
     }
