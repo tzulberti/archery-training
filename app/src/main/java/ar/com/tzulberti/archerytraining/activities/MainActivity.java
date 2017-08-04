@@ -31,7 +31,7 @@ public class MainActivity extends BaseArcheryTrainingActivity {
         );
 
         this.createDAOs();
-        AppCache.initialize(this.tournamentConstraintDAO);
+        AppCache.initialize(this.tournamentConstraintDAO, this.getResources(), this.getPackageName());
     }
 
 

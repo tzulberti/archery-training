@@ -1,5 +1,7 @@
 package ar.com.tzulberti.archerytraining.helper;
 
+import android.content.res.Resources;
+
 import java.util.ArrayList;
 
 import java.util.HashMap;
@@ -17,20 +19,27 @@ import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
  */
 public class AppCache {
 
+    public static final String TOURNAMENT_KEY_PREFIX = "tournament_";
+
     public static Map<Integer, TournamentConstraint> tournamentConstraintMap;
     public static Map<String, TournamentConstraint> tournamentConstraintSpinnerMap;
     public static List<String> tournamentTypes;
 
-    public static void initialize(TournamentConstraintDAO tournamentConstraintDAO) {
+    public static void initialize(TournamentConstraintDAO tournamentConstraintDAO, Resources resources, String packageName) {
 
         AppCache.tournamentConstraintMap = new HashMap<>();
         AppCache.tournamentConstraintSpinnerMap = new HashMap<>();
         AppCache.tournamentTypes = new ArrayList<>();
 
-
         for (TournamentConstraint tournamentConstraint : tournamentConstraintDAO.getValues()) {
-            tournamentTypes.add(tournamentConstraint.name);
-            tournamentConstraintSpinnerMap.put(tournamentConstraint.name, tournamentConstraint);
+            int nameId = resources.getIdentifier(TOURNAMENT_KEY_PREFIX + tournamentConstraint.stringXMLKey, "string", packageName);
+            String translatedName = tournamentConstraint.name;
+            if (nameId > 0) {
+                translatedName = resources.getString(nameId);
+            }
+            tournamentConstraint.translatedName = translatedName;
+            tournamentTypes.add(translatedName);
+            tournamentConstraintSpinnerMap.put(translatedName, tournamentConstraint);
             tournamentConstraintMap.put(tournamentConstraint.id, tournamentConstraint);
         }
 
