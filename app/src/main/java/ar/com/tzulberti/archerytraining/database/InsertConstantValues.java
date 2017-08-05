@@ -6,8 +6,10 @@ import android.database.sqlite.SQLiteDatabase;
 import java.util.ArrayList;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.database.consts.RoundConstraintConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
  * Used to insert all the fixture values into the database.
@@ -18,32 +20,74 @@ public class InsertConstantValues {
 
 
     public void insertAllFixtureData(SQLiteDatabase db) {
+        this.insertRoundConstrainInformation(db);
         this.insertTournamentConstrainsData(db);
+    }
+
+
+    public void insertRoundConstrainInformation(SQLiteDatabase db) {
+        List<RoundConstraint> roundConstraints = new ArrayList<RoundConstraint>();
+        roundConstraints.add(new RoundConstraint(1, 70, 6, 6, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(2, 60, 6, 6, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(3, 50, 6, 6, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(4, 30, 6, 6, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(5, 20, 6, 6, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(6, 50, 6, 6, 10, 6, "reduced_outdoor_target.png"));
+        roundConstraints.add(new RoundConstraint(7, 30, 6, 6, 10, 6, "reduced_outdoor_target.png"));
+        roundConstraints.add(new RoundConstraint(8, 20, 6, 6, 10, 6, "reduced_outdoor_target.png"));
+
+        roundConstraints.add(new RoundConstraint(9, 18, 10, 3, 10, 6, "triple_spot_target.png"));
+        // Has the information of the target 80cm, 40cm
+        roundConstraints.add(new RoundConstraint(10, 18, 10, 3, 10, 6, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(11, 12, 10, 3, 10, 6, "complete_archery_target.png"));
+
+
+        for (RoundConstraint roundConstraint : roundConstraints) {
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(RoundConstraintConsts.ID_COLUMN_NAME, roundConstraint.id);
+            contentValues.put(RoundConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME, roundConstraint.arrowsPerSeries);
+            contentValues.put(RoundConstraintConsts.DISTANCE_COLUMN_NAME, roundConstraint.distance);
+            contentValues.put(RoundConstraintConsts.MIN_SCORE_COLUMN_NAME, roundConstraint.minScore);
+            contentValues.put(RoundConstraintConsts.MAX_SCORE_COLUMN_NAME, roundConstraint.maxScore);
+            contentValues.put(RoundConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME, roundConstraint.seriesPerRound);
+            contentValues.put(RoundConstraintConsts.TARGET_IMAGE_COLUMN_NAME, roundConstraint.targetImage);
+
+
+            db.insertOrThrow(RoundConstraintConsts.TABLE_NAME, null, contentValues);
+        }
+
     }
 
     public void insertTournamentConstrainsData(SQLiteDatabase db) {
         List<TournamentConstraint> constraints = new ArrayList<TournamentConstraint>();
-        constraints.add(new TournamentConstraint(1, "FITA 70x70 - 70m", 70, 6, 6, 1, "complete_archery_target.png", false, "70_70_70m"));
-        constraints.add(new TournamentConstraint(2, "FITA 70x70 - 60m", 60, 6, 6, 1, "complete_archery_target.png", false, "70_70_60m"));
-        constraints.add(new TournamentConstraint(3, "FITA 70x70 - 50m", 50, 6, 6, 1, "complete_archery_target.png", false, "70_70_50m"));
-        constraints.add(new TournamentConstraint(4, "FITA 70x70 - 30m", 30, 6, 6, 1, "complete_archery_target.png", false, "70_70_30m"));
-        constraints.add(new TournamentConstraint(5, "FITA 70x70 - 20m", 20, 6, 6, 1, "complete_archery_target.png", false, "70_70_20m"));
-        constraints.add(new TournamentConstraint(100, "Indoor - 18m - Triple Spot", 18, 10, 3, 6, "triple_spot_target.png", true, "18_Triple_Spot"));
-        constraints.add(new TournamentConstraint(101, "Indoor - 18m - 40cm", 18, 10, 3, 1, "complete_archery_target.png", true, "18_40"));
-        constraints.add(new TournamentConstraint(102, "Indoor - 18m - 60cm", 18, 10, 3, 1, "complete_archery_target.png", true, "18_60"));
-        constraints.add(new TournamentConstraint(103, "Indoor - 18m - 80cm", 18, 10, 3, 1, "complete_archery_target.png", true, "18_80"));
+        constraints.add(new TournamentConstraint(1, "FITA 70x70 - 70m", true, "70_70_70m", 1, 1, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(20, "FITA 70x70 - 60m", true, "70_70_60m", 2, 2, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(30, "FITA 70x70 - 50m", true, "70_70_50m", 3, 3, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(40, "FITA 70x70 - 50m", true, "70_70_30m", 4, 4, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(50, "FITA 70x70 - 30m", true, "70_70_30m", 4, 4, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(60, "FITA 70x70 - 20m", true, "70_70_30m", 5, 5, 0, 0, 0, 0));
+
+
+        constraints.add(new TournamentConstraint(1000, "Indoor - 18m - Triple Spot", false, "18_Triple_Spot", 9, 9, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1010, "Indoor - 18m - 40cm", false, "18_40", 10, 10, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1020, "Indoor - 18m - 60cm", false, "18_60", 10, 10, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1030, "Indoor - 18m - 80cm", false, "18_80", 10, 10, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1040, "Indoor - 12m - 80cm", false, "12_80", 11, 10, 0, 0, 0, 0));
+
 
         for (TournamentConstraint tournamentConstraint : constraints) {
             ContentValues contentValues = new ContentValues();
             contentValues.put(TournamentConstraintConsts.ID_COLUMN_NAME, tournamentConstraint.id);
             contentValues.put(TournamentConstraintConsts.NAME_COLUMN_NAME, tournamentConstraint.name);
-            contentValues.put(TournamentConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME, tournamentConstraint.arrowsPerSeries);
-            contentValues.put(TournamentConstraintConsts.DISTANCE_COLUMN_NAME, tournamentConstraint.distance);
             contentValues.put(TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME, tournamentConstraint.isOutdoor ? 1: 0);
-            contentValues.put(TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME, tournamentConstraint.minScore);
-            contentValues.put(TournamentConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME, tournamentConstraint.seriesPerRound);
-            contentValues.put(TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME, tournamentConstraint.targetImage);
-            contentValues.put(TournamentConstraintConsts.STRING_XML_KEY, tournamentConstraint.stringXMLKey);
+            contentValues.put(TournamentConstraintConsts.STRING_XML_KEY_COLUMN_NAME, tournamentConstraint.stringXMLKey);
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME, tournamentConstraint.roundContraint1Id);
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME, tournamentConstraint.roundContraint2Id > 0 ? tournamentConstraint.roundContraint2Id :  null );
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME, tournamentConstraint.roundContraint3Id > 0 ? tournamentConstraint.roundContraint3Id :  null );
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME, tournamentConstraint.roundContraint4Id > 0 ? tournamentConstraint.roundContraint4Id :  null );
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME, tournamentConstraint.roundContraint5Id > 0 ? tournamentConstraint.roundContraint5Id :  null );
+            contentValues.put(TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME, tournamentConstraint.roundContraint6Id > 0 ? tournamentConstraint.roundContraint6Id :  null );
+
 
             db.insertOrThrow(TournamentConstraintConsts.TABLE_NAME, null, contentValues);
         }

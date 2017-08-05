@@ -14,7 +14,7 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**

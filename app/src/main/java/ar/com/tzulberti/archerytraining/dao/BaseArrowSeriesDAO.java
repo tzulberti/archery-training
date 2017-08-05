@@ -2,7 +2,6 @@ package ar.com.tzulberti.archerytraining.dao;
 
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,11 +10,9 @@ import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
  * Created by tzulberti on 6/26/17.

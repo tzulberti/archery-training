@@ -7,12 +7,14 @@ import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigura
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
+import ar.com.tzulberti.archerytraining.database.consts.RoundConstraintConsts;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.SightDistanceValueConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
+
 
 /**
  * Used to create all the tables when the application is started for the first time
@@ -27,6 +29,7 @@ import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
 public class TablesCreator {
 
     public void createAll(SQLiteDatabase db) {
+        this.createRoundConstraintTable(db);
         this.createTournamentConstraintTable(db);
         this.createSeriesTable(db);
         this.createTournamentTable(db);
@@ -41,18 +44,39 @@ public class TablesCreator {
     }
 
 
+    private void createRoundConstraintTable(SQLiteDatabase db) {
+        db.execSQL(
+                "CREATE TABLE " + RoundConstraintConsts.TABLE_NAME + " (" +
+                        RoundConstraintConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        RoundConstraintConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraintConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraintConsts.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL " +
+                        ")"
+        );
+    }
+
     private void createTournamentConstraintTable(SQLiteDatabase db) {
         db.execSQL(
                 "CREATE TABLE " + TournamentConstraintConsts.TABLE_NAME + " (" +
                         TournamentConstraintConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TournamentConstraintConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        TournamentConstraintConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL, " +
                         TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.STRING_XML_KEY + " STRING NOT NULL " +
+                        TournamentConstraintConsts.STRING_XML_KEY_COLUMN_NAME + " STRING NOT NULL, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " INTEGER, " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
                         ")"
         );
     }

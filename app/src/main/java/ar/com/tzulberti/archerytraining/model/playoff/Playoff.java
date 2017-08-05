@@ -6,7 +6,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
  * Created by tzulberti on 6/3/17.
