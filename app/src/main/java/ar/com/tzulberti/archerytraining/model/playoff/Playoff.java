@@ -9,9 +9,12 @@ import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
+ * Has the information of the playoff
+ *
+ * That is the part of the tournament when one shoots against the other
+ *
  * Created by tzulberti on 6/3/17.
  */
-
 public class Playoff implements ISerieContainer, Serializable{
 
     public long id;
@@ -32,9 +35,6 @@ public class Playoff implements ISerieContainer, Serializable{
 
     @Override
     public long getId() { return this.id; }
+    
 
-    @Override
-    public int getSerieMaxPossibleScore() {
-        return 30;
-    }
 }

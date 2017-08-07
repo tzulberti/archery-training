@@ -85,6 +85,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         contentValues.put(TournamentConsts.NAME_COLUMN_NAME, name);
         contentValues.put(TournamentConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
+        contentValues.put(TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME, (isTournament) ? 1 : 0);
         long id = db.insertOrThrow(TournamentConsts.TABLE_NAME, null, contentValues);
 
         Tournament res = new Tournament(id, name, DatetimeHelper.databaseValueToDate(databaseTimestamp));

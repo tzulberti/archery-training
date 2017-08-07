@@ -25,4 +25,24 @@ public class RoundConstraint {
         this.minScore = minScore;
         this.targetImage = targetImage;
     }
+
+    public int getSerieMaxPossibleScore() {
+        return this.arrowsPerSeries * this.maxScore;
+    }
+
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        RoundConstraint that = (RoundConstraint) o;
+
+        return id == that.id;
+    }
+
+    @Override
+    public int hashCode() {
+        return id;
+    }
 }

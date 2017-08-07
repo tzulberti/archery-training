@@ -7,12 +7,14 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
+ * Has the information of all the tournament
+ *
  * Created by tzulberti on 5/17/17.
  */
-
 public class Tournament implements ISerieContainer, Serializable {
 
     public long id;
@@ -32,7 +34,10 @@ public class Tournament implements ISerieContainer, Serializable {
         this.series = new ArrayList<>();
     }
 
-
+    @Override
+    public TournamentConstraint getTournamentConstraint() {
+        return this.tournamentConstraint;
+    }
 
     @Override
     public List<? extends ISerie> getSeries() {
@@ -42,12 +47,7 @@ public class Tournament implements ISerieContainer, Serializable {
     @Override
     public long getId() { return this.id; }
 
-    @Override
-    public int getSerieMaxPossibleScore() {
-        return this.tournamentConstraint.arrowsPerSeries * 10;
-    }
 
-    public int getMaxPossibleScore() {
-        return this.tournamentConstraint.arrowsPerSeries * 10 * 2 * this.tournamentConstraint.seriesPerRound;
-    }
+
+
 }

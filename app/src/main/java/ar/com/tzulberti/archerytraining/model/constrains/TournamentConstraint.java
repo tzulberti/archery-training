@@ -52,4 +52,47 @@ public class TournamentConstraint implements Serializable {
     public RoundConstraint getContraintForRound(int roundIndex) {
         return this.roundConstraintList.get(roundIndex -1);
     }
+
+
+    /**
+     * Gets the constraint for the current serie
+     *
+     * @param serieIndex the serie index for which get the constraint. This value starts at 1
+     * @return the round constraint for that serie
+     */
+    public RoundConstraint getConstraintForSerie(int serieIndex) {
+        int acumSeries = 0;
+        for (RoundConstraint roundConstraint : this.roundConstraintList) {
+            if (serieIndex < acumSeries && roundConstraint.seriesPerRound + acumSeries <= serieIndex) {
+                return roundConstraint;
+            } else {
+                acumSeries += roundConstraint.seriesPerRound;
+            }
+        }
+        return null;
+    }
+
+    /**
+     *
+     * @return the max score possible taking into account the max value for each round
+     */
+    public int getMaxPossibleScore() {
+        int maxScore = 0;
+        for (RoundConstraint roundConstraint : this.roundConstraintList) {
+            maxScore += roundConstraint.maxScore * roundConstraint.arrowsPerSeries;
+        }
+        return maxScore;
+    }
+
+    /**
+     *
+     * @return the max ammount of series that the container might have
+     */
+    public int getMaxSeries() {
+        int res = 0;
+        for (RoundConstraint roundConstraint : roundConstraintList) {
+            res += roundConstraint.seriesPerRound;
+        }
+        return res;
+    }
 }

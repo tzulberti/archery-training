@@ -2,7 +2,6 @@ package ar.com.tzulberti.archerytraining.activities.tournament;
 
 import android.os.Bundle;
 import android.util.TypedValue;
-import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -11,14 +10,16 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
+ * View the tournament information as a score sheet.
+ *
  * Created by tzulberti on 5/26/17.
  */
-
 public class ViewTournamentScoreSheetActivity extends BaseArcheryTrainingActivity {
 
 
@@ -35,15 +36,13 @@ public class ViewTournamentScoreSheetActivity extends BaseArcheryTrainingActivit
 
     private void renderScoreSheet(TableLayout tableLayout, Tournament tournament) {
         int roundAccumulatedScore = 0;
-        TableRow.LayoutParams trParams = new TableRow.LayoutParams(
-                LinearLayout.LayoutParams.MATCH_PARENT,
-                LinearLayout.LayoutParams.WRAP_CONTENT
-        );
 
-
+        RoundConstraint roundConstraint = null;
         for (TournamentSerie tournamentSerie : tournament.series) {
-            boolean startingRound = tournamentSerie.index == 1 || tournamentSerie.index == (tournament.tournamentConstraint.seriesPerRound + 1);
+            RoundConstraint currentConstraint = tournament.getTournamentConstraint().getConstraintForSerie(1);
+            boolean startingRound = (roundConstraint == null || roundConstraint != currentConstraint);
             if (startingRound) {
+                roundConstraint = currentConstraint;
                 int roundIndex = (tournamentSerie.index == 1) ? 1 : 2;
                 TableRow tr = new TableRow(this);
                 tr.setPadding(0, 25, 0, 10);
