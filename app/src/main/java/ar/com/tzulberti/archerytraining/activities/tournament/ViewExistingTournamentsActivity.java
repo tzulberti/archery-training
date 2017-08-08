@@ -2,7 +2,7 @@ package ar.com.tzulberti.archerytraining.activities.tournament;
 
 import android.content.Intent;
 
-import android.util.Log;
+
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -23,9 +23,10 @@ import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
+ * View used to list all the existing tournaments
+ *
  * Created by tzulberti on 5/17/17.
  */
-
 public class ViewExistingTournamentsActivity extends AbstractTableDataActivity {
 
 
@@ -71,7 +72,7 @@ public class ViewExistingTournamentsActivity extends AbstractTableDataActivity {
         nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
 
-        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + tournament.getMaxPossibleScore());
+        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + tournament.getTournamentConstraint().getMaxPossibleScore());
         totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
         datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(tournament.datetime));
@@ -100,7 +101,7 @@ public class ViewExistingTournamentsActivity extends AbstractTableDataActivity {
     public void onClick(View v) {
         int tournamentId = v.getId();
 
-        Intent intent = null;
+        Intent intent;
         if (tournamentId == (Integer.MAX_VALUE - 1)) {
             // the user selected to view the playoff stats
             intent = new Intent(this, ViewTournamentsStatsActivity.class);

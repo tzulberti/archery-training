@@ -7,11 +7,13 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
+ * Has the information of one serie of the round
  * Created by tzulberti on 5/22/17.
  */
-
 public class TournamentSerie implements ISerie, Serializable {
 
     public long id;
@@ -24,14 +26,6 @@ public class TournamentSerie implements ISerie, Serializable {
         this.arrows = new ArrayList<>();
     }
 
-
-    public boolean isCompleted() {
-        if (this.tournament.tournamentConstraint.arrowsPerSeries == this.arrows.size()) {
-            return true;
-        } else {
-            return false;
-        }
-    }
 
     @Override
     public List<? extends AbstractArrow> getArrows() {

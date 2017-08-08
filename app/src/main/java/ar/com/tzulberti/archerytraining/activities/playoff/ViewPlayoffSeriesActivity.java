@@ -36,7 +36,7 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
 
 /**
- * Show the detail of one playoff
+ * Show the detail of one playoff. Ie the table with all the series and it's score
  *
  * Created by tzulberti on 6/5/17.
  */
@@ -143,8 +143,8 @@ public class ViewPlayoffSeriesActivity extends BaseArcheryTrainingActivity imple
 
         int span = 1;
         if (!this.playoff.series.isEmpty()) {
-            // the +2 is because the series index and the total score
-            span = this.playoff.tournamentConstraint.arrowsPerSeries + 2;
+            // the +4 is because the series index and the total score, the serie score, and the opponent score
+            span = 3 + 4;
         }
 
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(

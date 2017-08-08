@@ -31,7 +31,7 @@ import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.IElementByScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 
 /**

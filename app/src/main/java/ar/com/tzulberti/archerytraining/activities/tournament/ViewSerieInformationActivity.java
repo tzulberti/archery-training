@@ -8,15 +8,18 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
+ * Shows all the serie impacts on the target or it will allow the user to
+ * update the serie arrow information
+ *
  * Created by tzulberti on 4/25/17.
  */
-
 public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
 
 
@@ -29,12 +32,13 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     protected void setAdditionalInformation() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
         TournamentConstraint tournamentConstraint = tournamentSerie.tournament.tournamentConstraint;
-        int maxScore = 10 * tournamentConstraint.seriesPerRound * 2 * tournamentConstraint.arrowsPerSeries;
+        RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(this.serie.getIndex());
+        int maxScore = tournamentConstraint.getMaxPossibleScore();
         ((TextView) this.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", tournamentSerie.tournament.totalScore, maxScore));
 
         // check the number of text scrore that shoudl be hiddeen taken into account
         // the number of arrows per score
-        for (int i = tournamentConstraint.arrowsPerSeries + 1; i < 7; i++) {
+        for (int i = roundConstraint.arrowsPerSeries + 1; i < 7; i++) {
             int id = 0;
 
             switch (i) {
@@ -48,15 +52,20 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
                     id = R.id.current_score6;
                     break;
             }
-            this.findViewById(id).setVisibility(View.GONE);
+
+            if (id != 0) {
+                this.findViewById(id).setVisibility(View.GONE);
+            }
         }
     }
 
     @Override
     protected void saveSerie() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
+        TournamentConstraint tournamentConstraint = tournamentSerie.tournament.tournamentConstraint;
+        RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(this.serie.getIndex());
         this.serieDataDAO.addSerieData(
-            tournamentSerie.tournament.tournamentConstraint.distance,
+            roundConstraint.distance,
             tournamentSerie.arrows.size(),
             SerieInformationConsts.TrainingType.TOURNAMENT
         );
@@ -98,12 +107,15 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     @Override
     protected boolean canActivateButtons() {
         Tournament tournament = (Tournament) this.serie.getContainer();
-        return this.serie.getArrows().size() == tournament.tournamentConstraint.arrowsPerSeries;
+        TournamentConstraint tournamentConstraint = tournament.tournamentConstraint;
+        RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(this.serie.getIndex());
+        return this.serie.getArrows().size() == roundConstraint.arrowsPerSeries;
     }
 
     @Override
     protected boolean hasFinished() {
         Tournament tournament = (Tournament) this.serie.getContainer();
-        return this.serie.getIndex() == (tournament.tournamentConstraint.seriesPerRound * 2);
+        TournamentConstraint tournamentConstraint = tournament.tournamentConstraint;
+        return this.serie.getIndex() == tournamentConstraint.getMaxSeries();
     }
 }

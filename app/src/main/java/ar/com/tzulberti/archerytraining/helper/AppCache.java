@@ -8,8 +8,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import ar.com.tzulberti.archerytraining.dao.TournamentConstraintDAO;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.dao.ConstraintsDAO;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 
 /**
@@ -25,13 +26,14 @@ public class AppCache {
     public static Map<String, TournamentConstraint> tournamentConstraintSpinnerMap;
     public static List<String> tournamentTypes;
 
-    public static void initialize(TournamentConstraintDAO tournamentConstraintDAO, Resources resources, String packageName) {
+    public static void initialize(ConstraintsDAO constraintsDAO, Resources resources, String packageName) {
 
+        Map<Integer, RoundConstraint> roundConstraintMap = constraintsDAO.getRoundConstraints();
         AppCache.tournamentConstraintMap = new HashMap<>();
         AppCache.tournamentConstraintSpinnerMap = new HashMap<>();
         AppCache.tournamentTypes = new ArrayList<>();
 
-        for (TournamentConstraint tournamentConstraint : tournamentConstraintDAO.getValues()) {
+        for (TournamentConstraint tournamentConstraint : constraintsDAO.getTournamentConstraints(roundConstraintMap)) {
             int nameId = resources.getIdentifier(TOURNAMENT_KEY_PREFIX + tournamentConstraint.stringXMLKey, "string", packageName);
             String translatedName = tournamentConstraint.name;
             if (nameId > 0) {

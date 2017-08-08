@@ -14,10 +14,11 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
-import ar.com.tzulberti.archerytraining.model.common.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
+ * Used to create a tournament based on the user information
  * Created by tzulberti on 5/17/17.
  */
 
@@ -27,7 +28,6 @@ public class AddTournamentActivity extends BaseArcheryTrainingActivity {
     private static final int[] REQUIRED_VALUES = {
             R.id.name,
     };
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +51,6 @@ public class AddTournamentActivity extends BaseArcheryTrainingActivity {
         // validate the values to make sure everything is ok
         for (int elementId : this.REQUIRED_VALUES) {
             EditText element = (EditText) this.findViewById(elementId);
-
-            if (element == null) {
-                // TODO check what to do in this case
-            }
             String value = element.getText().toString();
 
             if (StringUtils.isBlank(value)) {

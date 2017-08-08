@@ -27,7 +27,9 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
- * For one tournament shows all the series and the different options
+ * For one tournament shows all the series and the options to view the
+ * tournament stats
+ *
  * Created by tzulberti on 5/19/17.
  */
 
@@ -47,7 +49,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         final ViewTournamentSeriesActivity self = this;
 
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        if (this.tournament.series.size() == (this.tournament.tournamentConstraint.seriesPerRound * 2)) {
+        if (this.tournament.series.size() == this.tournament.tournamentConstraint.getMaxSeries()) {
             fab.setVisibility(View.GONE);
         } else {
             fab.setOnClickListener(new View.OnClickListener() {
@@ -56,10 +58,6 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
                 public void onClick(View view) {
                     // make sure that the user can add another serie to this tournament
                     TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
-                    if (tournamentSerie == null) {
-                        // TODO show message to the user
-                        return;
-                    }
 
                     Intent intent = new Intent(self, ViewSerieInformationActivity.class);
                     intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
@@ -127,7 +125,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         int span = 1;
         if (! this.tournament.series.isEmpty()) {
             // the +2 is because the series index and the total score
-            span = this.tournament.tournamentConstraint.arrowsPerSeries + 2;
+            span = this.tournament.tournamentConstraint.getConstraintForSerie(1).arrowsPerSeries + 2;
         }
 
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(

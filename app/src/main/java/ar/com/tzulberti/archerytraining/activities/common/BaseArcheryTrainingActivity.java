@@ -8,7 +8,7 @@ import android.view.inputmethod.InputMethodManager;
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
-import ar.com.tzulberti.archerytraining.dao.TournamentConstraintDAO;
+import ar.com.tzulberti.archerytraining.dao.ConstraintsDAO;
 import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 
@@ -23,7 +23,7 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
     protected TournamentDAO tournamentDAO;
     protected PlayoffDAO playoffDAO;
     protected BowDAO bowDAO;
-    protected TournamentConstraintDAO tournamentConstraintDAO;
+    protected ConstraintsDAO constraintsDAO;
 
     protected void createDAOs() {
         this.databaseHelper = new DatabaseHelper(this);
@@ -31,7 +31,7 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
         this.tournamentDAO = new TournamentDAO(this.databaseHelper);
         this.playoffDAO = new PlayoffDAO(this.databaseHelper);
         this.bowDAO = new BowDAO(this.databaseHelper);
-        this.tournamentConstraintDAO = new TournamentConstraintDAO(this.databaseHelper);
+        this.constraintsDAO = new ConstraintsDAO(this.databaseHelper);
     }
 
     protected void cleanState() {

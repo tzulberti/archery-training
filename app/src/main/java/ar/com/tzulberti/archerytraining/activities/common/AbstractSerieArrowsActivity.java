@@ -26,11 +26,14 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 
 /**
+ * Show the target so the user can input were the arrows go and set/view the series
+ * score
+ *
  * Created by tzulberti on 6/3/17.
  */
-
 public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingActivity implements View.OnTouchListener, View.OnLongClickListener {
 
     public static final String SERIE_ARGUMENT_KEY = "serie";
@@ -290,7 +293,8 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         }
 
         if (isFinal) {
-            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
+            RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), roundConstraint.getSerieMaxPossibleScore()));
             this.arrowUndoButton.setEnabled(true);
         }
     }
@@ -321,7 +325,8 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         this.nextSerieButton.setEnabled(false);
 
         // update the total score of the serie
-        this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.serie.getContainer().getSerieMaxPossibleScore()));
+        RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
+        this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), roundConstraint.getSerieMaxPossibleScore()));
 
         // removed only arrow for the current serie so he can not undo anymore
         if (this.serie.getArrows().size() == 0) {
