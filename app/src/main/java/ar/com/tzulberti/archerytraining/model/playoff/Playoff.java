@@ -35,6 +35,11 @@ public class Playoff implements ISerieContainer, Serializable{
 
     @Override
     public long getId() { return this.id; }
-    
+
+    @Override
+    public TournamentConstraint getTournamentConstraint() {
+        return this.tournamentConstraint;
+    }
+
 
 }

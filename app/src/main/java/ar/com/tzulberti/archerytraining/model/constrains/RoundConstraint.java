@@ -1,11 +1,13 @@
 package ar.com.tzulberti.archerytraining.model.constrains;
 
+import java.io.Serializable;
+
 /**
  * Has the information to limit the constrain of one of the tournament rounds
  *
  * Created by tzulberti on 8/5/17.
  */
-public class RoundConstraint {
+public class RoundConstraint implements Serializable {
 
     public int id;
     public int distance;

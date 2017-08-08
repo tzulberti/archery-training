@@ -47,7 +47,4 @@ public class Tournament implements ISerieContainer, Serializable {
     @Override
     public long getId() { return this.id; }
 
-
-
-
 }

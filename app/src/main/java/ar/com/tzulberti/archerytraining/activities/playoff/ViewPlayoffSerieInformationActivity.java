@@ -10,19 +10,20 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Random;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
-import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
 import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
 
 /**
+ * Used to view one of the playoffserie arrows on the target
+ *
  * Created by tzulberti on 6/4/17.
  */
-
 public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActivity {
 
     private EditText opponentScoreEdit;
@@ -44,7 +45,7 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
 
 
             TextView computerScoreText = (TextView) this.findViewById(R.id.computer_score);
-            int computerScore = -1;
+            int computerScore;
             if (playoffSerie.opponentTotalScore > 0) {
                 // the user already saved the playoff serie so used the saved value
                 computerScore = playoffSerie.opponentTotalScore;
@@ -69,7 +70,9 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
     @Override
     protected void saveSerie() {
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-        this.serieDataDAO.addSerieData(playoffSerie.playoff.tournamentConstraint.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
+        TournamentConstraint tournamentConstraint = playoffSerie.getContainer().getTournamentConstraint();
+        RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(playoffSerie.getIndex());
+        this.serieDataDAO.addSerieData(roundConstraint.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
         this.playoffDAO.updateSerie(playoffSerie);
     }
 

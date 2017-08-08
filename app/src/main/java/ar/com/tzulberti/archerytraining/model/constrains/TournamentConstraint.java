@@ -1,5 +1,7 @@
 package ar.com.tzulberti.archerytraining.model.constrains;
 
+import android.util.Log;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
@@ -63,7 +65,7 @@ public class TournamentConstraint implements Serializable {
     public RoundConstraint getConstraintForSerie(int serieIndex) {
         int acumSeries = 0;
         for (RoundConstraint roundConstraint : this.roundConstraintList) {
-            if (serieIndex < acumSeries && roundConstraint.seriesPerRound + acumSeries <= serieIndex) {
+            if (acumSeries < serieIndex && serieIndex <= roundConstraint.seriesPerRound + acumSeries ) {
                 return roundConstraint;
             } else {
                 acumSeries += roundConstraint.seriesPerRound;
@@ -73,13 +75,33 @@ public class TournamentConstraint implements Serializable {
     }
 
     /**
+     * Identifies the round where the serie belongs to
+     *
+     * @param serieIndex the serie of the container to find to which round it belongs
+     * @return the round where the serie belongs to
+     */
+    public int getRoundIndex(int serieIndex) {
+        int acumSeries = 0;
+        int roundIndex = 1;
+        for (RoundConstraint roundConstraint : this.roundConstraintList) {
+            if (acumSeries < serieIndex && serieIndex <= roundConstraint.seriesPerRound + acumSeries ) {
+                return roundIndex;
+            } else {
+                acumSeries += roundConstraint.seriesPerRound;
+                roundIndex += 1;
+            }
+        }
+        return roundIndex;
+    }
+
+    /**
      *
      * @return the max score possible taking into account the max value for each round
      */
     public int getMaxPossibleScore() {
         int maxScore = 0;
         for (RoundConstraint roundConstraint : this.roundConstraintList) {
-            maxScore += roundConstraint.maxScore * roundConstraint.arrowsPerSeries;
+            maxScore += roundConstraint.maxScore * roundConstraint.arrowsPerSeries * roundConstraint.seriesPerRound;
         }
         return maxScore;
     }

@@ -37,13 +37,12 @@ public class ViewTournamentScoreSheetActivity extends BaseArcheryTrainingActivit
     private void renderScoreSheet(TableLayout tableLayout, Tournament tournament) {
         int roundAccumulatedScore = 0;
 
-        RoundConstraint roundConstraint = null;
+        int roundIndex = 0;
         for (TournamentSerie tournamentSerie : tournament.series) {
-            RoundConstraint currentConstraint = tournament.getTournamentConstraint().getConstraintForSerie(1);
-            boolean startingRound = (roundConstraint == null || roundConstraint != currentConstraint);
+            int currentRoundIndex = tournament.getTournamentConstraint().getRoundIndex(tournamentSerie.index);
+            boolean startingRound = (roundIndex != currentRoundIndex);
             if (startingRound) {
-                roundConstraint = currentConstraint;
-                int roundIndex = (tournamentSerie.index == 1) ? 1 : 2;
+                roundIndex = currentRoundIndex;
                 TableRow tr = new TableRow(this);
                 tr.setPadding(0, 25, 0, 10);
                 TextView roundIndexText = new TextView(this);

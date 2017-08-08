@@ -42,8 +42,8 @@ public class ConstraintsDAO {
                     RoundConstraintConsts.DISTANCE_COLUMN_NAME + ", " +
                     RoundConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + ", " +
                     RoundConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.MIN_SCORE_COLUMN_NAME + ", " +
                     RoundConstraintConsts.MAX_SCORE_COLUMN_NAME + ", " +
+                    RoundConstraintConsts.MIN_SCORE_COLUMN_NAME + ", " +
                     RoundConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " " +
                 "FROM " +  RoundConstraintConsts.TABLE_NAME,
                 null
@@ -102,6 +102,7 @@ public class ConstraintsDAO {
                 cursor.isNull(8) ? null : cursor.getInt(8),
                 cursor.isNull(9) ? null : cursor.getInt(9)
             );
+            res.add(tournamentConstraint);
 
             Integer[] constrainsIds = new Integer[] {
                 tournamentConstraint.roundContraint1Id,

@@ -116,6 +116,6 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     protected boolean hasFinished() {
         Tournament tournament = (Tournament) this.serie.getContainer();
         TournamentConstraint tournamentConstraint = tournament.tournamentConstraint;
-        return (tournamentConstraint.getConstraintForSerie(this.serie.getIndex() + 1) == null);
+        return this.serie.getIndex() == tournamentConstraint.getMaxSeries();
     }
 }
