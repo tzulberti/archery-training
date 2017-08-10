@@ -16,6 +16,7 @@ import java.util.Map;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
@@ -23,6 +24,8 @@ import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfigurati
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
 /**
+ * Used to create a new playoff
+ *
  * Created by tzulberti on 6/2/17.
  */
 public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
@@ -54,7 +57,7 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         }
 
         this.tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 AppCache.tournamentTypes
@@ -67,9 +70,6 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
 
 
     public void addPlayoff(View v) {
-        Map<String, Integer> constructorKwargs = new HashMap<>();
-
-
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         Bundle bundle = new Bundle();
@@ -100,7 +100,6 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
             }
 
             editor.putInt(info.getKey(), value);
-            constructorKwargs.put(info.getKey(), value);
             bundle.putInt(info.getKey(), value);
         }
 
@@ -133,7 +132,7 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         this.hideKeyboard();
 
         Intent intent = new Intent(this, ViewPlayoffSeriesActivity.class);
-        intent.putExtra("creating", true);
+        intent.putExtra(AbstractTableDataActivity.CREATING_INTENT_KEY, 1);
         intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, playoff);
         startActivity(intent);
     }

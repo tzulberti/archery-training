@@ -95,11 +95,6 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     }
 
     @Override
-    protected AbstractSerieArrowsActivity getSerieDetailsFragment() {
-        return new ViewSerieInformationActivity();
-    }
-
-    @Override
     protected ISerie createNewSerie() {
         return this.tournamentDAO.createNewSerie((Tournament) this.serie.getContainer());
     }

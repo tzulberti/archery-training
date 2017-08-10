@@ -12,6 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
+import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
@@ -73,7 +74,7 @@ public class AddTournamentActivity extends BaseArcheryTrainingActivity {
 
         Intent intent = new Intent(this, ViewTournamentSeriesActivity.class);
         intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, tournament);
-        intent.putExtra("creating", 1);
+        intent.putExtra(AbstractTableDataActivity.CREATING_INTENT_KEY, 1);
 
         startActivity(intent);
 

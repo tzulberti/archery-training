@@ -18,6 +18,8 @@ import ar.com.tzulberti.archerytraining.R;
  */
 public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActivity implements View.OnClickListener {
 
+    public static final String CREATING_INTENT_KEY = "creating";
+
     /**
      * Used to add the buttons before the table with all the data is being shown
      * @param tableLayout the container which will contain all the data
@@ -51,31 +53,52 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
     protected abstract void addNewValue();
 
     /**
-     * Identifies if the user can clicks on the rows of the table
-     * @return
+     * @return if the user can clicks on the rows of the table
      */
     protected boolean areRowsClickable() {
         return true;
     }
+
+    /**
+     * @return if the user can view the button to add a new value
+     */
+    protected boolean enableAddNew() { return true; }
+
+    /**
+     * Get the data from the intent that is used to create a new value
+     */
+    protected void getValueFromIntent() {}
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.createDAOs();
+        this.getValueFromIntent();
         setContentView(R.layout.common_show_existing_values);
 
 
         FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        final AbstractTableDataActivity self = this;
-        fab.setOnClickListener(new View.OnClickListener() {
+        if (this.enableAddNew()) {
+            final AbstractTableDataActivity self = this;
+            fab.setOnClickListener(new View.OnClickListener() {
 
-            @Override public void onClick(View view) {
-                self.addNewValue();
-            }
-        });
+                @Override
+                public void onClick(View view) {
+                    self.addNewValue();
+                }
+            });
+        } else {
+            fab.setVisibility(View.GONE);
+        }
 
-        this.showInformation((TableLayout) this.findViewById(R.id.existing_data));
+        if (this.getIntent().hasExtra(CREATING_INTENT_KEY)) {
+            this.getIntent().removeExtra(CREATING_INTENT_KEY);
+            this.createDAOs();
+            this.addNewValue();
+        } else {
+            this.showInformation((TableLayout) this.findViewById(R.id.existing_data));
+        }
     }
 
 

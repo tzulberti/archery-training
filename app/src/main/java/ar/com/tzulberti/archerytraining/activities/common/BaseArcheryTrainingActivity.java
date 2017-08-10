@@ -13,9 +13,10 @@ import ar.com.tzulberti.archerytraining.dao.TournamentDAO;
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 
 /**
+ * Base class that should be used by all the other activities
+ *
  * Created by tzulberti on 7/29/17.
  */
-
 public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
 
     protected DatabaseHelper databaseHelper;
@@ -34,8 +35,6 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
         this.constraintsDAO = new ConstraintsDAO(this.databaseHelper);
     }
 
-    protected void cleanState() {
-    }
 
     protected void hideKeyboard() {
         View view = this.getCurrentFocus();

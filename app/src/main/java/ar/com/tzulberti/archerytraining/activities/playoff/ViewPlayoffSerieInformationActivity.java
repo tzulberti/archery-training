@@ -98,10 +98,6 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
         return ViewPlayoffSeriesActivity.class;
     }
 
-    @Override
-    protected AbstractSerieArrowsActivity getSerieDetailsFragment() {
-        return new ViewPlayoffSerieInformationActivity();
-    }
 
     @Override
     protected ISerie createNewSerie() {

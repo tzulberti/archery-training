@@ -94,10 +94,10 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
      * <p>
      * This should also update the serie total score, and all those kind of values
      *
-     * @param x
-     * @param y
-     * @param score
-     * @param isX
+     * @param x the x coordinate of the impact
+     * @param y the y coordinate of the impact
+     * @param score the score given the coordinates
+     * @param isX if it is an X
      */
     protected abstract void addArrowData(float x, float y, int score, boolean isX);
 
@@ -338,7 +338,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     }
 
     public void goToNextOrEnd(View v) {
-        ISerie transitionSerie = null;
+        ISerie transitionSerie;
 
         if (this.hasFinished()) {
             Intent intent = new Intent(this, this.getContainerDetailsFragment());
@@ -366,29 +366,21 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
      */
     protected abstract Class<? extends AppCompatActivity> getContainerDetailsFragment();
 
-    /**
-     * Used to show the previous or next serie.
-     *
-     * @return the fragment to be shown
-     */
-    protected abstract AbstractSerieArrowsActivity getSerieDetailsFragment();
 
     /**
      * Creates the new serie on the database
      *
-     * @return
+     * @return the created serie
      */
     protected abstract ISerie createNewSerie();
 
     /**
-     * Indicates if it can activate the next, and previous buttons
-     * @return
+     * @return if it can activate the next, and previous buttons
      */
     protected abstract boolean canActivateButtons();
 
     /**
-     * Indicates if no more series can be loaded
-     * @return
+     * @return if no more series can be loaded
      */
     protected abstract boolean hasFinished();
 
