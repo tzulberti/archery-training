@@ -60,7 +60,7 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         setContentView(R.layout.common_view_stats);
 
         Spinner tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);
-        ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(
+        ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
                 AppCache.tournamentTypes

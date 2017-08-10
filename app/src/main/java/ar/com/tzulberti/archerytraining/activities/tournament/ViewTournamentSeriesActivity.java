@@ -6,8 +6,6 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
-import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -17,9 +15,12 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
+import java.io.Serializable;
+import java.util.List;
+
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
-import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
+import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -33,95 +34,73 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
  * Created by tzulberti on 5/19/17.
  */
 
-public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity implements View.OnClickListener {
+public class ViewTournamentSeriesActivity extends AbstractTableDataActivity implements View.OnClickListener {
 
     public Tournament tournament;
-    private TableLayout dataContainer;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        this.createDAOs();
-        setContentView(R.layout.tournament_view_series);
-
+    protected void getValueFromIntent() {
         this.tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
-
-        final ViewTournamentSeriesActivity self = this;
-
-        FloatingActionButton fab = (FloatingActionButton) this.findViewById(R.id.fab);
-        if (this.tournament.series.size() == this.tournament.tournamentConstraint.getMaxSeries()) {
-            fab.setVisibility(View.GONE);
-        } else {
-            fab.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View view) {
-                    // make sure that the user can add another serie to this tournament
-                    TournamentSerie tournamentSerie = self.tournamentDAO.createNewSerie(self.tournament);
-
-                    Intent intent = new Intent(self, ViewSerieInformationActivity.class);
-                    intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
-                    startActivity(intent);
-                }
-            });
-        }
-
-
-        this.dataContainer = (TableLayout) this.findViewById(R.id.tournament_series_list);
-        this.showExistingSeries();
     }
 
-    public void showExistingSeries() {
 
+    protected boolean enableAddNew() {
+        return this.tournament.series.size() < this.tournament.tournamentConstraint.getMaxSeries();
+    }
 
-        if (this.getIntent().hasExtra("creating")) {
-            this.getIntent().removeExtra("creating");
-            TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(tournament);
+    protected List<? extends Serializable> getData() {
+        return this.tournament.getSeries();
+    }
 
-            Intent intent = new Intent(this, ViewSerieInformationActivity.class);
-            intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
-            startActivity(intent);
+    protected void renderRow(Serializable data, TableRow tr) {
+        tr.setPadding(0, 15, 0, 15);
 
-            return;
-        }
-        
+        TextView serieIndexText = new TextView(this);
+        TournamentSerie tournamentSerie = (TournamentSerie) data;
+        serieIndexText.setText(getString(R.string.tournament_serie_current_serie, tournamentSerie.index));
+        serieIndexText.setGravity(Gravity.START);
 
-        for (TournamentSerie data : this.tournament.series) {
-            TableRow tr = new TableRow(this);
-            tr.setPadding(0, 15, 0, 15);
+        tr.addView(serieIndexText);
 
-            TextView serieIndexText = new TextView(this);
-            serieIndexText.setText(getString(R.string.tournament_serie_current_serie, data.index));
-            serieIndexText.setGravity(Gravity.START);
+        for (TournamentSerieArrow arrowData : tournamentSerie.arrows) {
+            TextView arrowScoreText = new TextView(this);
+            arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score, arrowData.isX));
+            arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
+            arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+            arrowScoreText.setBackgroundResource(R.drawable.rounded);
 
-            tr.addView(serieIndexText);
-
-            for (TournamentSerieArrow arrowData : data.arrows) {
-                TextView arrowScoreText = new TextView(this);
-                arrowScoreText.setText(TournamentHelper.getUserScore(arrowData.score, arrowData.isX));
-                arrowScoreText.setTextColor(TournamentHelper.getFontColor(arrowData.score));
-                arrowScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-                arrowScoreText.setBackgroundResource(R.drawable.rounded);
-
-                arrowScoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(arrowData.score), PorterDuff.Mode.SRC_IN));
-                arrowScoreText.setPadding(10, 0, 10, 0);
-                arrowScoreText.setGravity(Gravity.CENTER);
-                tr.addView(arrowScoreText);
-            }
-
-            TextView totalScoreText = new TextView(this);
-            totalScoreText.setText(String.valueOf(data.totalScore));
-            totalScoreText.setBackgroundResource(R.drawable.rounded);
-            totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-            totalScoreText.setGravity(Gravity.CENTER);
-
-            tr.addView(totalScoreText);
-            tr.setId(data.index);
-            tr.setOnClickListener(this);
-
-            this.dataContainer.addView(tr);
+            arrowScoreText.getBackground().setColorFilter(new PorterDuffColorFilter(TournamentHelper.getBackground(arrowData.score), PorterDuff.Mode.SRC_IN));
+            arrowScoreText.setPadding(10, 0, 10, 0);
+            arrowScoreText.setGravity(Gravity.CENTER);
+            tr.addView(arrowScoreText);
         }
 
+        TextView totalScoreText = new TextView(this);
+        totalScoreText.setText(String.valueOf(tournamentSerie.totalScore));
+        totalScoreText.setBackgroundResource(R.drawable.rounded);
+        totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        totalScoreText.setGravity(Gravity.CENTER);
+
+        tr.addView(totalScoreText);
+        tr.setId(tournamentSerie.index);
+        tr.setOnClickListener(this);
+    }
+
+    protected void addNewValue() {
+        // make sure that the user can add another serie to this tournament
+        TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(this.tournament);
+
+        Intent intent = new Intent(this, ViewSerieInformationActivity.class);
+        intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
+        startActivity(intent);
+    }
+
+
+    protected void addButtonsBeforeData(TableLayout tableLayout) {
+
+    }
+
+
+    protected void addButtonsAfterData(TableLayout tableLayout) {
         int span = 1;
         if (! this.tournament.series.isEmpty()) {
             // the +2 is because the series index and the total score
@@ -145,7 +124,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         viewScoreSheetButton.setOnClickListener(this);
         viewScoreSheetButton.setEnabled(buttonsEnabled);
         tr2.addView(viewScoreSheetButton);
-        this.dataContainer.addView(tr2);
+        tableLayout.addView(tr2);
 
 
         TableRow tr3 = new TableRow(this);
@@ -156,7 +135,7 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         viewTournamentArrowStats.setOnClickListener(this);
         viewTournamentArrowStats.setEnabled(buttonsEnabled);
         tr3.addView(viewTournamentArrowStats);
-        this.dataContainer.addView(tr3);
+        tableLayout.addView(tr3);
 
         TableRow trN = new TableRow(this);
         Button deleteButton = new Button(this);
@@ -166,9 +145,9 @@ public class ViewTournamentSeriesActivity extends BaseArcheryTrainingActivity im
         deleteButton.setOnClickListener(this);
         deleteButton.getBackground().setColorFilter(new PorterDuffColorFilter(Color.RED, PorterDuff.Mode.SRC_IN));
         trN.addView(deleteButton);
-        this.dataContainer.addView(trN);
-
+        tableLayout.addView(trN);
     }
+
 
     @Override
     public void onClick(View v) {

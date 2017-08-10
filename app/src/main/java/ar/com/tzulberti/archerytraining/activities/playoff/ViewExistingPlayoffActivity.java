@@ -14,13 +14,14 @@ import java.io.Serializable;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 
 /**
+ * List all the existing playoff
+ *
  * Created by tzulberti on 6/4/17.
  */
 
@@ -97,10 +98,8 @@ public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
     @Override
     public void onClick(View v) {
         int playoffId = v.getId();
-        Class activity = null;
 
-
-        Intent intent = null;
+        Intent intent;
         if (playoffId == (Integer.MAX_VALUE - 1)) {
             // the user selected to view the playoff stats
             intent = new Intent(this, ViewPlayoffStatsActivity.class);
