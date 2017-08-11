@@ -15,14 +15,15 @@ import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
+ * Base DAO that has common logic for playoff and tournament based on the DAO
+ *
  * Created by tzulberti on 6/26/17.
  */
-
 public abstract class BaseArrowSeriesDAO  {
 
-    protected DatabaseHelper databaseHelper;
+    DatabaseHelper databaseHelper;
 
-    public BaseArrowSeriesDAO(DatabaseHelper databaseHelper) {
+    BaseArrowSeriesDAO(DatabaseHelper databaseHelper) {
         this.databaseHelper = databaseHelper;
     }
 
@@ -33,14 +34,12 @@ public abstract class BaseArrowSeriesDAO  {
     protected abstract BaseSerieContainerConsts getContainerTable();
 
     /**
-     * Returns the table that has the arrows score data
-     * @return
+     * @return the table that has the arrows score data
      */
     protected abstract BaseSerieArrowConsts getArrowsTable();
 
     /**
-     * The table that has the series score data
-     * @return
+     * @return The table that has the series score data
      */
     protected abstract BaseSerieConsts getSeriesTable();
 
@@ -53,7 +52,7 @@ public abstract class BaseArrowSeriesDAO  {
         String query =
                 "SELECT " +
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + ", " +
-                    "COUNT(" + serieConsts.getTableName() + "." + serieConsts.ID_COLUMN_NAME + ") " +
+                    "COUNT(" + serieConsts.getTableName() + "." + BaseSerieConsts.ID_COLUMN_NAME + ") " +
                 "FROM " +  serieConsts.getTableName() + " " +
                 "JOIN " + baseSerieContainerConsts.getTableName() + " " +
                     "ON " + baseSerieContainerConsts.getTableName() + "." + BaseSerieContainerConsts.ID_COLUMN_NAME + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
@@ -65,15 +64,15 @@ public abstract class BaseArrowSeriesDAO  {
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + " DESC ";
 
 
-        Cursor playoffArrowsCursor = db.rawQuery(
+        Cursor arrowsCursor = db.rawQuery(
                 query,
                 new String[]{String.valueOf(tournamentConstraint.id)}
         );
         List<SeriesPerScore> res = new ArrayList<>();
-        while (playoffArrowsCursor.moveToNext()) {
+        while (arrowsCursor.moveToNext()) {
             SeriesPerScore seriesPerScore = new SeriesPerScore();
-            seriesPerScore.serieScore = playoffArrowsCursor.getInt(0);
-            seriesPerScore.seriesAmount = playoffArrowsCursor.getInt(1);
+            seriesPerScore.serieScore = arrowsCursor.getInt(0);
+            seriesPerScore.seriesAmount = arrowsCursor.getInt(1);
             res.add(seriesPerScore);
         }
 
@@ -87,11 +86,11 @@ public abstract class BaseArrowSeriesDAO  {
         BaseSerieConsts serieConsts = this.getSeriesTable();
         BaseSerieContainerConsts baseSerieContainerConsts = this.getContainerTable();
 
-        Cursor playoffArrowsCursor = db.rawQuery(
+        Cursor arrowsCursor = db.rawQuery(
                 "SELECT " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                        "COUNT(" + serieArrowConsts.getTableName() + "." + serieArrowConsts.ID_COLUMN_NAME + ") " +
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
+                        "COUNT(" + serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.ID_COLUMN_NAME + ") " +
                 "FROM " +  serieArrowConsts.getTableName() + " " +
                 "JOIN " + serieConsts.getTableName() + " " +
                     "ON " + serieArrowConsts.getTableName() + "." + serieArrowConsts.getSerieColumnName() + " = " + serieConsts.getTableName() + "." + BaseSerieConsts.ID_COLUMN_NAME + " " +
@@ -100,21 +99,21 @@ public abstract class BaseArrowSeriesDAO  {
                 "WHERE " +
                         BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
                 "GROUP BY " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME + " " +
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME + " " +
                 "ORDER BY " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
-                        serieArrowConsts.getTableName() + "." + serieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
+                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
 
                 new String[]{String.valueOf(tournamentConstraint.id)}
         );
         List<ArrowsPerScore> res = new ArrayList<>();
         int currentScore = -1;
-        while (playoffArrowsCursor.moveToNext()) {
+        while (arrowsCursor.moveToNext()) {
             ArrowsPerScore arrowsPerScore = new ArrowsPerScore();
-            arrowsPerScore.isX = (playoffArrowsCursor.getInt(0) == 1);
-            arrowsPerScore.score = playoffArrowsCursor.getInt(1);
-            arrowsPerScore.arrowsAmount = playoffArrowsCursor.getInt(2);
+            arrowsPerScore.isX = (arrowsCursor.getInt(0) == 1);
+            arrowsPerScore.score = arrowsCursor.getInt(1);
+            arrowsPerScore.arrowsAmount = arrowsCursor.getInt(2);
 
             if (currentScore == -1) {
                 // check if the user never hit an X or he never got an 10, 9... etc
