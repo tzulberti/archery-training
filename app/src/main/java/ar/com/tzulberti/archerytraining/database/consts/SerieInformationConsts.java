@@ -2,16 +2,14 @@ package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
  * Has the schema information for the serie_information table.
- * <p>
- * <p>
+ *
  * Created by tzulberti on 4/24/17.
  */
 
-public class SerieInformationConsts {
+public class SerieInformationConsts extends BaseArcheryTrainingConsts {
 
     public static final String TABLE_NAME = "serie_information";
 
-    public static final String ID_COLUMN_NAME = "id";
     public static final String DATETIME_COLUMN_NAME = "datetime";
     public static final String DISTANCE_COLUMN_NAME = "distance";
     public static final String ARROWS_AMOUNT_COLUMN_NAME = "arrows_amount";

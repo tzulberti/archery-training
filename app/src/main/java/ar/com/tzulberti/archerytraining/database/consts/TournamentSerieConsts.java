@@ -1,9 +1,10 @@
 package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
+ * The schema information of the table that has one serie of arrows of the tournament
+ *
  * Created by tzulberti on 5/16/17.
  */
-
 public class TournamentSerieConsts extends  BaseSerieConsts {
 
     public static final String TABLE_NAME = "tournament_series";

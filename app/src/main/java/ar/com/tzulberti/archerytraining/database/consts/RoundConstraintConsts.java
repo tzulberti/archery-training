@@ -4,10 +4,11 @@ package ar.com.tzulberti.archerytraining.database.consts;
  * Has the database mapping information for the round constrains
  * Created by tzulberti on 8/5/17.
  */
-public class RoundConstraintConsts {
+public class RoundConstraintConsts extends BaseArcheryTrainingConsts {
+
     public static final String TABLE_NAME = "round_constraint";
 
-    public static final String ID_COLUMN_NAME = "id";
+
     public static final String DISTANCE_COLUMN_NAME = "distance";
     public static final String SERIES_PER_ROUND_COLUMN_NAME = "series_per_round";
     public static final String ARROWS_PER_SERIES_COLUMN_NAME = "arrows_per_series";

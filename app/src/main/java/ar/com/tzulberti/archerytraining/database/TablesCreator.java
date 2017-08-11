@@ -2,6 +2,7 @@ package ar.com.tzulberti.archerytraining.database;
 
 import android.database.sqlite.SQLiteDatabase;
 
+import ar.com.tzulberti.archerytraining.database.consts.BaseArcheryTrainingConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
@@ -26,9 +27,9 @@ import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
  *
  * Created by tzulberti on 6/3/17.
  */
-public class TablesCreator {
+class TablesCreator {
 
-    public void createAll(SQLiteDatabase db) {
+    void createAll(SQLiteDatabase db) {
         this.createRoundConstraintTable(db);
         this.createTournamentConstraintTable(db);
         this.createSeriesTable(db);
@@ -88,7 +89,8 @@ public class TablesCreator {
                         SerieInformationConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
                         SerieInformationConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " INTEGER NOT NULL " +
+                        SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
                         ");"
         );
     }
@@ -102,6 +104,7 @@ public class TablesCreator {
                         TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0," +
                         TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
                         ");"
         );
@@ -114,6 +117,7 @@ public class TablesCreator {
                         TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
                         "CONSTRAINT unq_serie_index_tournament_id UNIQUE (" + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +   TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ")" +
                         ");"
@@ -130,6 +134,7 @@ public class TablesCreator {
                         TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
                         "FOREIGN KEY (" + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + ") REFERENCES " + TournamentSerieConsts.TABLE_NAME + " ( " +  TournamentSerieConsts.ID_COLUMN_NAME + " ) " +
                         ");"
@@ -146,6 +151,7 @@ public class TablesCreator {
                         PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
                         PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
                 ")"
         );
@@ -159,6 +165,7 @@ public class TablesCreator {
                         PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " INTEGER NOT NULL, " +
                         PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
                 ")"
         );
@@ -174,6 +181,7 @@ public class TablesCreator {
                         PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
                         PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ), " +
                         "FOREIGN KEY (" + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + ") REFERENCES " + PlayoffSerieConsts.TABLE_NAME + " ( " +  PlayoffSerieConsts.ID_COLUMN_NAME + " ) " +
                 ");"
@@ -188,6 +196,7 @@ public class TablesCreator {
                         ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
                 ");"
         );
@@ -197,7 +206,8 @@ public class TablesCreator {
         db.execSQL(
                 "CREATE TABLE " + BowConsts.TABLE_NAME + " (" +
                         BowConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        BowConsts.NAME_COLUMN_NAME + " TEXT NOT NULL " +
+                        BowConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
                         ")"
         );
     }
@@ -209,6 +219,7 @@ public class TablesCreator {
                         SightDistanceValueConsts.BOW_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         SightDistanceValueConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
                         SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME + " FLOAT NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + SightDistanceValueConsts.BOW_ID_COLUMN_NAME + ") REFERENCES " + BowConsts.TABLE_NAME + " ( " +  BowConsts.ID_COLUMN_NAME + " ) " +
                         ")"
         );

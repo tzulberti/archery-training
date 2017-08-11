@@ -1,9 +1,10 @@
 package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
+ * The schema information of the table that has one tournament information
+ *
  * Created by tzulberti on 4/25/17.
  */
-
 public class TournamentConsts extends BaseSerieContainerConsts {
 
     public static final String TABLE_NAME = "tournaments";

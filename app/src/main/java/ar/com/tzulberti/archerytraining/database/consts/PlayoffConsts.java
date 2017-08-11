@@ -1,9 +1,10 @@
 package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
+ * Has all the information of one playoff
+ *
  * Created by tzulberti on 6/2/17.
  */
-
 public class PlayoffConsts extends BaseSerieContainerConsts {
 
     public static final String TABLE_NAME = "playoff";
