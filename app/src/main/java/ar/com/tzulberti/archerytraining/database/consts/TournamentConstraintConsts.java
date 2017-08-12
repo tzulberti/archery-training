@@ -1,14 +1,15 @@
 package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
+ * The schema information of the table that has the contraints on the tournament/playoff
+ *
  * Created by tzulberti on 7/19/17.
  */
-
-public class TournamentConstraintConsts {
+public class TournamentConstraintConsts extends BaseArcheryTrainingConsts {
 
     public static final String TABLE_NAME = "tournament_constraint";
 
-    public static final String ID_COLUMN_NAME = "id";
+
     public static final String NAME_COLUMN_NAME = "name";
     public static final String IS_OUTDOOR_COLUMN_NAME = "is_outdoor";
     public static final String STRING_XML_KEY_COLUMN_NAME = "string_xml_key";

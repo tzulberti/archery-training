@@ -1,9 +1,10 @@
 package ar.com.tzulberti.archerytraining.database.consts;
 
 /**
+ * Has the schema information for one arrow of one serie of the playoff
+ *
  * Created by tzulberti on 6/2/17.
  */
-
 public class PlayoffSerieArrowConsts  extends  BaseSerieArrowConsts {
 
     public static final String TABLE_NAME = "playoff_serie_arrow";
