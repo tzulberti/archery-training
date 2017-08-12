@@ -118,6 +118,7 @@
 
 
 
+    <string name="tournament_existing_name">Name: %1s</string>
     <string name="tournament_serie_index">Serie</string>
     <string name="tournament_serie_current_serie">Serie %1$d</string>
     <string name="tournament_serie_current_round">Round %1$d</string>

@@ -10,6 +10,7 @@ import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -22,6 +23,7 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -95,8 +97,27 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
     }
 
 
-    protected void addButtonsBeforeData(TableLayout tableLayout) {
 
+    protected void addButtonsBeforeData(TableLayout tableLayout) {
+        TableLayout tournamentTableLayout = (TableLayout) View.inflate(
+                this,
+                R.layout.tournament_tournament_information,
+                null
+        );
+
+        ((TextView) tournamentTableLayout.findViewById(R.id.tournament_name)).setText(this.tournament.name);
+        ((TextView) tournamentTableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(this.tournament.datetime));
+        ((TextView) tournamentTableLayout.findViewById(R.id.total_tournament_score)).setText(String.valueOf(this.tournament.totalScore) + "/" + this.tournament.getTournamentConstraint().getMaxPossibleScore());
+        ((TextView) tournamentTableLayout.findViewById(R.id.tournament_constraint)).setText(this.tournament.getTournamentConstraint().translatedName);
+
+        ImageView imageView = (ImageView) tournamentTableLayout.findViewById(R.id.tournament_type);
+        if (this.tournament.isTournament) {
+            imageView.setImageResource(R.drawable.ic_trophy);
+        } else {
+            imageView.setImageResource(R.drawable.ic_bow);
+        }
+
+        tableLayout.addView(tournamentTableLayout);
     }
 
 

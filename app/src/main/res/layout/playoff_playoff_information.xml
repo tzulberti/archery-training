@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    >
+
+
+    <TableRow android:background="@drawable/table_upper_row">
+        <ImageView
+            android:id="@+id/playoff_type"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            />
+        <TableLayout>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/opponent_name"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:gravity="start"
+                    android:padding="3dp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/total_score"
+                    android:layout_gravity="center_vertical"
+                    android:textSize="20sp"
+                    android:gravity="start"
+                    android:padding="3dp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/datetime"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:padding="3dp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/tournament_constraint"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:padding="3dp"/>
+            </TableRow>
+            <TableRow>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/score_configuration"
+                    android:textSize="12sp"
+                    android:gravity="start"
+                    android:padding="3dp"/>
+            </TableRow>
+        </TableLayout>
+    </TableRow>
+
+</TableLayout>
