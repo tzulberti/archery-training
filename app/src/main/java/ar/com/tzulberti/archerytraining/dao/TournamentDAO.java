@@ -102,7 +102,8 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                         TournamentConsts.NAME_COLUMN_NAME + ", " +
                         TournamentConsts.DATETIME_COLUMN_NAME + ", " +
                         TournamentConsts.TOTAL_SCORE_COLUMN_NAME + ", " +
-                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " " +
+                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
+                        TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " " +
                 "FROM " +  TournamentConsts.TABLE_NAME + " " +
                 "WHERE " + TournamentConsts.ID_COLUMN_NAME + "= ?",
                 new String[]{String.valueOf(tournamentId)}
@@ -112,6 +113,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         res.totalScore = cursor.getInt(2);
         res.tournamentConstraintId = cursor.getInt(3);
         res.tournamentConstraint = AppCache.tournamentConstraintMap.get(res.tournamentConstraintId);
+        res.isTournament = (cursor.getInt(4) == 1);
         return res;
     }
 

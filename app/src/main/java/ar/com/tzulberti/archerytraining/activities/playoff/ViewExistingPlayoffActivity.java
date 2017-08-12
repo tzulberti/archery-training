@@ -18,6 +18,7 @@ import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsAct
 import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 /**
  * List all the existing playoff
@@ -30,11 +31,12 @@ public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
 
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {
+
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.WRAP_CONTENT
         );
-        trParams.span = 4;
+
 
         Button viewPlayoffStatsButton = new Button(this);
         viewPlayoffStatsButton.setText(this.getString(R.string.stats_view));
@@ -53,31 +55,34 @@ public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
     }
 
     @Override
-    protected void renderRow(Serializable data, TableRow tr) {
-        Playoff playoff = (Playoff) data;
-        ImageView imageView = new ImageView(this);
-        TextView nameText = new TextView(this);
-        TextView datetimeText = new TextView(this);
-        TextView totalScoreText = new TextView(this);
+    protected boolean renderDataUsingRows() { return false; }
 
+    @Override
+    protected void renderInformation(Serializable data, TableLayout mainTableLayout) {
+        Playoff playoff = (Playoff) data;
+
+        TableLayout tableLayout = (TableLayout) View.inflate(
+                this,
+                R.layout.playoff_playoff_information,
+                null
+        );
+
+        ImageView imageView = (ImageView) tableLayout.findViewById(R.id.playoff_type);
         if (playoff.computerPlayOffConfiguration == null) {
             imageView.setImageResource(R.drawable.ic_standing_man);
         } else {
             imageView.setImageResource(R.drawable.ic_computer);
         }
-        nameText.setText(playoff.name);
-        nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-        totalScoreText.setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
-        totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+        ((TextView) tableLayout.findViewById(R.id.opponent_name)).setText("Computer");
+        ((TextView) tableLayout.findViewById(R.id.total_score)).setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
+        ((TextView) tableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
+        ((TextView) tableLayout.findViewById(R.id.tournament_constraint)).setText(playoff.getTournamentConstraint().translatedName);
+        ((TextView) tableLayout.findViewById(R.id.score_configuration)).setText(String.valueOf(playoff.computerPlayOffConfiguration.minScore) + " - " + String.valueOf(playoff.computerPlayOffConfiguration.maxScore));
 
-        datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
-
-        tr.addView(imageView);
-        tr.addView(nameText);
-        tr.addView(totalScoreText);
-        tr.addView(datetimeText);
-        tr.setId((int) playoff.id);
+        tableLayout.setId((int) playoff.id);
+        tableLayout.setOnClickListener(this);
+        mainTableLayout.addView(tableLayout);
     }
 
 

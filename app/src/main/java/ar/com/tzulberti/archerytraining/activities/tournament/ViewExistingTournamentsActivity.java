@@ -3,6 +3,7 @@ package ar.com.tzulberti.archerytraining.activities.tournament;
 import android.content.Intent;
 
 
+import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.View;
 import android.widget.Button;
@@ -51,38 +52,37 @@ public class ViewExistingTournamentsActivity extends AbstractTableDataActivity {
 
     @Override
     protected void addButtonsAfterData(TableLayout tableLayout) {
-
     }
 
+    protected boolean renderDataUsingRows() { return false; }
+
     @Override
-    protected void renderRow(Serializable data, TableRow tr) {
+    protected void renderInformation(Serializable data, TableLayout mainTableLayout) {
+
+        TableLayout tableLayout = (TableLayout) View.inflate(
+                this,
+                R.layout.tournament_tournament_information,
+                null
+        );
+
         Tournament tournament = (Tournament) data;
-        ImageView imageView = new ImageView(this);
-        TextView nameText = new TextView(this);
-        TextView datetimeText = new TextView(this);
-        TextView totalScoreText = new TextView(this);
 
 
+        ((TextView) tableLayout.findViewById(R.id.tournament_name)).setText(tournament.name);
+        ((TextView) tableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(tournament.datetime));
+        ((TextView) tableLayout.findViewById(R.id.total_tournament_score)).setText(String.valueOf(tournament.totalScore) + "/" + tournament.getTournamentConstraint().getMaxPossibleScore());
+        ((TextView) tableLayout.findViewById(R.id.tournament_constraint)).setText(tournament.getTournamentConstraint().translatedName);
+
+        ImageView imageView = (ImageView) tableLayout.findViewById(R.id.tournament_type);
         if (tournament.isTournament) {
             imageView.setImageResource(R.drawable.ic_trophy);
         } else {
             imageView.setImageResource(R.drawable.ic_bow);
         }
-        nameText.setText(tournament.name);
-        nameText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
 
-
-        totalScoreText.setText(String.valueOf(tournament.totalScore) + "/" + tournament.getTournamentConstraint().getMaxPossibleScore());
-        totalScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
-
-        datetimeText.setText(DatetimeHelper.DATE_FORMATTER.format(tournament.datetime));
-
-
-        tr.addView(imageView);
-        tr.addView(nameText);
-        tr.addView(totalScoreText);
-        tr.addView(datetimeText);
-        tr.setId((int) tournament.id);
+        tableLayout.setId((int) tournament.id);
+        tableLayout.setOnClickListener(this);
+        mainTableLayout.addView(tableLayout);
     }
 
     @Override

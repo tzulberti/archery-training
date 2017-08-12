@@ -20,6 +20,7 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
 
     public static final String CREATING_INTENT_KEY = "creating";
 
+
     /**
      * Used to add the buttons before the table with all the data is being shown
      * @param tableLayout the container which will contain all the data
@@ -36,8 +37,20 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
     /**
      * Renders the data into a table rows
      * @param data the current value to be render
+     * @param tr the table row where to add the information
      */
-    protected abstract void renderRow(Serializable data, TableRow tr);
+    protected void renderRow(Serializable data, TableRow tr) {
+        throw new UnsupportedOperationException();
+    }
+
+    /**
+     * Renders the data in the table as another table
+     * @param data the data to be shown
+     * @param mainTableContainer where the data should be included
+     */
+    protected void renderInformation(Serializable data, TableLayout mainTableContainer) {
+        throw new UnsupportedOperationException();
+    }
 
     /**
      * Get all the information that is going to be shown
@@ -69,6 +82,11 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
      */
     protected void getValueFromIntent() {}
 
+    /**
+     * @return if the data should be rendered using rows, or if inside the table there
+     *      are going to be other tables
+     */
+    protected boolean renderDataUsingRows() { return true; }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -113,14 +131,20 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
         boolean areRowsClickable = this.areRowsClickable();
 
         for (Serializable data : existingData) {
-            TableRow tr = new TableRow(this);
-            tr.setPadding(0, 15, 0, 15);
-            this.renderRow(data, tr);
-            if (areRowsClickable) {
-                tr.setClickable(true);
-                tr.setOnClickListener(this);
+            if (this.renderDataUsingRows()) {
+                TableRow tr = new TableRow(this);
+                tr.setPadding(0, 15, 0, 15);
+                this.renderRow(data, tr);
+                if (areRowsClickable) {
+                    tr.setClickable(true);
+                    tr.setOnClickListener(this);
+                }
+                dataContainer.addView(tr);
+            } else {
+                this.renderInformation(data, dataContainer);
             }
-            dataContainer.addView(tr);
+
+
         }
 
         this.addButtonsAfterData(dataContainer);
