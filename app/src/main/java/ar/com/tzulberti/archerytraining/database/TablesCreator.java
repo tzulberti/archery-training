@@ -117,6 +117,7 @@ class TablesCreator {
                         TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
                         BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
                         "CONSTRAINT unq_serie_index_tournament_id UNIQUE (" + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +   TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ")" +

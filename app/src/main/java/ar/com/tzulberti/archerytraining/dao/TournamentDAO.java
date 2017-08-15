@@ -127,7 +127,8 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                 TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
                 TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
                 TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME + " " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME + ", " +
+                TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME + " " +
             "FROM " +  TournamentSerieConsts.TABLE_NAME  + " " +
             "LEFT JOIN " + TournamentSerieArrowConsts.TABLE_NAME + " " +
                 "ON " + TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.ID_COLUMN_NAME + " = " + TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " " +
@@ -153,6 +154,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                 currentSerie.index = cursor.getInt(1);
                 currentSerie.arrows = new ArrayList<>();
                 currentSerie.totalScore = 0;
+                currentSerie.roundIndex = cursor.getInt(7);
                 tournament.series.add(currentSerie);
             }
 
@@ -200,12 +202,14 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         if (hasData) {
             serieIndex = cursor.getInt(0) + 1;
         }
+        int roundIndex = tournamet.getTournamentConstraint().getRoundIndex(serieIndex);
 
         ContentValues contentValues = new ContentValues();
 
         contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamet.id);
         contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, serieIndex);
         contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, 0);
+        contentValues.put(TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME, roundIndex);
 
         long id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
         TournamentSerie res = new TournamentSerie();
@@ -214,6 +218,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         res.index = serieIndex;
         res.totalScore = 0;
         res.tournament = tournamet;
+        res.roundIndex = roundIndex;
         tournamet.series.add(res);
         return res;
     }
@@ -266,6 +271,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
         contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.index);
         contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, tournamentSerie.totalScore);
+        contentValues.put(TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME, tournamentSerie.roundIndex);
         tournamentSerie.id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
 
         for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
