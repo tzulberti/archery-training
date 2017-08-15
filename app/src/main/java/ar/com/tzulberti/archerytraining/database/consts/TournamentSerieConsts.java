@@ -11,6 +11,7 @@ public class TournamentSerieConsts extends  BaseSerieConsts {
 
     public static final String TOURNAMENT_ID_COLUMN_NAME = "tournament_id";
     public static final String TOTAL_SCORE_COLUMN_NAME = "total_score";
+    public static final String ROUND_INDEX_COLUMN_NAME = "round_index";
 
     @Override
     public String getScoreColumnName() {

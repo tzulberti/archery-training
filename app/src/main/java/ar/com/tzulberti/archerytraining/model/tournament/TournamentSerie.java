@@ -19,6 +19,7 @@ public class TournamentSerie implements ISerie, Serializable {
     public long id;
     public int index;
     public int totalScore;
+    public int roundIndex;
     public List<TournamentSerieArrow> arrows;
     public Tournament tournament;
 
