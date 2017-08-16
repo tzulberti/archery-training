@@ -115,7 +115,7 @@
     <string name="tournament_type">Tipo de torneo</string>
 
 
-
+    <string name="tournament_existing_name">Nombre: %1s</string>
     <string name="tournament_serie_index">Serie</string>
     <string name="tournament_serie_current_serie">Serie %1$d</string>
     <string name="tournament_serie_current_round">Ronda %1$d</string>
