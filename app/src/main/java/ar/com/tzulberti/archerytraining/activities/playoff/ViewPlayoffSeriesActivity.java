@@ -15,6 +15,7 @@ import android.view.Gravity;
 import android.view.View;
 
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
@@ -32,6 +33,7 @@ import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActiv
 import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentScoreSheetActivity;
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
@@ -119,6 +121,26 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
 
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {
+        TableLayout playoffTableLayout = (TableLayout) View.inflate(
+                this,
+                R.layout.playoff_playoff_information,
+                null
+        );
+
+        ImageView imageView = (ImageView) playoffTableLayout.findViewById(R.id.playoff_type);
+        if (playoff.computerPlayOffConfiguration == null) {
+            imageView.setImageResource(R.drawable.ic_standing_man);
+        } else {
+            imageView.setImageResource(R.drawable.ic_computer);
+        }
+
+        ((TextView) playoffTableLayout.findViewById(R.id.opponent_name)).setText("Computer");
+        ((TextView) playoffTableLayout.findViewById(R.id.total_score)).setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
+        ((TextView) playoffTableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
+        ((TextView) playoffTableLayout.findViewById(R.id.tournament_constraint)).setText(playoff.getTournamentConstraint().translatedName);
+        ((TextView) playoffTableLayout.findViewById(R.id.score_configuration)).setText(String.valueOf(playoff.computerPlayOffConfiguration.minScore) + " - " + String.valueOf(playoff.computerPlayOffConfiguration.maxScore));
+
+        tableLayout.addView(playoffTableLayout);
 
     }
 
