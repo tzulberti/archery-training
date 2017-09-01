@@ -150,6 +150,7 @@
     <string name="playoff_opponent_type">Opponent type</string>
     <string name="playoff_opponent_type_computer">Computer</string>
     <string name="playoff_opponent_type_human">Human</string>
+    <string name="playoff_opponent_score_required">Opponent\'s serie score is required</string>
 
     <string name="playoff_opponent_name">Opponent\'s name</string>
     <string name="playoff_min_score">Min serie score</string>

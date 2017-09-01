@@ -42,9 +42,9 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
         this.opponentScoreEdit = (EditText) this.findViewById(R.id.opponent_score);
 
+
         if (playoff.computerPlayOffConfiguration != null) {
             this.opponentScoreEdit.setVisibility(View.GONE);
-
 
             TextView computerScoreText = (TextView) this.findViewById(R.id.computer_score);
             int computerScore;
@@ -64,7 +64,7 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
             if (playoffSerie.opponentTotalScore > 0 ) {
                 this.opponentScoreEdit.setText(String.valueOf(playoffSerie.opponentTotalScore));
             } else {
-                this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+                this.opponentScoreEdit.setError(this.getString(R.string.playoff_opponent_score_required));
             }
             this.opponentScoreEdit.addTextChangedListener(new TextWatcher() {
                 @Override
@@ -142,7 +142,7 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
             // validates that the user has input the opponent score when not using computer
             String opponentScore = this.opponentScoreEdit.getText().toString();
             if (StringUtils.isEmpty(opponentScore)) {
-                this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+                this.opponentScoreEdit.setError(this.getString(R.string.playoff_opponent_score_required));
                 return false;
             }
             playoffSerie.opponentTotalScore = Integer.valueOf(opponentScore);

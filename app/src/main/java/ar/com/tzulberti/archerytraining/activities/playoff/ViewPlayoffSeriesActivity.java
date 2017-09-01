@@ -134,7 +134,7 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
             imageView.setImageResource(R.drawable.ic_computer);
         }
 
-        ((TextView) playoffTableLayout.findViewById(R.id.opponent_name)).setText("Computer");
+        ((TextView) playoffTableLayout.findViewById(R.id.opponent_name)).setText(playoff.name);
         ((TextView) playoffTableLayout.findViewById(R.id.total_score)).setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
         ((TextView) playoffTableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
         ((TextView) playoffTableLayout.findViewById(R.id.tournament_constraint)).setText(playoff.getTournamentConstraint().translatedName);
