@@ -100,7 +100,7 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
 
         TextView opponentScoreText = new TextView(this);
         opponentScoreText.setText(String.valueOf(playoffSerie.opponentTotalScore));
-        opponentScoreText.setBackgroundResource(R.drawable.rounded);
+        opponentScoreText.setBackgroundResource(R.drawable.rounded_opponent);
         opponentScoreText.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
         opponentScoreText.setGravity(Gravity.CENTER);
 
