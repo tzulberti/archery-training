@@ -119,7 +119,7 @@
             android:layout_height="wrap_content"
             android:id="@+id/computer_score"
             android:textSize="20sp"
-            android:background="@drawable/rounded"
+            android:background="@drawable/rounded_opponent"
             android:gravity="center"
             android:padding="3dp"/>
 
@@ -129,6 +129,7 @@
             android:id="@+id/opponent_score"
             android:textSize="20sp"
             android:inputType="number"
+            android:background="@drawable/rounded_opponent"
             android:gravity="center"
             android:padding="3dp"/>
 
