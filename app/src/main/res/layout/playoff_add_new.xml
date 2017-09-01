@@ -5,7 +5,8 @@
     android:stretchColumns="1"
     >
 
-    <TableRow>
+    <TableRow android:paddingTop="2dp">
+
         <TextView
             android:padding="3dip"
             android:text="@string/tournament_type" />
@@ -13,12 +14,34 @@
         <Spinner
             android:id="@+id/tournament_constrains"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
+            android:layout_height="wrap_content" />
+    </TableRow>
+
+    <TableRow android:paddingTop="10dp">
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/playoff_opponent_type" />
+
+        <Spinner
+            android:id="@+id/opponent_type"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
     </TableRow>
 
 
-    <TableRow>
+    <TableRow android:id="@+id/opponent_name_row">
+        <TextView
+            android:text="@string/playoff_opponent_name"
+            android:padding="3dip" />
+
+        <EditText
+            android:id="@+id/opponent_name"
+            android:gravity="right"
+            />
+    </TableRow>
+
+    <TableRow android:id="@+id/min_score_row">
         <TextView
             android:text="@string/playoff_min_score"
             android:padding="3dip" />
@@ -30,7 +53,7 @@
             />
     </TableRow>
 
-    <TableRow>
+    <TableRow android:id="@+id/max_score_row">
         <TextView
             android:text="@string/playoff_max_score"
             android:padding="3dip" />

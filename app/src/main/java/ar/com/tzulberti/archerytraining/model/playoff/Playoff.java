@@ -26,6 +26,7 @@ public class Playoff implements ISerieContainer, Serializable{
     public TournamentConstraint tournamentConstraint;
 
     public ComputerPlayOffConfiguration computerPlayOffConfiguration;
+    public HumanPlayoffConfiguration humanPlayoffConfiguration;
     public List<PlayoffSerie> series;
 
     @Override

@@ -1,6 +1,8 @@
 package ar.com.tzulberti.archerytraining.activities.playoff;
 
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -40,9 +42,9 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
         this.opponentScoreEdit = (EditText) this.findViewById(R.id.opponent_score);
 
+
         if (playoff.computerPlayOffConfiguration != null) {
             this.opponentScoreEdit.setVisibility(View.GONE);
-
 
             TextView computerScoreText = (TextView) this.findViewById(R.id.computer_score);
             int computerScore;
@@ -62,8 +64,26 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
             if (playoffSerie.opponentTotalScore > 0 ) {
                 this.opponentScoreEdit.setText(String.valueOf(playoffSerie.opponentTotalScore));
             } else {
-                this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+                this.opponentScoreEdit.setError(this.getString(R.string.playoff_opponent_score_required));
             }
+            this.opponentScoreEdit.addTextChangedListener(new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+                }
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+                }
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                    if (ViewPlayoffSerieInformationActivity.this.canActivateButtons()) {
+                        ViewPlayoffSerieInformationActivity.this.activateButtons();
+                    }
+                }
+            });
         }
     }
 
@@ -105,9 +125,14 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
     }
 
     @Override
+    protected boolean canAddArrowImpact() {
+        return this.serie.getArrows().size() < 3;
+    }
+
+    @Override
     protected boolean canActivateButtons() {
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-        if (this.serie.getArrows().size() != 3) {
+        if (this.serie.getArrows().size() < 3) {
             return false;
         }
 
@@ -117,7 +142,7 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
             // validates that the user has input the opponent score when not using computer
             String opponentScore = this.opponentScoreEdit.getText().toString();
             if (StringUtils.isEmpty(opponentScore)) {
-                this.opponentScoreEdit.setError(this.getString(R.string.commonRequiredValidationError));
+                this.opponentScoreEdit.setError(this.getString(R.string.playoff_opponent_score_required));
                 return false;
             }
             playoffSerie.opponentTotalScore = Integer.valueOf(opponentScore);
