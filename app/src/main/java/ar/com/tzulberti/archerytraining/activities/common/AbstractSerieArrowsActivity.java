@@ -297,10 +297,17 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         }
 
         if (isFinal) {
-            RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
-            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), roundConstraint.getSerieMaxPossibleScore()));
+            this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.getMaxSerieScore()));
             this.arrowUndoButton.setEnabled(true);
         }
+    }
+
+    /**
+     * @return the max possible score for the current serie
+     */
+    protected int getMaxSerieScore() {
+        RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
+        return roundConstraint.getSerieMaxPossibleScore();
     }
 
 

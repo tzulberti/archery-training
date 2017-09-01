@@ -28,6 +28,8 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
  */
 public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActivity {
 
+    private static final int MAX_ARROWS_ON_PLAYOFF_SERIE = 3;
+
     private EditText opponentScoreEdit;
 
     @Override
@@ -126,13 +128,19 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
 
     @Override
     protected boolean canAddArrowImpact() {
-        return this.serie.getArrows().size() < 3;
+        return this.serie.getArrows().size() < MAX_ARROWS_ON_PLAYOFF_SERIE;
+    }
+
+    @Override
+    protected int getMaxSerieScore() {
+        RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
+        return roundConstraint.maxScore * MAX_ARROWS_ON_PLAYOFF_SERIE;
     }
 
     @Override
     protected boolean canActivateButtons() {
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
-        if (this.serie.getArrows().size() < 3) {
+        if (this.serie.getArrows().size() < MAX_ARROWS_ON_PLAYOFF_SERIE) {
             return false;
         }
 
