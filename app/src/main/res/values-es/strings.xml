@@ -143,6 +143,7 @@
 
     <string name="playoff">Eliminatoria</string>
     <string name="playoff_distance">Distancia</string>
+    <string name="playoff_opponent_name">Nombre del oponente</string>
     <string name="playoff_min_score">Puntaje min por serie</string>
     <string name="playoff_max_score">Puntaje max por serie</string>
     <string name="playoff_computer_name">Computadora</string>

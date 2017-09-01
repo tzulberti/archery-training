@@ -74,11 +74,13 @@ public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
             imageView.setImageResource(R.drawable.ic_computer);
         }
 
-        ((TextView) tableLayout.findViewById(R.id.opponent_name)).setText("Computer");
+        ((TextView) tableLayout.findViewById(R.id.opponent_name)).setText(playoff.name);
         ((TextView) tableLayout.findViewById(R.id.total_score)).setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
         ((TextView) tableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
         ((TextView) tableLayout.findViewById(R.id.tournament_constraint)).setText(playoff.getTournamentConstraint().translatedName);
-        ((TextView) tableLayout.findViewById(R.id.score_configuration)).setText(String.valueOf(playoff.computerPlayOffConfiguration.minScore) + " - " + String.valueOf(playoff.computerPlayOffConfiguration.maxScore));
+        if (playoff.computerPlayOffConfiguration != null) {
+            ((TextView) tableLayout.findViewById(R.id.score_configuration)).setText(String.valueOf(playoff.computerPlayOffConfiguration.minScore) + " - " + String.valueOf(playoff.computerPlayOffConfiguration.maxScore));
+        }
 
         tableLayout.setId((int) playoff.id);
         tableLayout.setOnClickListener(this);

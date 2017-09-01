@@ -5,6 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import ar.com.tzulberti.archerytraining.database.consts.BaseArcheryTrainingConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
+import ar.com.tzulberti.archerytraining.database.consts.HumanPlayoffConfigurationConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
@@ -40,6 +41,7 @@ class TablesCreator {
         this.createPlayoffSerieTable(db);
         this.createPlayoffSerieArrowTable(db);
         this.createComputerPlayoffTable(db);
+        this.createHumanPlayoffTable(db);
         this.createBowTable(db);
         this.createSightValueTable(db);
     }
@@ -200,6 +202,18 @@ class TablesCreator {
                         BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
                         "FOREIGN KEY (" + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
                 ");"
+        );
+    }
+
+    private void createHumanPlayoffTable(SQLiteDatabase db) {
+        db.execSQL(
+                "CREATE TABLE " + HumanPlayoffConfigurationConsts.TABLE_NAME + " (" +
+                        HumanPlayoffConfigurationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        HumanPlayoffConfigurationConsts.OPPONENT_NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
+                        ");"
         );
     }
 

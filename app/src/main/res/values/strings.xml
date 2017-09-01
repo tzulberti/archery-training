@@ -147,6 +147,11 @@
 
     <string name="playoff">Playoff</string>
     <string name="playoff_distance">Distance</string>
+    <string name="playoff_opponent_type">Opponent type</string>
+    <string name="playoff_opponent_type_computer">Computer</string>
+    <string name="playoff_opponent_type_human">Human</string>
+
+    <string name="playoff_opponent_name">Opponent\'s name</string>
     <string name="playoff_min_score">Min serie score</string>
     <string name="playoff_max_score">Max serie score</string>
     <string name="playoff_computer_name">Computer</string>

@@ -210,7 +210,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     @Override
     public boolean onTouch(View v, MotionEvent event) {
         int numberOfArrows = this.serie.getArrows().size();
-        if (this.canActivateButtons()) {
+        if (! this.canAddArrowImpact()) {
             // already got the max number of arrows so there is nothing specific to do
             return false;
         }
@@ -223,37 +223,41 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         }
 
         if (isFinal && this.canActivateButtons()) {
-            // enable the buttons to save the current serie
-            if (this.serie.getIndex() > 1) {
-                this.previousSerieButton.setEnabled(true);
-            }
-            this.nextSerieButton.setEnabled(true);
-
-            // update the series information after updating the arrows by it's score
-            // so it can be showed on that order
-            Collections.sort(this.serie.getArrows(), new Comparator<AbstractArrow>() {
-
-                @Override
-                public int compare(AbstractArrow o1, AbstractArrow o2) {
-                    int res = 0;
-                    if (o1.isX && !o2.isX) {
-                        res = 1;
-                    } else if (!o1.isX && o2.isX) {
-                        res = -1;
-                    } else if (o1.score > o2.score) {
-                        res = 1;
-                    } else if (o1.score < o2.score) {
-                        res = -1;
-                    }
-                    res = -1 * res;
-                    return res;
-                }
-            });
-
-            this.saveSerie();
+            this.activateButtons();
         }
 
         return false;
+    }
+
+    protected void activateButtons() {
+        // enable the buttons to save the current serie
+        if (this.serie.getIndex() > 1) {
+            this.previousSerieButton.setEnabled(true);
+        }
+        this.nextSerieButton.setEnabled(true);
+
+        // update the series information after updating the arrows by it's score
+        // so it can be showed on that order
+        Collections.sort(this.serie.getArrows(), new Comparator<AbstractArrow>() {
+
+            @Override
+            public int compare(AbstractArrow o1, AbstractArrow o2) {
+                int res = 0;
+                if (o1.isX && !o2.isX) {
+                    res = 1;
+                } else if (!o1.isX && o2.isX) {
+                    res = -1;
+                } else if (o1.score > o2.score) {
+                    res = 1;
+                } else if (o1.score < o2.score) {
+                    res = -1;
+                }
+                res = -1 * res;
+                return res;
+            }
+        });
+
+        this.saveSerie();
     }
 
 
@@ -378,6 +382,13 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
      * @return if it can activate the next, and previous buttons
      */
     protected abstract boolean canActivateButtons();
+
+    /**
+     * @return if the user can continue adding arrows to the target
+     */
+    protected boolean canAddArrowImpact() {
+        return ! this.canActivateButtons();
+    }
 
     /**
      * @return if no more series can be loaded
