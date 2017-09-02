@@ -135,11 +135,18 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
         }
 
         ((TextView) playoffTableLayout.findViewById(R.id.opponent_name)).setText(playoff.name);
-        ((TextView) playoffTableLayout.findViewById(R.id.total_score)).setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
         ((TextView) playoffTableLayout.findViewById(R.id.datetime)).setText(DatetimeHelper.DATE_FORMATTER.format(playoff.datetime));
         ((TextView) playoffTableLayout.findViewById(R.id.tournament_constraint)).setText(playoff.getTournamentConstraint().translatedName);
         if (playoff.computerPlayOffConfiguration != null) {
             ((TextView) playoffTableLayout.findViewById(R.id.score_configuration)).setText(String.valueOf(playoff.computerPlayOffConfiguration.minScore) + " - " + String.valueOf(playoff.computerPlayOffConfiguration.maxScore));
+        }
+
+        TextView totalScoreText = ((TextView) playoffTableLayout.findViewById(R.id.total_score));
+        totalScoreText.setText(String.valueOf(playoff.userPlayoffScore) + " - " + String.valueOf(playoff.opponentPlayoffScore));
+        if (playoff.userPlayoffScore > playoff.opponentPlayoffScore) {
+            totalScoreText.setTextColor(this.getResources().getColor(R.color.colorGreen));
+        } else if (playoff.userPlayoffScore < playoff.opponentPlayoffScore) {
+            totalScoreText.setTextColor(this.getResources().getColor(R.color.colorRed));
         }
 
         tableLayout.addView(playoffTableLayout);
