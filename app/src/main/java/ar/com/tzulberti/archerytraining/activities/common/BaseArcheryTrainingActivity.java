@@ -1,10 +1,19 @@
 package ar.com.tzulberti.archerytraining.activities.common;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.webkit.WebView;
+import android.widget.TextView;
 
+import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
 import ar.com.tzulberti.archerytraining.dao.PlayoffDAO;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
@@ -41,6 +50,56 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
         if (view != null) {
             InputMethodManager imm = (InputMethodManager) this.getSystemService(Context.INPUT_METHOD_SERVICE);
             imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+
+    /**
+     * @return indicates if there should be shown a help window for the current activity
+     */
+    protected boolean shouldShowHelp() {
+        return false;
+    }
+
+    /**
+     * @return the help text that should be shown on the current window
+     */
+    protected String helpText() {
+        return null;
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (this.shouldShowHelp()) {
+            MenuInflater inflater = getMenuInflater();
+            inflater.inflate(R.menu.main_menu, menu);
+            return true;
+        } else {
+            return super.onCreateOptionsMenu(menu);
+        }
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.help_button) {
+            // get prompts.xml view
+            LayoutInflater li = LayoutInflater.from(this);
+            View promptsView = li.inflate(R.layout.help_dialog, null);
+            WebView helpContent = (WebView) promptsView.findViewById(R.id.help_text_info);
+            helpContent.loadData(this.helpText(), "text/html", "utf-8");
+
+
+            AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(this);
+            alertDialogBuilder.setView(promptsView);
+            // create alert dialog
+            AlertDialog alertDialog = alertDialogBuilder.create();
+
+            // show it
+            alertDialog.show();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }

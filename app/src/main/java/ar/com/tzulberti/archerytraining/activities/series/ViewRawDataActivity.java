@@ -27,6 +27,16 @@ public class ViewRawDataActivity extends AbstractTableDataActivity {
     private static final int MAX_VALUES_TO_SHOW = 20;
 
     @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.series_help);
+    }
+
+    @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {
         TableRow.LayoutParams trParams = new TableRow.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,

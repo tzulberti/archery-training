@@ -3,7 +3,11 @@ package ar.com.tzulberti.archerytraining.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.Window;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity;
@@ -18,10 +22,18 @@ import io.sentry.android.AndroidSentryClientFactory;
 
 public class MainActivity extends BaseArcheryTrainingActivity {
 
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    protected String helpText() {
+        return this.getResources().getString(R.string.main_help);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.main);
 
         Context ctx = this.getApplicationContext();
@@ -33,6 +45,7 @@ public class MainActivity extends BaseArcheryTrainingActivity {
         this.createDAOs();
         AppCache.initialize(this.constraintsDAO, this.getResources(), this.getPackageName());
     }
+
 
 
 
