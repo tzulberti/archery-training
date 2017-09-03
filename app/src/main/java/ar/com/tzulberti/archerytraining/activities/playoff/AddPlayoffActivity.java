@@ -42,6 +42,16 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
     private Spinner playoffTypeSpinner;
 
     @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.playoff_add_help);
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         this.createDAOs();

@@ -1,21 +1,12 @@
 <resources>
     <string name="app_name">Archery Training</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Configuracion</string>
-
-    <!-- Today exercise left menu options -->
-    <string name="leftMenuTodayRawData">Ver data</string>
-    <string name="leftMenuRetentions">Retenciones</string>
-    <string name="leftMenuTournament">Torneo</string>
-
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Requerido</string>
     <string name="commonDelete">Borrar</string>
     <string name="common_confirmation_dialog_title">Confirmación</string>
     <string name="common_container_stats_showing_series">Serie %1$d a %2$d</string>
+    <string name="common_help">Ayuda</string>
 
     <!-- training type translation -->
     <string name="training_type_free">Libre</string>
@@ -25,9 +16,7 @@
 
 
     <string name="stats_view">Ver estadisticas</string>
-    <string name="stats_show">Actualizar graficos</string>
-    <string name="stats_from">Desde</string>
-    <string name="stats_to">Hasta</string>
+
     <string name="stats_arrow_stats"># de flechas por puntaje</string>
     <string name="stats_series_stats"># de series por puntaje</string>
     <string name="stats_arrow_table_data">Flechas</string>
@@ -38,10 +27,75 @@
     <string name="stats_series_table_median">Mediana</string>
     <string name="stats_series_table_max">Max</string>
 
+    <string name="common_container_stats">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Para ver los datos estadisticos de un torneo o eliminatoria
+        </p>
+        <p>
+            Podes elegir el rango de series que quiere ver, y todos los
+            graficos se van a actualizar automaticamente
+        </p>
+        <p>
+            En el blanco, el punto verde indica el centro de todos impactos que esten marcados
+            en el mismo, y el circulo verde indica desde el centro que tan grande es el groupo
+            para incluir todas las flechas que estan en el blanco
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <!-- ////////////////////////////////////////////////////////////////////////// -->
+    <!-- String used on the main action -->
+
+    <string name="main_series">Series</string>
+    <string name="main_retentions">Retenciones</string>
+    <string name="main_tournament">Torneos</string>
+    <string name="main_playoff">Eliminatorias</string>
+    <string name="main_bow">Arco</string>
+
+    <string name="main_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            <strong>Series</strong>: podes ver la cantidad de flechas que tiraste y ver
+            estadisticas de las mismas.
+        </p>
+
+        <p>
+            <strong>Retenciones</strong>: ejercicio donde se abre ela arco por varios segundos,
+            y despues se descansa por ese mismo tiempo
+
+        </p>
+        <p>
+            <strong>Torneo</strong>: donde se puede cargar la informacion de los torneos (para
+            torneos reales o de practica)
+        </p>
+
+        <p>
+            <strong>Eliminatoria</strong>: para poder practicar eliminatorias contra la computadora
+            el contra otra persona
+
+        </p>
+        <p>
+            <strong>Arco</strong>: para guardar la informacion de la posicion de la mira del mismo
+        </p>
+
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
-    <string name="series">Series</string>
+
     <string name="series_get_today_totals">Ver los totales de hoy</string>
     <string name="series_get_current_week_totals">Ver los totales de esta semana</string>
     <string name="series_get_current_month_totals">Ver los totales de este mes</string>
@@ -64,13 +118,25 @@
     <string name="addSerieArrowsAmountTableHeader"># de flechas</string>
     <string name="addSerieTodayTotals">Totales de hoy</string>
 
+    <string name="series_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Muestra la cantidad de flechas que se tira a las diferentes distancias, para que uno
+            pueda ver la cantidad de flechas que tiro hoy, durante esta semana o durante el mes
+        </p>
+        <p>
+            Cuando se usa la opcion de <strong>Eliminatorias</strong> o <strong>Torneos</strong>,
+            las flechas de los mismos son ingreados aca
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
 
 
-    <!-- Today totals data -->
-    <string name="todayDataTotalSeries"># de series</string>
-
-    <!-- Today raw data -->
-    <string name="todayRawDataDelete">Borrar</string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Different texts used on the retentions window -->
@@ -84,7 +150,6 @@
 
     <!-- Text usados en la pantalla de cuando empieza todo -->
     <string name="button_stop">Parar</string>
-    <string name="wait_time">Tiempo de descanso</string>
     <string name="serieInfo">Serie actual</string>
     <string name="repetitionsInfo">Repeticion actual</string>
     <string name="status">Estado</string>
@@ -105,10 +170,7 @@
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- View existing tournaments information -->
     <string name="tournament_name">Nombre</string>
-    <string name="tournament_datetime">Cuando</string>
-    <string name="tournament_delete">Borrar</string>
     <string name="tournament_start">Empezar</string>
-    <string name="tournament_stop">Terminar</string>
 
     <string name="tournament_default_name">Entrenamiento</string>
     <string name="tournament_is_tournament">¿Es torneo?</string>
@@ -138,11 +200,67 @@
     <string name="tournament_view_stats_median">Mediana</string>
     <string name="tournament_view_stats_max">Max</string>
 
+    <string name="tournament_general_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Usado para crear un nuevo torneo, que puede ser real o simplemente uno de
+            practica en donde se quiere guardar el puntaje
+        </p>
+        <p>
+            La opción <strong>Ver estadisticas</strong> es usada para ver las estadisticas
+            de todos los torneos, pero se puede ver las estadisticas de uno cuando se esta
+            viendo los detalles del mismo
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="tournament_view_serie_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Usado para ver una serie o crear una serie de un torneo
+            Used to view the existing serie or to create a serie in the tournament.
+        </p>
+        <p>
+            Podes marcar el impacto de la flecha haciendo click en el blanco y moviendote
+            para que el mismo quede en la posicion correcta. El impacto es el punto bordo
+            que aparece en ese caso
+        </p>
+        <p>
+            Los circulos verdes indican las flechas que se tienen que marcar en el blanco. Una
+            vez que se hayan marcado todas, se habilita el boton para ir a la siguiente serie o
+            ver la anterior.
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="tournament_show_existing_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Para ver la informacion del torneo, y las estadisticas del mismo. Tambien se puede
+            ver los impactos de una serie, si se hace click sobre la misma
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Computer playoff option -->
 
-    <string name="playoff">Eliminatoria</string>
-    <string name="playoff_distance">Distancia</string>
+
     <string name="playoff_opponent_name">Nombre del oponente</string>
 
     <string name="playoff_opponent_type">Tipo de oponente</string>
@@ -160,12 +278,91 @@
     <string name="playoff_error_creating_min_greater_max">El puntaje min tiene que ser menor o igual que el max</string>
 
 
+    <string name="playoff_general_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Aca se crean las diferentes eliminatorias (puede ser real o simplemente una en la que
+            quieras guardar el puntaje)
+        </p>
+        <p>
+            La opción <strong>Ver estadisticas</strong> es usada para ver las estadisticas
+            de todos las eliminatorias, pero se puede ver las estadisticas de uno cuando se esta
+            viendo los detalles del mismo
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_add_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Podes crear una eliminatoria contra un humano o la computadora
+        </p>
+        <p>
+            Cuando se crea una eliminatoria contra un <strong>Humano</strong>, el unico valor
+            requerido es el nombre. Pero cuando se crea contra <strong>Computadora</strong>,
+            se require que se ingrese el minimo y maximo valor que la misma puede hacer en cada
+            serie
+        </p>
+        <p>
+            Por ejemplo, si selecciona 25 como minimo y 30 como maximo, entonces durante las series
+            de la eliminatoria, la computadora puede ser 26 en la primer, 25 en la segunda, y 30
+            en la tercera. La misma simepre va a elegir un valor al azar entre el minimo y maximo
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_view_serie_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            La informacion de una serie de una eliminatoria. Tiene que marcar los 3 impactos en el
+            blanco para poder pasar a la siguiente serie
+        </p>
+        <p>
+            Si esta haciendo una eliminatoria contra la computadora, entonces el circulo azul indica
+            el puntaje de la misma para esta serie. Pero si esta eliminando contra algun humano,
+            en el circulo azul tiene que ingresar el total de las 3 flechas que hizo el mismo, es
+            decir, el total de la serie que hizo su oponente
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_existing_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Se puede ver una eliminatoria y la estaditica de la misma. El puntaje que aparece
+            en azul es el que hizo el oponente para esa serie
+        </p>
+        <p>
+            Puede hacer click en cualquier serie, para ver los impactos de las flechas en el
+            blanco
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
-    <string name="bow">Arco</string>
     <string name="bow_name">Nombre</string>
     <string name="bow_add_sight_value">Agregar posición mira</string>
     <string name="bow_save">Guardar</string>

@@ -37,6 +37,16 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
         return R.layout.playoff_view_serie_arrows;
     }
 
+    @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.playoff_view_serie_help);
+    }
+
 
     @Override
     protected void setAdditionalInformation() {

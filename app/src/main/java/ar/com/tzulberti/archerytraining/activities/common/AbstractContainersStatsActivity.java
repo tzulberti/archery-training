@@ -47,6 +47,16 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
     protected HorizontalBarChart arrowsStatsHorizontalBarChart;
     protected TableLayout tableStats;
 
+    @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.common_container_stats);
+    }
+
     /**
      * Sets the DAO used to get the information from the database
      */
