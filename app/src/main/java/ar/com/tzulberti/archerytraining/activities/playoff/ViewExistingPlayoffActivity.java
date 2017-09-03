@@ -28,6 +28,15 @@ import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 
 public class ViewExistingPlayoffActivity extends AbstractTableDataActivity {
 
+    @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.playoff_existing_help);
+    }
 
     @Override
     protected void addButtonsBeforeData(TableLayout tableLayout) {

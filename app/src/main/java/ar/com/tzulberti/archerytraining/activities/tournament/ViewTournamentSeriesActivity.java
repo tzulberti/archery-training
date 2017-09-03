@@ -40,6 +40,16 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
 
     public Tournament tournament;
 
+    @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.tournament_view_serie_help);
+    }
+
     protected void getValueFromIntent() {
         this.tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
     }

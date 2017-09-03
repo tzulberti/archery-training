@@ -1,23 +1,17 @@
 <resources>
     <string name="app_name">Archery Training</string>
 
-    <string name="navigation_drawer_open">Open navigation drawer</string>
-    <string name="navigation_drawer_close">Close navigation drawer</string>
-
-    <string name="action_settings">Settings</string>
-
-    <!-- Today exercise left menu options -->
 
 
-    <string name="leftMenuTodayRawData">Raw data</string>
-    <string name="leftMenuRetentions">Retentions</string>
-    <string name="leftMenuTournament">Tournament</string>
+
+
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Required</string>
     <string name="commonDelete">Delete</string>
     <string name="common_confirmation_dialog_title">Confirmation</string>
     <string name="common_container_stats_showing_series">Serie %1$d to %2$d</string>
+    <string name="common_help">Help</string>
 
     <!-- training type translation -->
     <string name="training_type_free">Free training</string>
@@ -27,9 +21,8 @@
 
 
     <string name="stats_view">View stats</string>
-    <string name="stats_show">Update charts</string>
-    <string name="stats_from">From</string>
-    <string name="stats_to">To</string>
+
+
     <string name="stats_arrow_stats"># of arrows per score</string>
     <string name="stats_series_stats"># of series per score</string>
     <string name="stats_arrow_table_data">Arrows data</string>
@@ -40,10 +33,75 @@
     <string name="stats_series_table_median">Median</string>
     <string name="stats_series_table_max">Max</string>
 
+
+    <string name="common_container_stats">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Used to view the stats of a tournament/playff
+        </p>
+        <p>
+            You can select the range of series you what to show the stats, and all the graphs
+            are going to be updated
+        </p>
+        <p>
+            On the target, the green dot indicates the center shot for all the arrows on the
+            selected series, and the green circle indicates from the center shot how big is the
+            group to include all the arrows.
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <!-- ////////////////////////////////////////////////////////////////////////// -->
+    <!-- String used on the main action -->
+
+    <string name="main_series">Series</string>
+    <string name="main_retentions">Retentions</string>
+    <string name="main_tournament">Tournament</string>
+    <string name="main_playoff">Playoff</string>
+    <string name="main_bow">Bow</string>
+
+    <string name="main_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            <strong>Series</strong>: can view the number of arrows shoot on any given period or used
+            to load free training arrows
+        </p>
+
+        <p>
+            <strong>Retentions</strong>: exercise were you have to keep the bow open for a given
+            number of seconds and then rest the same number of seconds
+        </p>
+        <p>
+            <strong>Tournament</strong>:where can you load the tournament information (for real
+            tournaments or the practice ones)
+        </p>
+
+        <p>
+            <strong>Playoff</strong>: used to practice playoff. You could do it against
+            the computer or against another human
+        </p>
+        <p>
+            <strong>Bow</strong>: used to save the basic sight information of the bow
+        </p>
+
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Things related to the add serie option -->
     <!-- String used when the user is going to load a new serie with information -->
-    <string name="series">Series</string>
+
     <string name="series_get_today_totals">See today\'s data</string>
     <string name="series_get_current_week_totals">See current week data</string>
     <string name="series_get_current_month_totals">See current month data</string>
@@ -67,11 +125,24 @@
     <string name="addSerieTodayTotals">Today totals</string>
 
 
-    <!-- Today totals data -->
-    <string name="todayDataTotalSeries">Series #</string>
+    <string name="series_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Used to show the number of arrows shot at the difference distances. So you can check
+            the number of shots done during today, week, month, etc.
+        </p>
+        <p>
+            When using <strong>Tournaments</strong> or <strong>Playoff</strong>, the series are
+            already loaded so you do not have to do that manually.
+        </p>
+        </body>
+        </html>
 
-    <!-- Today raw data -->
-    <string name="todayRawDataDelete">Delete</string>
+        ]]>
+    </string>
+
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Different texts used on the retentions window -->
@@ -83,14 +154,13 @@
     <string name="startIn">Start in</string>
     <string name="buttonStart">Start</string>
 
-    <!-- Text usados en la pantalla de cuando empieza todo -->
+    <!-- Used to configure the retention -->
     <string name="button_stop">Stop</string>
-    <string name="wait_time">Resting time</string>
     <string name="serieInfo">Current serie</string>
     <string name="repetitionsInfo">Current repetition</string>
     <string name="status">Status</string>
 
-    <!-- Differentes estados en el que se puede encontrar la applicacion -->
+    <!-- Different status of the retention -->
     <string name="runningStatus">Open bow</string>
     <string name="restStatus">Resting</string>
     <string name="stoppedStatus">Stop</string>
@@ -106,10 +176,7 @@
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- View existing tournaments information -->
     <string name="tournament_name">Name</string>
-    <string name="tournament_datetime">When</string>
-    <string name="tournament_delete">Delete</string>
     <string name="tournament_start">Start</string>
-    <string name="tournament_stop">End</string>
 
 
     <string name="tournament_default_name">Training</string>
@@ -141,12 +208,66 @@
     <string name="tournament_view_stats_median">Median</string>
     <string name="tournament_view_stats_max">Max</string>
 
+    <string name="tournament_general_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Used to create a new tournament. It can be used on real tournament or
+            just in practice one were you want to keep an score.
+        </p>
+        <p>
+            The <strong>View stats</strong> option is used to show the stats for
+            all the tournaments, but you can view the stats for one tournament
+            specially when viewing it\'s details
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="tournament_view_serie_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Used to view the existing serie or to create a serie in the tournament.
+        </p>
+        <p>
+            You can mark the impact by clicking on the target face and moving to put
+            the impact on the corresponding place. The current impact is the burdeax point
+            that you move.
+        </p>
+        <p>
+            The green circles indicates that the number of arrows that should be marked
+            on the target, and once that all the arrows are marked you can go the next
+            serie (or view the previous serie)
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="tournament_show_existing_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            You can view the tournament information, and it\'s stats, or view the serie
+            target impacts if you click on it
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Playoff option -->
 
-    <string name="playoff">Playoff</string>
-    <string name="playoff_distance">Distance</string>
     <string name="playoff_opponent_type">Opponent type</string>
     <string name="playoff_opponent_type_computer">Computer</string>
     <string name="playoff_opponent_type_human">Human</string>
@@ -160,18 +281,97 @@
     <string name="playoff_start">Start</string>
     <string name="playoff_serie_score">%1$d - %2$d</string>
     <string name="playoff_error_creating_max_value_30">The value should be 30 or smaller</string>
-    <string name="playoff_error_creating_min_greater_max">The min value shoudl be smaller or equal than the max</string>
+    <string name="playoff_error_creating_min_greater_max">The min value should be smaller or equal than the max</string>
+
+
+    <string name="playoff_general_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Used to create a new playoff. It can be used on real playoff or
+            just in practice one were you want to keep an score.
+        </p>
+        <p>
+            The <strong>View stats</strong> option is used to show the stats for
+            all the playoff, but you can view the stats for one playoff
+            specially when viewing it\'s details
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_add_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            You can create a playoff against a human or the computer
+        </p>
+        <p>
+            When you create a playoff against the <strong>Human</strong> the only required value is the name,
+            but when selecting the <strong>Computer</strong> option, this requires to select the min
+            and max value that the computer can do on each series.
+        </p>
+        <p>
+            For example, if you select the min to be 25 and the max 30, then during the playoff the
+            computer can do 26 on the first serie, 25 on the second one, 30 on the last one. It will
+            randomly choose a number between that range for each serie.
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_view_serie_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            It is the information for one serie for the playoff. You have to input the 3 arrows impact
+            by clicking on the target, to go to the next serie
+        </p>
+        <p>
+            If the playoff is against a computer, then the blue circle indicates the serie score
+            that the computer choose. But if it is against a human, on the blue circle you must put
+            the serie score for you oppoenent, ie, the sum of 3 arrows of you opponent
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="playoff_existing_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            You can view the playoff information, and it\'s stats. The score in the blue circle
+            is the opponent\'s score for that serie
+        </p>
+        <p>
+            You can click on any serie to view the impact of the serie on the target
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
 
 
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
-    <string name="bow">Bow</string>
     <string name="bow_name">Name</string>
     <string name="bow_add_sight_value">Add new sight value</string>
     <string name="bow_save">Save</string>
     <string name="bow_distance">Distance</string>
     <string name="bow_distance_delete">Delete</string>
     <string name="bow_sight_value">Sight value</string>
+
 
 
 

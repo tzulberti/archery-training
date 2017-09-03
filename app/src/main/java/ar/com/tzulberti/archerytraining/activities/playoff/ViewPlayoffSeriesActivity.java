@@ -51,6 +51,16 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
 
     private Playoff playoff;
 
+    @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.playoff_general_help);
+    }
+
     protected void getValueFromIntent() {
         this.playoff = (Playoff) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
     }

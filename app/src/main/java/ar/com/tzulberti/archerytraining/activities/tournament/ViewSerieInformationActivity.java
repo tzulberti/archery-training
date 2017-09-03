@@ -24,6 +24,16 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
 
 
     @Override
+    protected boolean shouldShowHelp() {
+        return true;
+    }
+
+    @Override
+    protected String helpText() {
+        return this.getString(R.string.tournament_general_help);
+    }
+
+    @Override
     protected int getLayoutResource() {
         return R.layout.tournament_view_serie_arrow;
     }
