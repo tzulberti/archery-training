@@ -324,6 +324,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     public void undoLastArrow(View v) {
         TextView scoreText = this.currentScoreText[this.serie.getArrows().size() - 1];
         scoreText.setText("");
+        scoreText.setBackground(this.getResources().getDrawable(R.drawable.rounded));
         scoreText.setBackgroundResource(R.drawable.rounded);
 
         // remove the last added arrow
@@ -336,8 +337,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         this.nextSerieButton.setEnabled(false);
 
         // update the total score of the serie
-        RoundConstraint roundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
-        this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), roundConstraint.getSerieMaxPossibleScore()));
+        this.totalSerieScoreText.setText(String.format("%s / %s", this.serie.getTotalScore(), this.getMaxSerieScore()));
 
         // removed only arrow for the current serie so he can not undo anymore
         if (this.serie.getArrows().size() == 0) {
