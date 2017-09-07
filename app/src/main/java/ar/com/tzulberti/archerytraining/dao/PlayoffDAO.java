@@ -3,6 +3,7 @@ package ar.com.tzulberti.archerytraining.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -380,7 +381,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
                 "LEFT JOIN " + PlayoffSerieArrowConsts.TABLE_NAME + " " +
                     "ON " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + " = " + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
                 "WHERE " +
-                    PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
+                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
                 "ORDER BY " +
                     PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
                     PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME,
@@ -416,6 +417,7 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             arrowData.id = serieDataCursor.getInt(7);
             currentSerie.userTotalScore += arrowData.score;
         }
+        Log.e("foobar", "Series: " + playoff.series.size());
 
         return playoff;
     }
