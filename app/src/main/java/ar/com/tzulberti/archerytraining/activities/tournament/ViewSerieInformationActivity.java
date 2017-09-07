@@ -43,7 +43,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
         TournamentConstraint tournamentConstraint = tournamentSerie.tournament.tournamentConstraint;
         RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(this.serie.getIndex());
-        int maxScore = tournamentConstraint.getMaxPossibleScore();
+        int maxScore = this.getMaxSerieScore();
         ((TextView) this.findViewById(R.id.total_tournament_score)).setText(String.format("%s / %s", tournamentSerie.tournament.totalScore, maxScore));
 
         // check the number of text scrore that shoudl be hiddeen taken into account
