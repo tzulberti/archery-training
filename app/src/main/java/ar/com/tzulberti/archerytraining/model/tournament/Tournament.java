@@ -7,7 +7,6 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
-import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 /**
@@ -46,5 +45,6 @@ public class Tournament implements ISerieContainer, Serializable {
 
     @Override
     public long getId() { return this.id; }
+
 
 }

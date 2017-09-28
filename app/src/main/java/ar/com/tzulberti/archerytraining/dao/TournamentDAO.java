@@ -22,9 +22,10 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 /**
+ * DAO used to manage all the information related to tournaments
+ *
  * Created by tzulberti on 5/17/17.
  */
-
 public class TournamentDAO extends BaseArrowSeriesDAO {
 
 
@@ -73,6 +74,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             tournament.tournamentConstraint = AppCache.tournamentConstraintMap.get(tournament.tournamentConstraintId);
             res.add(tournament);
         }
+        cursor.close();
         return res;
     }
 
@@ -114,6 +116,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         res.tournamentConstraintId = cursor.getInt(3);
         res.tournamentConstraint = AppCache.tournamentConstraintMap.get(res.tournamentConstraintId);
         res.isTournament = (cursor.getInt(4) == 1);
+        cursor.close();
         return res;
     }
 
@@ -136,6 +139,8 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
                 TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " = ? " +
             "ORDER BY " +
                 TournamentSerieConsts.TABLE_NAME + "." + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " DESC, " +
+                TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " DESC, " +
                 TournamentSerieArrowConsts.TABLE_NAME + "." + TournamentSerieArrowConsts.ID_COLUMN_NAME;
 
         Cursor cursor = db.rawQuery(query, new String[]{String.valueOf(tournament.id)});
@@ -174,7 +179,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
             currentSerie.arrows.add(arrowData);
             currentSerie.totalScore += arrowData.score;
         }
-
+        cursor.close();
         return res;
     }
 
@@ -202,6 +207,7 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         if (hasData) {
             serieIndex = cursor.getInt(0) + 1;
         }
+        cursor.close();
         int roundIndex = tournamet.getTournamentConstraint().getRoundIndex(serieIndex);
 
         ContentValues contentValues = new ContentValues();
@@ -228,72 +234,127 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
      * Updates the database with all the information of the tournament serie, and it
      * will return the same instance with all the ids of the object set
      *
-     * @param tournamentSerie
-     * @return
+     * @param tournamentSerie the serie to update
+     * @return the updated tournament serie with the corresponding id
      */
     public TournamentSerie saveTournamentSerieInformation(TournamentSerie tournamentSerie) {
         // delete existing values for this serie and create new ones
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
 
-        // delete the arrow information is there is any
-        int deletedArrows = db.delete(
-                TournamentSerieArrowConsts.TABLE_NAME,
-                TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + "= ?",
-                new String[]{String.valueOf(tournamentSerie.id)}
-        );
-
-        if (tournamentSerie.id != 0 && deletedArrows > 0) {
-            // Update the tournament with the score of the current serie
-            Cursor cursor = db.rawQuery(
-                    String.format("SELECT SUM(%s) FROM %s WHERE %s = ?",
-                            TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, TournamentSerieConsts.TABLE_NAME, TournamentSerieConsts.ID_COLUMN_NAME),
-                    new String[]{String.valueOf(tournamentSerie.id)}
-            );
-            cursor.moveToNext();
-
-            int databaseSerieTotalScore = cursor.getInt(0);
+        if (tournamentSerie.id != 0) {
+            // update the serie total score
             db.execSQL(
-                    String.format("UPDATE %s SET %s = %s - ? WHERE %s = ?",
-                            TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.ID_COLUMN_NAME),
-                    new String[]{String.valueOf(databaseSerieTotalScore), String.valueOf(tournamentSerie.tournament.id)}
+                "UPDATE " + TournamentSerieConsts.TABLE_NAME + " " +
+                "SET " +
+                    TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME + " = ?, " +
+                    TournamentSerieConsts.IS_SYNCED + " = 0 " +
+                "WHERE " +
+                    TournamentSerieConsts.ID_COLUMN_NAME + " = ?",
+                 new String[] {String.valueOf(tournamentSerie.totalScore), String.valueOf(tournamentSerie.id)}
+
             );
-            tournamentSerie.tournament.totalScore -= databaseSerieTotalScore;
+
+            // update the existing arrows information, but it needs to get the existing ones from
+            // the database
+            Cursor cursor = db.rawQuery(
+                "SELECT " +
+                    TournamentSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
+                    TournamentSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
+                    TournamentSerieArrowConsts.ID_COLUMN_NAME + " " +
+                "FROM " + TournamentSerieArrowConsts.TABLE_NAME + " " +
+                "WHERE " +
+                    TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " = ? " +
+                "ORDER BY " +
+                    TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " DESC, " +
+                    TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " DESC, " +
+                    TournamentSerieArrowConsts.ID_COLUMN_NAME,
+                new String[]{String.valueOf(tournamentSerie.id)}
+            );
+            int currentIndex = 0;
+            while (cursor.moveToNext()) {
+                int existingScore = cursor.getInt(0);
+                boolean existingIsX = (cursor.getInt(1) == 1);
+                int id = cursor.getInt(2);
+
+                TournamentSerieArrow tournamentSerieArrow = tournamentSerie.arrows.get(currentIndex);
+                tournamentSerieArrow.id = id;
+
+                if (existingIsX != tournamentSerieArrow.isX || existingScore != tournamentSerieArrow.score) {
+                    // if one of the values are different, then it should be updated
+                    db.execSQL(
+                        "UPDATE " + TournamentSerieArrowConsts.TABLE_NAME + " " +
+                        "SET " +
+                            TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " = ?, " +
+                            TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " = ?, " +
+                            TournamentSerieArrowConsts.IS_SYNCED + " = 0 " +
+                        "WHERE " +
+                            TournamentSerieArrowConsts.ID_COLUMN_NAME + " = ?",
+                        new String[] {String.valueOf(tournamentSerieArrow.score), String.valueOf(tournamentSerieArrow.isX ? 1 : 0), String.valueOf(id)}
+                    );
+                }
+
+                currentIndex += 1;
+            }
+            cursor.close();
+
+            // create the missing values
+            while (currentIndex < tournamentSerie.arrows.size()) {
+                ContentValues contentValuesArrow = new ContentValues();
+                TournamentSerieArrow serieArrowData = tournamentSerie.arrows.get(currentIndex);
+                contentValuesArrow.put(TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
+                contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.id);
+                contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
+                contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
+                contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+                contentValuesArrow.put(TournamentSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
+                serieArrowData.id = db.insertOrThrow(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+                currentIndex += 1;
+            }
+
+        } else {
+            // create the serie and its arrows
+            ContentValues contentValues = new ContentValues();
+            contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
+            contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.index);
+            contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, tournamentSerie.totalScore);
+            contentValues.put(TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME, tournamentSerie.roundIndex);
+            tournamentSerie.id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
+
+            for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
+                ContentValues contentValuesArrow = new ContentValues();
+                contentValuesArrow.put(TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
+                contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.id);
+                contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
+                contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
+                contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+                contentValuesArrow.put(TournamentSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
+                serieArrowData.id = db.insertOrThrow(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+            }
         }
 
-        // if the information already existed then delete it
-        db.delete(
-                TournamentSerieConsts.TABLE_NAME,
-                TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + "= ? AND " + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + "= ?",
-                new String[]{String.valueOf(tournamentSerie.tournament.id), String.valueOf(tournamentSerie.index)}
+        // update the tournament totals
+        Cursor cursor = db.rawQuery(
+            "SELECT SUM(" + TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME + ") " +
+            "FROM " + TournamentSerieConsts.TABLE_NAME + " " +
+            "WHERE " +
+                TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " = ?",
+            new String[]{String.valueOf(tournamentSerie.tournament.id)}
         );
+        cursor.moveToNext();
+        int newSeriesTotal = cursor.getInt(0);
+        cursor.close();
 
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
-        contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.index);
-        contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, tournamentSerie.totalScore);
-        contentValues.put(TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME, tournamentSerie.roundIndex);
-        tournamentSerie.id = db.insertOrThrow(TournamentSerieConsts.TABLE_NAME, null, contentValues);
-
-        for (TournamentSerieArrow serieArrowData : tournamentSerie.arrows) {
-            ContentValues contentValuesArrow = new ContentValues();
-            contentValuesArrow.put(TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME, tournamentSerie.tournament.id);
-            contentValuesArrow.put(TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME, tournamentSerie.id);
-            contentValuesArrow.put(TournamentSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
-            contentValuesArrow.put(TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
-            contentValuesArrow.put(TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
-            contentValuesArrow.put(TournamentSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-            serieArrowData.id = db.insertOrThrow(TournamentSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
-        }
-
-        // update the tournament information
         db.execSQL(
-                String.format("UPDATE %s SET %s = %s + ? WHERE %s = ?",
-                        TournamentConsts.TABLE_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.TOTAL_SCORE_COLUMN_NAME, TournamentConsts.ID_COLUMN_NAME),
-                new String[]{String.valueOf(tournamentSerie.totalScore), String.valueOf(tournamentSerie.tournament.id)}
+            "UPDATE " + TournamentConsts.TABLE_NAME + " " +
+            "SET " +
+                TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " = ?, " +
+                TournamentConsts.IS_SYNCED + " = 0 " +
+            "WHERE " +
+                TournamentConsts.ID_COLUMN_NAME + "= ?",
+            new String[]{String.valueOf(newSeriesTotal), String.valueOf(tournamentSerie.tournament.id)}
         );
+        tournamentSerie.tournament.totalScore = newSeriesTotal;
 
-        // update the current instance of the tournament information
-        tournamentSerie.tournament.totalScore += tournamentSerie.totalScore;
 
         return tournamentSerie;
     }

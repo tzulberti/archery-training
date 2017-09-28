@@ -14,9 +14,10 @@ import ar.com.tzulberti.archerytraining.model.bow.Bow;
 import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
 
 /**
+ * DAO used to save all the information related to the bow
+ *
  * Created by tzulberti on 6/12/17.
  */
-
 public class BowDAO {
 
     private DatabaseHelper databaseHelper;
@@ -68,7 +69,7 @@ public class BowDAO {
             sightDistanceValue.sightValue = bowCursor.getFloat(3);
             sightDistanceValue.id = bowCursor.getInt(4);
         }
-
+        bowCursor.close();
         return res;
     }
 
@@ -89,8 +90,7 @@ public class BowDAO {
             contentValuesSightDistance.put(SightDistanceValueConsts.BOW_ID_COLUMN_NAME, res.id);
             contentValuesSightDistance.put(SightDistanceValueConsts.DISTANCE_COLUMN_NAME, sightDistanceValue.distance);
             contentValuesSightDistance.put(SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME, sightDistanceValue.sightValue);
-            long sightId = db.insertOrThrow(SightDistanceValueConsts.TABLE_NAME, null, contentValuesSightDistance);
-            sightDistanceValue.id = sightId;
+            sightDistanceValue.id = db.insertOrThrow(SightDistanceValueConsts.TABLE_NAME, null, contentValuesSightDistance);
         }
 
         return res;

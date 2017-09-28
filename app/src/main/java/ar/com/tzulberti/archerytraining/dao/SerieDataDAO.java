@@ -17,9 +17,10 @@ import ar.com.tzulberti.archerytraining.model.series.SerieData;
 import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
 
 /**
+ * DAO used to save all the information for the series
+ *
  * Created by tzulberti on 4/19/17.
  */
-
 public class SerieDataDAO {
 
     public enum GroupByType implements Serializable {
@@ -42,11 +43,7 @@ public class SerieDataDAO {
         contentValues.put(SerieInformationConsts.DATETIME_COLUMN_NAME, DatetimeHelper.getCurrentTime());
         contentValues.put(SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME, trainingType.getValue());
 
-        long id = db.insertOrThrow(SerieInformationConsts.TABLE_NAME, null, contentValues);
-        if (id == -1) {
-            // TODO check what to do in this case
-        }
-        return id;
+        return db.insertOrThrow(SerieInformationConsts.TABLE_NAME, null, contentValues);
     }
 
     public long deleteSerieId(int id) {
@@ -59,7 +56,7 @@ public class SerieDataDAO {
     }
 
     public List<SerieData> getLastValues(int limit) {
-        ArrayList<SerieData> res = new ArrayList<SerieData>();
+        ArrayList<SerieData> res = new ArrayList<>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
         String sortOrder = SerieInformationConsts.DATETIME_COLUMN_NAME + " DESC";
@@ -88,6 +85,7 @@ public class SerieDataDAO {
 
             res.add(currentData);
         }
+        cursor.close();
         return res;
     }
 
@@ -108,10 +106,12 @@ public class SerieDataDAO {
                 new String[]{String.valueOf(DatetimeHelper.getTodayZeroHours()), String.valueOf(DatetimeHelper.getTomorrowZeroHours())}
         );
 
+        long res = 0;
         while (cursor.moveToNext()) {
-            return cursor.getLong(0);
+            res = cursor.getLong(0);
         }
-        return 0;
+        cursor.close();
+        return res;
     }
 
     public List<ArrowsPerDayData> getDailyArrowsInformation(long minDate, long maxDate, GroupByType groupByType) {
@@ -151,6 +151,7 @@ public class SerieDataDAO {
             arrowsPerDayData.totalArrows = cursor.getInt(1);
             res.add(arrowsPerDayData);
         }
+        cursor.close();
         return res;
     }
 
@@ -161,7 +162,7 @@ public class SerieDataDAO {
      * @return the total data for today
      */
     public List<DistanceTotalData> getTotalsForDistance(long startingDate, long endingDate) {
-        List<DistanceTotalData> res = new ArrayList<DistanceTotalData>();
+        List<DistanceTotalData> res = new ArrayList<>();
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
 
         Cursor cursor = db.rawQuery(
@@ -188,6 +189,7 @@ public class SerieDataDAO {
             data.seriesAmount = cursor.getInt(3);
             res.add(data);
         }
+        cursor.close();
         return res;
     }
 

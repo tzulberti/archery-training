@@ -64,6 +64,7 @@ public class ConstraintsDAO {
                     )
             );
         }
+        cursor.close();
 
         return res;
     }
@@ -120,6 +121,7 @@ public class ConstraintsDAO {
             }
 
         }
+        cursor.close();
 
         return res;
     }

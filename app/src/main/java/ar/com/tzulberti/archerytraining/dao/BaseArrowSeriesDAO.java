@@ -1,5 +1,6 @@
 package ar.com.tzulberti.archerytraining.dao;
 
+
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
@@ -10,9 +11,11 @@ import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
 import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
+
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
+
 
 /**
  * Base DAO that has common logic for playoff and tournament based on the DAO
@@ -75,6 +78,7 @@ public abstract class BaseArrowSeriesDAO  {
             seriesPerScore.seriesAmount = arrowsCursor.getInt(1);
             res.add(seriesPerScore);
         }
+        arrowsCursor.close();
 
         return res;
     }
@@ -147,6 +151,7 @@ public abstract class BaseArrowSeriesDAO  {
             currentScore = arrowsPerScore.score;
             res.add(arrowsPerScore);
         }
+        arrowsCursor.close();
 
         if (currentScore > 0) {
             // the the min score was something like 3 so I have to add the missing values
@@ -167,4 +172,5 @@ public abstract class BaseArrowSeriesDAO  {
         }
         return chartRes;
     }
+
 }
