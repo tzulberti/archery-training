@@ -218,6 +218,7 @@ public class SerieDataDAO {
             data.seriesAmount = cursor.getInt(2);
             res.add(data);
         }
+        cursor.close();
         return res;
     }
 
