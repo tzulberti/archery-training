@@ -4,9 +4,10 @@ import java.io.Serializable;
 import java.util.List;
 
 /**
+ * Interface used for the container series
+ *
  * Created by tzulberti on 6/3/17.
  */
-
 public interface ISerie extends Serializable {
 
     List<? extends AbstractArrow> getArrows();
@@ -18,4 +19,8 @@ public interface ISerie extends Serializable {
     int getTotalScore();
 
     void updateTotalScore(int arrowScore);
+
+    long getId();
+
+    void setId(long id);
 }

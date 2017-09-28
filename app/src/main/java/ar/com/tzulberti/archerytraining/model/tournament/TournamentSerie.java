@@ -7,8 +7,7 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
-import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
-import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
+
 
 /**
  * Has the information of one serie of the round
@@ -52,4 +51,10 @@ public class TournamentSerie implements ISerie, Serializable {
     public void updateTotalScore(int arrowScore) {
         this.totalScore += arrowScore;
     }
+
+    @Override
+    public long getId() { return this.id; }
+
+    @Override
+    public void setId(long id) { this.id = id;}
 }

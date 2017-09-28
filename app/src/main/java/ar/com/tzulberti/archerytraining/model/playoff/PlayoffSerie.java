@@ -10,9 +10,10 @@ import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 /**
+ * Saves the information of one of the series of the playoff
+ *
  * Created by tzulberti on 6/3/17.
  */
-
 public class PlayoffSerie implements ISerie, Serializable {
 
     public long id;
@@ -46,4 +47,10 @@ public class PlayoffSerie implements ISerie, Serializable {
     public void updateTotalScore(int arrowScore) {
         this.userTotalScore += arrowScore;
     }
+
+    @Override
+    public void setId(long id) { this.id = id; }
+
+    @Override
+    public long getId() { return this.id; }
 }
