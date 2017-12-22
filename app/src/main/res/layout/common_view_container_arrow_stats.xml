@@ -84,5 +84,12 @@
             android:layout_height="300dp"
             android:layout_below="@id/tournament_series_chart"
             />
+
+        <com.github.mikephil.charting.charts.HorizontalBarChart
+            android:id="@+id/tournament_color_horizontal_chart"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_below="@id/tournament_arrows_horizontal_chart"
+            />
     </LinearLayout>
 </ScrollView>

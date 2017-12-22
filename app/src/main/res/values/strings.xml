@@ -32,6 +32,7 @@
     <string name="stats_series_table_avg">Avg</string>
     <string name="stats_series_table_median">Median</string>
     <string name="stats_series_table_max">Max</string>
+    <string name="stats_colors_stats"># of arrows per color</string>
 
 
     <string name="common_container_stats">

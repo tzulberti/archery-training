@@ -26,6 +26,7 @@
     <string name="stats_series_table_avg">Prom</string>
     <string name="stats_series_table_median">Mediana</string>
     <string name="stats_series_table_max">Max</string>
+    <string name="stats_colors_stats"># of de flechas por color</string>
 
     <string name="common_container_stats">
         <![CDATA[

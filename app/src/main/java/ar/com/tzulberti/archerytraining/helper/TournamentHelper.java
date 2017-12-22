@@ -3,11 +3,29 @@ package ar.com.tzulberti.archerytraining.helper;
 import android.graphics.Color;
 
 /**
+ * Helper functions used to render the data of the score correctly
+ *
  * Created by tzulberti on 5/23/17.
  */
-
 public class TournamentHelper {
 
+    public static final int[] ALL_COLORS = new int[]{
+        Color.YELLOW,
+        Color.RED,
+        Color.BLUE,
+        Color.BLACK,
+        Color.WHITE,
+        Color.GREEN
+    };
+
+    public static final String[] COLORS_TEXT = new String[]{
+        "Yellow",
+        "Red",
+        "Blue",
+        "Black",
+        "White",
+        "M"
+    };
 
     public static final String getUserScore(int score, boolean isX) {
         if (score == 0) {
@@ -40,14 +58,14 @@ public class TournamentHelper {
                 res = Color.WHITE;
                 break;
             case 0:
-                res = Color.BLACK;
+                res = Color.GREEN;
                 break;
         }
         return res;
     }
 
     public static final int getFontColor(int score) {
-        if (score == 0 || score == 3 || score == 4) {
+        if (score == 3 || score == 4) {
             return Color.WHITE;
         } else {
             return Color.BLACK;
