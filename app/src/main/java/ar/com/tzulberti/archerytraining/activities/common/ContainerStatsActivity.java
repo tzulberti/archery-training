@@ -30,6 +30,7 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -38,12 +39,17 @@ import java.util.Map;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
+import ar.com.tzulberti.archerytraining.helper.charts.BarAxisValueFormattter;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 
 /**
  * Used to show the stats for one tournamnent/playoff
+ *
+ * This is different from AbstractContainersStatsActivity, because this is used to
+ * show the stats for only one tournament/playoff while AbstractContainersStatsActivity
+ * is used to show the stats for a range of values
  *
  * Created by tzulberti on 7/30/17.
  */
@@ -228,7 +234,9 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
     private void renderArrowsChart(HorizontalBarChart horizontalBarChart, List<ISerie> series) {
         Map<String, Integer> arrowsCounter = new HashMap<>();
+        int totalArrows = 0;
         for (ISerie serie : series) {
+            totalArrows += serie.getArrows().size();
             for (AbstractArrow arrow : serie.getArrows()) {
                 String score = TournamentHelper.getUserScore(arrow.score, arrow.isX);
                 Integer existingCounts = arrowsCounter.get(score);
@@ -243,6 +251,9 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         List<String> xAxis = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
 
+        List<String> stackLabels = new ArrayList<>();
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
         int maxCounter = 0;
         for (int i = 0; i < 12; i++) {
             String score;
@@ -266,13 +277,17 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
             arrowsCounterSet.add(new BarEntry(i, counter));
             xAxis.add(score);
             colors.add(color);
+            stackLabels.add("123123123");
         }
 
 
+        String[] foobar = Arrays.copyOf(stackLabels.toArray(), stackLabels.size(), String[].class);
         BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
         set1.setColors(colors);
+        set1.setStackLabels(foobar);
         BarData data = new BarData();
         data.addDataSet(set1);
+        data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
 
 
         XAxis xl = horizontalBarChart.getXAxis();
@@ -283,14 +298,19 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         xl.setGranularity(1);
         xl.setLabelCount(xAxis.size());
 
+
+
+        // this is the upper Axis in this case, but we don't want to show
+        // any label on the top
         YAxis yl = horizontalBarChart.getAxisLeft();
-        yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yl.setDrawAxisLine(false);
         yl.setDrawGridLines(false);
         yl.setEnabled(false);
         yl.setAxisMinimum(0f);
 
+        // this the lower axis, that is the one being shown
         YAxis yr = horizontalBarChart.getAxisRight();
-        yr.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
+        yr.setDrawAxisLine(true);
         yr.setDrawGridLines(false);
         yr.setAxisMinimum(0f);
 
