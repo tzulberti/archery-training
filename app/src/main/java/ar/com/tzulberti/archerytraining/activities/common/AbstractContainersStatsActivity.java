@@ -28,6 +28,7 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BaseArrowSeriesDAO;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
+import ar.com.tzulberti.archerytraining.helper.charts.BarAxisValueFormattter;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.IElementByScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
@@ -126,16 +127,19 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         List<String> xAxis = new ArrayList<>();
 
         int index = 0;
+        long totalSeries = 0;
         for (SeriesPerScore data : seriesPerScores) {
             seriesCounterSet.add(new BarEntry(index, data.seriesAmount));
             xAxis.add(String.valueOf(data.serieScore));
             index += 1;
+            totalSeries += data.seriesAmount;
         }
 
         BarDataSet set1 = new BarDataSet(seriesCounterSet, "");
         set1.setColors(colors);
         BarData data = new BarData();
         data.addDataSet(set1);
+        data.setValueFormatter(new BarAxisValueFormattter(totalSeries));
 
         XAxis xl = horizontalBarChart.getXAxis();
         xl.setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -176,6 +180,7 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         List<Integer> colors = new ArrayList<>();
 
         int index = 0;
+        long totalArrows = 0;
         for (ArrowsPerScore arrowsPerScore : arrowsPerScores) {
             String score = TournamentHelper.getUserScore(arrowsPerScore.score, arrowsPerScore.isX);
             Integer color = TournamentHelper.getBackground(arrowsPerScore.score);
@@ -183,12 +188,14 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
             xAxis.add(score);
             colors.add(color);
             index += 1;
+            totalArrows += arrowsPerScore.arrowsAmount;
         }
 
         BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
         set1.setColors(colors);
         BarData data = new BarData();
         data.addDataSet(set1);
+        data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
 
 
         XAxis xl = horizontalBarChart.getXAxis();
