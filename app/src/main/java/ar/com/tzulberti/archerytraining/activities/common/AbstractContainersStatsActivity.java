@@ -13,22 +13,23 @@ import android.widget.TextView;
 
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
-import com.github.mikephil.charting.components.XAxis;
-import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BaseArrowSeriesDAO;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.BarAxisValueFormattter;
+import ar.com.tzulberti.archerytraining.helper.charts.HorizontalBarChartHelper;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.IElementByScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
@@ -103,6 +104,7 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
 
         List<ArrowsPerScore> arrowsPerScores = this.baseArrowSeriesDAO.getArrowsPerScore(tournamentConstraint);
         this.showArrowsPerScore(arrowsPerScores, this.arrowsStatsHorizontalBarChart);
+        this.showArrowsPerColor(arrowsPerScores, (HorizontalBarChart) this.findViewById(R.id.playoff_stats_color_stats));
 
         this.showTableStats(arrowsPerScores, seriesPerScoreList, this.tableStats );
     }
@@ -141,31 +143,9 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         data.addDataSet(set1);
         data.setValueFormatter(new BarAxisValueFormattter(totalSeries));
 
-        XAxis xl = horizontalBarChart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(false);
-        xl.setValueFormatter(new IndexAxisValueFormatter(xAxis));
-        xl.setGranularity(1);
-        xl.setLabelCount(xAxis.size());
-
-        YAxis yl = horizontalBarChart.getAxisLeft();
-        yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yl.setDrawGridLines(false);
-        yl.setEnabled(false);
-        yl.setAxisMinimum(0f);
-
-        YAxis yr = horizontalBarChart.getAxisRight();
-        yr.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yr.setDrawGridLines(false);
-        yr.setAxisMinimum(0f);
-
-        horizontalBarChart.setData(data);
-        horizontalBarChart.getLegend().setEnabled(false);
-        horizontalBarChart.setEnabled(false);
-        horizontalBarChart.setTouchEnabled(false);
-        horizontalBarChart.setMinimumHeight(xAxis.size() * 90);
+        HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
         horizontalBarChart.getDescription().setEnabled(false);
+        horizontalBarChart.setMinimumHeight(xAxis.size() * 80);
         horizontalBarChart.invalidate();
     }
 
@@ -197,31 +177,55 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         data.addDataSet(set1);
         data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
 
-
-        XAxis xl = horizontalBarChart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(false);
-        xl.setValueFormatter(new IndexAxisValueFormatter(xAxis));
-        xl.setGranularity(1);
-        xl.setLabelCount(xAxis.size());
-
-        YAxis yl = horizontalBarChart.getAxisLeft();
-        yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yl.setDrawGridLines(false);
-        yl.setEnabled(false);
-        yl.setAxisMinimum(0f);
-
-        YAxis yr = horizontalBarChart.getAxisRight();
-        yr.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
-        yr.setDrawGridLines(false);
-        yr.setAxisMinimum(0f);
-
-        horizontalBarChart.setData(data);
-        horizontalBarChart.getLegend().setEnabled(false);
-        horizontalBarChart.setEnabled(false);
-        horizontalBarChart.setTouchEnabled(false);
+        HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
         horizontalBarChart.getDescription().setEnabled(false);
+        horizontalBarChart.invalidate();
+    }
+
+    private void showArrowsPerColor(List<ArrowsPerScore> arrowsPerScores, HorizontalBarChart horizontalBarChart) {
+        if (arrowsPerScores == null || arrowsPerScores.isEmpty()) {
+            horizontalBarChart.clear();
+            return;
+        }
+
+        Map<Integer, Integer> arrowsCounter = new HashMap<>();
+        int totalArrows = 0;
+        for (ArrowsPerScore arrowsPerScore : arrowsPerScores) {
+            totalArrows += arrowsPerScore.arrowsAmount;
+            Integer color = TournamentHelper.getBackground(arrowsPerScore.score);
+            Integer existingCounts = arrowsCounter.get(color);
+            if (existingCounts == null) {
+                existingCounts = 0;
+            }
+            arrowsCounter.put(color, existingCounts + arrowsPerScore.arrowsAmount);
+
+        }
+
+        List<BarEntry> arrowsCounterSet = new ArrayList<>();
+        List<String> xAxis = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
+
+        int i = 0;
+        for (int color : TournamentHelper.ALL_COLORS) {
+            Integer counter = arrowsCounter.get(color);
+            if (counter == null) {
+                counter = 0;
+            }
+            arrowsCounterSet.add(new BarEntry(i, counter));
+            colors.add(color);
+            xAxis.add(TournamentHelper.COLORS_TEXT[i]);
+            i += 1;
+        }
+
+
+        BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
+        set1.setColors(colors);
+        BarData data = new BarData();
+        data.addDataSet(set1);
+        data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
+
+        HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
+        horizontalBarChart.getDescription().setText(getString(R.string.tournament_view_stats_arrow_chart_description));
         horizontalBarChart.invalidate();
     }
 

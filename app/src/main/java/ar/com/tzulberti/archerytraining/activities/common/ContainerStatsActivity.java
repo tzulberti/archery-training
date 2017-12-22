@@ -26,11 +26,9 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 
 import java.text.DecimalFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -40,6 +38,7 @@ import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.BarAxisValueFormattter;
+import ar.com.tzulberti.archerytraining.helper.charts.HorizontalBarChartHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
@@ -147,6 +146,7 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         this.showTargetImpacts(series);
         this.renderSeriesChart((LineChart) this.findViewById(R.id.tournament_series_chart), series);
         this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), series);
+        this.renderColorChart((HorizontalBarChart) this.findViewById(R.id.tournament_color_horizontal_chart), series);
         this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), series);
 
         this.seriesShowingText.setText(getString(R.string.common_container_stats_showing_series, minSerie, maxSerie));
@@ -251,10 +251,7 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         List<String> xAxis = new ArrayList<>();
         List<Integer> colors = new ArrayList<>();
 
-        List<String> stackLabels = new ArrayList<>();
-        DecimalFormat df = new DecimalFormat();
-        df.setMaximumFractionDigits(2);
-        int maxCounter = 0;
+
         for (int i = 0; i < 12; i++) {
             String score;
             Integer color;
@@ -271,53 +268,62 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
             if (counter == null) {
                 counter = 0;
             }
-            if (counter > maxCounter) {
-                maxCounter = counter;
-            }
             arrowsCounterSet.add(new BarEntry(i, counter));
             xAxis.add(score);
             colors.add(color);
-            stackLabels.add("123123123");
         }
 
-
-        String[] foobar = Arrays.copyOf(stackLabels.toArray(), stackLabels.size(), String[].class);
         BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
         set1.setColors(colors);
-        set1.setStackLabels(foobar);
         BarData data = new BarData();
         data.addDataSet(set1);
         data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
 
-
-        XAxis xl = horizontalBarChart.getXAxis();
-        xl.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xl.setDrawAxisLine(true);
-        xl.setDrawGridLines(false);
-        xl.setValueFormatter(new IndexAxisValueFormatter(xAxis));
-        xl.setGranularity(1);
-        xl.setLabelCount(xAxis.size());
+        HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
+        horizontalBarChart.getDescription().setText(getString(R.string.tournament_view_stats_arrow_chart_description));
+        horizontalBarChart.invalidate();
+    }
 
 
+    private void renderColorChart(HorizontalBarChart horizontalBarChart, List<ISerie> series) {
+        Map<Integer, Integer> arrowsCounter = new HashMap<>();
+        int totalArrows = 0;
+        for (ISerie serie : series) {
+            totalArrows += serie.getArrows().size();
+            for (AbstractArrow arrow : serie.getArrows()) {
+                Integer color = TournamentHelper.getBackground(arrow.score);
+                Integer existingCounts = arrowsCounter.get(color);
+                if (existingCounts == null) {
+                    existingCounts = 0;
+                }
+                arrowsCounter.put(color, existingCounts + 1);
+            }
+        }
 
-        // this is the upper Axis in this case, but we don't want to show
-        // any label on the top
-        YAxis yl = horizontalBarChart.getAxisLeft();
-        yl.setDrawAxisLine(false);
-        yl.setDrawGridLines(false);
-        yl.setEnabled(false);
-        yl.setAxisMinimum(0f);
+        List<BarEntry> arrowsCounterSet = new ArrayList<>();
+        List<String> xAxis = new ArrayList<>();
+        List<Integer> colors = new ArrayList<>();
 
-        // this the lower axis, that is the one being shown
-        YAxis yr = horizontalBarChart.getAxisRight();
-        yr.setDrawAxisLine(true);
-        yr.setDrawGridLines(false);
-        yr.setAxisMinimum(0f);
+        int i = 0;
+        for (int color : TournamentHelper.ALL_COLORS) {
+            Integer counter = arrowsCounter.get(color);
+            if (counter == null) {
+                counter = 0;
+            }
+            arrowsCounterSet.add(new BarEntry(i, counter));
+            colors.add(color);
+            xAxis.add(TournamentHelper.COLORS_TEXT[i]);
+            i += 1;
+        }
 
-        horizontalBarChart.setData(data);
-        horizontalBarChart.getLegend().setEnabled(false);
-        horizontalBarChart.setEnabled(false);
-        horizontalBarChart.setTouchEnabled(false);
+
+        BarDataSet set1 = new BarDataSet(arrowsCounterSet, "");
+        set1.setColors(colors);
+        BarData data = new BarData();
+        data.addDataSet(set1);
+        data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
+
+        HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
         horizontalBarChart.getDescription().setText(getString(R.string.tournament_view_stats_arrow_chart_description));
         horizontalBarChart.invalidate();
     }
@@ -396,4 +402,5 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         tr.addView(meanTextView);
         tr.addView(maxTextView);
     }
+
 }
