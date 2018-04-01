@@ -98,8 +98,19 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
     }
 
     protected void addNewValue() {
-        // make sure that the user can add another serie to this tournament
-        TournamentSerie tournamentSerie = this.tournamentDAO.createNewSerie(this.tournament);
+        // check if the last serie has some arrows, and if that is the case then create a new
+        // serie, but if it is empty in arrows, then edit that serie instead of creating one
+        TournamentSerie tournamentSerie = null;
+        if (this.tournament.getSeries().size() > 0) {
+            TournamentSerie lastSerie = (TournamentSerie) this.tournament.getSeries().get(this.tournament.getSeries().size() - 1);
+            if (lastSerie.arrows.size() == 0) {
+                tournamentSerie = lastSerie;
+            }
+        }
+
+        if (tournamentSerie == null) {
+            tournamentSerie = this.tournamentDAO.createNewSerie(this.tournament);
+        }
 
         Intent intent = new Intent(this, ViewSerieInformationActivity.class);
         intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, tournamentSerie);
