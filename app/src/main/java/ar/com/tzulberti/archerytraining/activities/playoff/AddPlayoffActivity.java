@@ -12,6 +12,7 @@ import android.widget.Spinner;
 
 import org.apache.commons.lang3.StringUtils;
 
+import java.security.KeyStore;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -142,7 +143,15 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
                 }
 
 
-                int value = Integer.parseInt(inputValue);
+                int value = 0;
+                try {
+                    value = Integer.parseInt(inputValue);
+                } catch (NumberFormatException e) {
+                    info.getValue().setError(this.getString(R.string.playoff_error_creating_max_value_30));
+                    foundError = true;
+                    continue;
+                }
+
                 if (value <= 0) {
                     info.getValue().setError(requiredValueError);
                     foundError = true;
