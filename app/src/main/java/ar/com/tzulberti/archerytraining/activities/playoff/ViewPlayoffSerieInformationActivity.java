@@ -163,8 +163,15 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
                 this.opponentScoreEdit.setError(this.getString(R.string.playoff_opponent_score_required));
                 return false;
             }
-            playoffSerie.opponentTotalScore = Integer.valueOf(opponentScore);
-            return true;
+
+
+            try {
+                playoffSerie.opponentTotalScore = Integer.valueOf(opponentScore);
+                return true;
+            } catch (NumberFormatException e) {
+                this.opponentScoreEdit.setError(this.getString(R.string.playoff_error_creating_max_value_30));
+                return false;
+            }
         }
     }
 
