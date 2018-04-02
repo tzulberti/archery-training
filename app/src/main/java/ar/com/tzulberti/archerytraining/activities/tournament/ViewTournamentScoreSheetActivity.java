@@ -26,7 +26,6 @@ public class ViewTournamentScoreSheetActivity extends BaseArcheryTrainingActivit
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.tournament_view_tournament_score_sheet);
 
         Tournament tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);

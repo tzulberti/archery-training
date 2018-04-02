@@ -37,7 +37,6 @@ public class ConfigureRetentionActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.retention_configure);
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);

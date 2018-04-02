@@ -91,7 +91,6 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         this.getValueFromIntent();
         setContentView(R.layout.common_show_existing_values);
 
@@ -112,7 +111,6 @@ public abstract class AbstractTableDataActivity extends BaseArcheryTrainingActiv
 
         if (this.getIntent().hasExtra(CREATING_INTENT_KEY)) {
             this.getIntent().removeExtra(CREATING_INTENT_KEY);
-            this.createDAOs();
             this.addNewValue();
         } else {
             this.showInformation((TableLayout) this.findViewById(R.id.existing_data));

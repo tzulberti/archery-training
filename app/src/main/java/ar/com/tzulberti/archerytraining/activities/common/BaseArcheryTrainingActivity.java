@@ -2,6 +2,7 @@ package ar.com.tzulberti.archerytraining.activities.common;
 
 import android.app.AlertDialog;
 import android.content.Context;
+import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -12,6 +13,8 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
 import android.widget.TextView;
+
+import com.google.firebase.analytics.FirebaseAnalytics;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
@@ -34,6 +37,15 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
     protected PlayoffDAO playoffDAO;
     protected BowDAO bowDAO;
     protected ConstraintsDAO constraintsDAO;
+
+    private FirebaseAnalytics mFirebaseAnalytics;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        this.createDAOs();
+        this.mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
+    }
 
     protected void createDAOs() {
         this.databaseHelper = new DatabaseHelper(this);

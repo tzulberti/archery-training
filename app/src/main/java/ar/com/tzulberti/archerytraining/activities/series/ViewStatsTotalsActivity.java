@@ -45,7 +45,6 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.series_period_data);
 
 

@@ -42,7 +42,6 @@ public class MainActivity extends BaseArcheryTrainingActivity {
                 new AndroidSentryClientFactory(ctx)
         );
 
-        this.createDAOs();
         AppCache.initialize(this.constraintsDAO, this.getResources(), this.getPackageName());
     }
 

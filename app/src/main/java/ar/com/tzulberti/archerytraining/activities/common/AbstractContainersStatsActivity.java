@@ -68,7 +68,6 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.common_view_stats);
 
         Spinner tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);

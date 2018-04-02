@@ -108,7 +108,6 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         setContentView(this.getLayoutResource());
         this.serie = (ISerie)this.getIntent().getSerializableExtra(SERIE_ARGUMENT_KEY);
 
-        this.createDAOs();
         this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
