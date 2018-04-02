@@ -189,7 +189,9 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
     public void updateSerie(PlayoffSerie playoffSerie) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
-        if (playoffSerie.id != 0) {
+        boolean alreadyExistsPlayoffSerie = this.checkIfExists(PlayoffSerieConsts.TABLE_NAME, playoffSerie.id);
+
+        if (alreadyExistsPlayoffSerie) {
             // update the serie total score
             db.execSQL(
                     "UPDATE " + PlayoffSerieConsts.TABLE_NAME + " " +

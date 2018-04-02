@@ -3,6 +3,7 @@ package ar.com.tzulberti.archerytraining.dao;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -211,7 +212,6 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         int roundIndex = tournamet.getTournamentConstraint().getRoundIndex(serieIndex);
 
         ContentValues contentValues = new ContentValues();
-
         contentValues.put(TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME, tournamet.id);
         contentValues.put(TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME, serieIndex);
         contentValues.put(TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME, 0);
@@ -240,8 +240,9 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
     public TournamentSerie saveTournamentSerieInformation(TournamentSerie tournamentSerie) {
         // delete existing values for this serie and create new ones
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
+        boolean alreadyExistsTournamentSerie = this.checkIfExists(TournamentSerieConsts.TABLE_NAME, tournamentSerie.id);
 
-        if (tournamentSerie.id != 0) {
+        if (alreadyExistsTournamentSerie) {
             // update the serie total score
             db.execSQL(
                 "UPDATE " + TournamentSerieConsts.TABLE_NAME + " " +
@@ -387,18 +388,22 @@ public class TournamentDAO extends BaseArrowSeriesDAO {
         );
     }
 
-    public void deleteSerie(long tournamentSerieId) {
+    public void deleteSerie(TournamentSerie tournamentSerie) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         db.delete(
                 TournamentSerieArrowConsts.TABLE_NAME,
                 TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + "= ? ",
-                new String[]{String.valueOf(tournamentSerieId)}
+                new String[]{String.valueOf(tournamentSerie.id)}
         );
 
         db.delete(
                 TournamentSerieConsts.TABLE_NAME,
                 TournamentSerieConsts.ID_COLUMN_NAME + "= ? ",
-                new String[]{String.valueOf(tournamentSerieId)}
+                new String[]{String.valueOf(tournamentSerie.id)}
         );
+
+        // remove the serie from the tournament to update the database changes
+        tournamentSerie.getContainer().getSeries().remove(tournamentSerie.index -1 );
+
     }
 }

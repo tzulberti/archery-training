@@ -23,12 +23,10 @@ import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
  * Created by tzulberti on 7/19/17.
  */
 
-public class ConstraintsDAO {
-
-    private DatabaseHelper databaseHelper;
+public class ConstraintsDAO extends BaseDAO{
 
     public ConstraintsDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
     }
 
 
