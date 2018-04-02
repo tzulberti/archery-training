@@ -33,7 +33,6 @@ public class AddTournamentActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.tournament_add_new);
 
         Spinner tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);

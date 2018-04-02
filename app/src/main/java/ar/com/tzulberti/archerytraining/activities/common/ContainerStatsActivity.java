@@ -70,7 +70,6 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.common_view_container_arrow_stats);
 
 

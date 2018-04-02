@@ -37,7 +37,6 @@ public class ViewBowActivity extends BaseArcheryTrainingActivity implements View
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.bow_view_details);
 
 

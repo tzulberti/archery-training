@@ -34,7 +34,6 @@ public class AddSerieActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.series_add);
 
         this.distanceText = (EditText) this.findViewById(R.id.distance);
