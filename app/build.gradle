@@ -1,7 +1,7 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 25
+    compileSdkVersion 27
     buildToolsVersion '27.0.3'
     defaultConfig {
         applicationId "ar.com.tzulberti.archerytraining"
@@ -23,19 +23,19 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    androidTestCompile('com.android.support.test.espresso:espresso-core:2.2.2', {
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+    androidTestImplementation('com.android.support.test.espresso:espresso-core:2.2.2', {
         exclude group: 'com.android.support', module: 'support-annotations'
     })
-    compile 'com.android.support:appcompat-v7:25.4.0'
-    compile 'com.android.support:design:25.4.0'
-    compile 'com.android.support.constraint:constraint-layout:1.0.2'
-    compile 'org.apache.commons:commons-lang3:3.0'
-    compile 'com.github.PhilJay:MPAndroidChart:v3.0.2'
-    compile 'com.github.chrisbanes:PhotoView:2.0.0'
-    compile 'com.jsibbold:zoomage:1.1.0'
-    compile 'com.edmodo:rangebar:1.0.0'
-    compile 'io.sentry:sentry-android:1.0.0'
-    debugCompile 'com.amitshekhar.android:debug-db:1.0.0'
-    testCompile 'junit:junit:4.12'
+    implementation 'com.android.support:appcompat-v7:27.1.0'
+    implementation 'com.android.support:design:27.1.0'
+    implementation 'com.android.support.constraint:constraint-layout:1.0.2'
+    implementation 'org.apache.commons:commons-lang3:3.0'
+    implementation 'com.github.PhilJay:MPAndroidChart:v3.0.2'
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    implementation 'com.jsibbold:zoomage:1.1.0'
+    implementation 'com.edmodo:rangebar:1.0.0'
+    implementation 'io.sentry:sentry-android:1.0.0'
+    debugImplementation 'com.amitshekhar.android:debug-db:1.0.0'
+    testImplementation 'junit:junit:4.12'
 }
