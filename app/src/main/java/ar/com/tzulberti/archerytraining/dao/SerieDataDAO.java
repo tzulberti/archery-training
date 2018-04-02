@@ -21,16 +21,14 @@ import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
  *
  * Created by tzulberti on 4/19/17.
  */
-public class SerieDataDAO {
+public class SerieDataDAO extends BaseDAO {
 
     public enum GroupByType implements Serializable {
         DAILY, HOURLY, NONE
     }
 
-    private DatabaseHelper databaseHelper;
-
     public SerieDataDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
     }
 
 

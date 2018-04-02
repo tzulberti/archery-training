@@ -1,6 +1,7 @@
 package ar.com.tzulberti.archerytraining.activities.tournament;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
@@ -85,7 +86,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     @Override
     protected void deleteSerie() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
-        this.tournamentDAO.deleteSerie(tournamentSerie.id);
+        this.tournamentDAO.deleteSerie(tournamentSerie);
     }
 
     @Override

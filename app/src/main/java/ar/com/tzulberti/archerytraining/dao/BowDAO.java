@@ -18,12 +18,10 @@ import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
  *
  * Created by tzulberti on 6/12/17.
  */
-public class BowDAO {
-
-    private DatabaseHelper databaseHelper;
+public class BowDAO extends BaseDAO {
 
     public BowDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
     }
 
 
