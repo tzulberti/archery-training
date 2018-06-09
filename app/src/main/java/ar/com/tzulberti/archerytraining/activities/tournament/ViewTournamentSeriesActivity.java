@@ -47,7 +47,7 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
 
     @Override
     protected String helpText() {
-        return this.getString(R.string.tournament_view_serie_help);
+        return this.getString(R.string.tournament_show_existing_help);
     }
 
     protected void getValueFromIntent() {
