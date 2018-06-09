@@ -18,6 +18,7 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.utils.ColorTemplate;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -309,15 +310,18 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
             currentCount += elementByScore.getAmount();
         }
 
+        DecimalFormat df = new DecimalFormat();
+        df.setMaximumFractionDigits(2);
+
         if (count > 0) {
             TextView minTextView = new TextView(context);
             minTextView.setText(String.valueOf(min));
 
             TextView avgTextView = new TextView(context);
-            avgTextView.setText(String.valueOf(sum / count));
+            avgTextView.setText(df.format(sum / count));
 
             TextView medianTextView = new TextView(context);
-            medianTextView.setText(String.valueOf(median));
+            medianTextView.setText(df.format(median));
 
             TextView maxTextView = new TextView(context);
             maxTextView.setText(String.valueOf(max));
