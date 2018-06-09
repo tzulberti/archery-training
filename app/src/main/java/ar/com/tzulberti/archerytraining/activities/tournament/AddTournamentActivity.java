@@ -49,7 +49,7 @@ public class AddTournamentActivity extends BaseArcheryTrainingActivity {
 
     public void createTournament(View clickButton) {
         // validate the values to make sure everything is ok
-        for (int elementId : this.REQUIRED_VALUES) {
+        for (int elementId : REQUIRED_VALUES) {
             EditText element = (EditText) this.findViewById(elementId);
             String value = element.getText().toString();
 

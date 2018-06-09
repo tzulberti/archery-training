@@ -32,7 +32,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
 
     @Override
     protected String helpText() {
-        return this.getString(R.string.tournament_general_help);
+        return this.getString(R.string.tournament_view_serie_help);
     }
 
     @Override
