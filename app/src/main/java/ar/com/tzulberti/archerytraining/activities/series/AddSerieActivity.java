@@ -12,7 +12,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.series.SerieData;
@@ -71,7 +71,7 @@ public class AddSerieActivity extends BaseArcheryTrainingActivity {
         this.serieDataDAO.addSerieData(
                 Integer.valueOf(distanceValue.toString()),
                 Integer.valueOf(arrowsAmount.toString()),
-                SerieInformationConsts.TrainingType.FREE
+                SerieData.TrainingType.FREE
         );
 
         // reset the input to notify the user of a change and hide the keyboard because

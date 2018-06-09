@@ -8,7 +8,9 @@ import java.util.List;
  *
  * Created by tzulberti on 6/3/17.
  */
-public interface ISerie extends Serializable {
+public interface ISerie extends IPrimaryKeyTable {
+
+    String SERIE_INDEX_COLUMN_NAME = "serie_index";
 
     List<? extends AbstractArrow> getArrows();
 
@@ -23,4 +25,16 @@ public interface ISerie extends Serializable {
     long getId();
 
     void setId(long id);
+
+
+
+    String getScoreColumnName();
+
+    String getTableName();
+
+    /**
+     * All the series belongs to a container (tournament, etc...) so this
+     * returns the column that references that table
+     */
+    String getContainerIdColumnName();
 }

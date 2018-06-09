@@ -6,11 +6,12 @@ import android.view.View;
 import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -78,7 +79,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
         this.serieDataDAO.addSerieData(
             roundConstraint.distance,
             tournamentSerie.arrows.size(),
-            SerieInformationConsts.TrainingType.TOURNAMENT
+            SerieData.TrainingType.TOURNAMENT
         );
         this.tournamentDAO.saveTournamentSerieInformation(tournamentSerie);
     }

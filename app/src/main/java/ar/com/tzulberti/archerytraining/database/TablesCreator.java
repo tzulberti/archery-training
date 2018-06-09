@@ -2,20 +2,19 @@ package ar.com.tzulberti.archerytraining.database;
 
 import android.database.sqlite.SQLiteDatabase;
 
-import ar.com.tzulberti.archerytraining.database.consts.BaseArcheryTrainingConsts;
-import ar.com.tzulberti.archerytraining.database.consts.BowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
-import ar.com.tzulberti.archerytraining.database.consts.HumanPlayoffConfigurationConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
-import ar.com.tzulberti.archerytraining.database.consts.RoundConstraintConsts;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
-import ar.com.tzulberti.archerytraining.database.consts.SightDistanceValueConsts;
-import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
-import ar.com.tzulberti.archerytraining.database.consts.TournamentConsts;
-import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.TournamentSerieConsts;
+import ar.com.tzulberti.archerytraining.model.bow.Bow;
+import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
+import ar.com.tzulberti.archerytraining.model.playoff.HumanPlayoffConfiguration;
+import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
+import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
+import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
+import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
 
 /**
@@ -49,97 +48,97 @@ class TablesCreator {
 
     private void createRoundConstraintTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + RoundConstraintConsts.TABLE_NAME + " (" +
-                        RoundConstraintConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        RoundConstraintConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        RoundConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        RoundConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        RoundConstraintConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        RoundConstraintConsts.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        RoundConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL " +
+                "CREATE TABLE " + RoundConstraint.TABLE_NAME + " (" +
+                        RoundConstraint.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        RoundConstraint.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraint.SERIES_PER_ROUND_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraint.ARROWS_PER_SERIES_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraint.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraint.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        RoundConstraint.TARGET_IMAGE_COLUMN_NAME + " TEXT NOT NULL " +
                         ")"
         );
     }
 
     private void createTournamentConstraintTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TournamentConstraintConsts.TABLE_NAME + " (" +
-                        TournamentConstraintConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        TournamentConstraintConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.STRING_XML_KEY_COLUMN_NAME + " STRING NOT NULL, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + " INTEGER, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + " INTEGER, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + " INTEGER, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + " INTEGER, " +
-                        TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " INTEGER, " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraintConsts.TABLE_NAME + " ( " +  RoundConstraintConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + TournamentConstraint.TABLE_NAME + " (" +
+                        TournamentConstraint.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        TournamentConstraint.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        TournamentConstraint.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraint.STRING_XML_KEY_COLUMN_NAME + " STRING NOT NULL, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + " INTEGER, " +
+                        TournamentConstraint.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " INTEGER, " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
                         ")"
         );
     }
 
     private void createSeriesTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + SerieInformationConsts.TABLE_NAME + "( " +
-                        SerieInformationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        SerieInformationConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        SerieInformationConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        SerieInformationConsts.ARROWS_AMOUNT_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        SerieInformationConsts.TRAINING_TYPE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
+                "CREATE TABLE " + SerieData.TABLE_NAME + "( " +
+                        SerieData.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SerieData.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
+                        SerieData.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SerieData.ARROWS_AMOUNT_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SerieData.TRAINING_TYPE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SerieData.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
                         ");"
         );
     }
 
     private void createTournamentTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TournamentConsts.TABLE_NAME + "( " +
-                        TournamentConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        TournamentConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        TournamentConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        TournamentConsts.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0," +
-                        TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + TournamentConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + Tournament.TABLE_NAME + "( " +
+                        Tournament.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        Tournament.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        Tournament.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
+                        Tournament.IS_TOURNAMENT_DATA_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        Tournament.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0," +
+                        Tournament.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        Tournament.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + Tournament.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraint.TABLE_NAME + " ( " +  TournamentConstraint.ID_COLUMN_NAME + " ) " +
                         ");"
         );
     }
 
     private void createTournamentSerieTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TournamentSerieConsts.TABLE_NAME + " (" +
-                        TournamentSerieConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieConsts.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieConsts.ROUND_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
-                        "CONSTRAINT unq_serie_index_tournament_id UNIQUE (" + TournamentSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +   TournamentSerieConsts.TOURNAMENT_ID_COLUMN_NAME + ")" +
+                "CREATE TABLE " + TournamentSerie.TABLE_NAME + " (" +
+                        TournamentSerie.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        TournamentSerie.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerie.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerie.TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerie.ROUND_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerie.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + TournamentSerie.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + Tournament.TABLE_NAME + " ( " +  Tournament.ID_COLUMN_NAME + " ), " +
+                        "CONSTRAINT unq_serie_index_tournament_id UNIQUE (" + TournamentSerie.SERIE_INDEX_COLUMN_NAME + ", " +   TournamentSerie.TOURNAMENT_ID_COLUMN_NAME + ")" +
                         ");"
         );
     }
 
     private void createTournamentSerieArrowTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + TournamentSerieArrowConsts.TABLE_NAME + " (" +
-                        TournamentSerieArrowConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieArrowConsts.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
-                        TournamentSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
-                        TournamentSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + TournamentSerieArrowConsts.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConsts.TABLE_NAME + " ( " +  TournamentConsts.ID_COLUMN_NAME + " ), " +
-                        "FOREIGN KEY (" + TournamentSerieArrowConsts.SERIE_INDEX_COLUMN_NAME + ") REFERENCES " + TournamentSerieConsts.TABLE_NAME + " ( " +  TournamentSerieConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + TournamentSerieArrow.TABLE_NAME + " (" +
+                        TournamentSerieArrow.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        TournamentSerieArrow.TOURNAMENT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerieArrow.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerieArrow.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        TournamentSerieArrow.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
+                        TournamentSerieArrow.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
+                        TournamentSerieArrow.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        TournamentSerieArrow.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + TournamentSerieArrow.TOURNAMENT_ID_COLUMN_NAME + ") REFERENCES " + Tournament.TABLE_NAME + " ( " +  Tournament.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + TournamentSerieArrow.SERIE_INDEX_COLUMN_NAME + ") REFERENCES " + TournamentSerie.TABLE_NAME + " ( " +  TournamentSerie.ID_COLUMN_NAME + " ) " +
                         ");"
         );
     }
@@ -147,46 +146,46 @@ class TablesCreator {
 
     private void createPlayoffTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + PlayoffConsts.TABLE_NAME + " (" +
-                        PlayoffConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PlayoffConsts.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
-                        PlayoffConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
-                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
-                        PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraintConsts.TABLE_NAME + " ( " +  TournamentConstraintConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + Playoff.TABLE_NAME + " (" +
+                        Playoff.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        Playoff.DATETIME_COLUMN_NAME + " LONG NOT NULL, " +
+                        Playoff.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        Playoff.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        Playoff.USER_PLAYOFF_SCORE_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        Playoff.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        Playoff.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + Playoff.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ") REFERENCES " + TournamentConstraint.TABLE_NAME + " ( " +  TournamentConstraint.ID_COLUMN_NAME + " ) " +
                 ")"
         );
     }
 
     private void createPlayoffSerieTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + PlayoffSerieConsts.TABLE_NAME + " (" +
-                        PlayoffSerieConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + PlayoffSerie.TABLE_NAME + " (" +
+                        PlayoffSerie.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        PlayoffSerie.SERIE_INDEX_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerie.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + Playoff.TABLE_NAME + " ( " +  Playoff.ID_COLUMN_NAME + " ) " +
                 ")"
         );
     }
 
     private void createPlayoffSerieArrowTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + PlayoffSerieArrowConsts.TABLE_NAME + " (" +
-                        PlayoffSerieArrowConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
-                        PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
-                        PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ), " +
-                        "FOREIGN KEY (" + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + ") REFERENCES " + PlayoffSerieConsts.TABLE_NAME + " ( " +  PlayoffSerieConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + PlayoffSerieArrow.TABLE_NAME + " (" +
+                        PlayoffSerieArrow.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        PlayoffSerieArrow.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerieArrow.SERIE_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerieArrow.SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        PlayoffSerieArrow.X_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
+                        PlayoffSerieArrow.Y_POSITION_COLUMN_NAME + " REAL NOT NULL, " +
+                        PlayoffSerieArrow.IS_X_COLUMN_NAME + " INTEGER NOT NULL DEFAULT 0, " +
+                        PlayoffSerieArrow.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + PlayoffSerieArrow.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + Playoff.TABLE_NAME + " ( " +  Playoff.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + PlayoffSerieArrow.SERIE_ID_COLUMN_NAME + ") REFERENCES " + PlayoffSerie.TABLE_NAME + " ( " +  PlayoffSerie.ID_COLUMN_NAME + " ) " +
                 ");"
         );
     }
@@ -194,48 +193,48 @@ class TablesCreator {
 
     private void createComputerPlayoffTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + ComputerPlayoffConfigurationConsts.TABLE_NAME + " (" +
-                        ComputerPlayoffConfigurationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + ComputerPlayOffConfiguration.TABLE_NAME + " (" +
+                        ComputerPlayOffConfiguration.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        ComputerPlayOffConfiguration.MIN_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        ComputerPlayOffConfiguration.MAX_SCORE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        ComputerPlayOffConfiguration.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + Playoff.TABLE_NAME + " ( " +  Playoff.ID_COLUMN_NAME + " ) " +
                 ");"
         );
     }
 
     private void createHumanPlayoffTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + HumanPlayoffConfigurationConsts.TABLE_NAME + " (" +
-                        HumanPlayoffConfigurationConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        HumanPlayoffConfigurationConsts.OPPONENT_NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + PlayoffConsts.TABLE_NAME + " ( " +  PlayoffConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + HumanPlayoffConfiguration.TABLE_NAME + " (" +
+                        HumanPlayoffConfiguration.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        HumanPlayoffConfiguration.OPPONENT_NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        HumanPlayoffConfiguration.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME + ") REFERENCES " + Playoff.TABLE_NAME + " ( " +  Playoff.ID_COLUMN_NAME + " ) " +
                         ");"
         );
     }
 
     private void createBowTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + BowConsts.TABLE_NAME + " (" +
-                        BowConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        BowConsts.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
+                "CREATE TABLE " + Bow.TABLE_NAME + " (" +
+                        Bow.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        Bow.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
+                        Bow.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0 " +
                         ")"
         );
     }
 
     private void createSightValueTable(SQLiteDatabase db) {
         db.execSQL(
-                "CREATE TABLE " + SightDistanceValueConsts.TABLE_NAME + " (" +
-                        SightDistanceValueConsts.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                        SightDistanceValueConsts.BOW_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        SightDistanceValueConsts.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME + " FLOAT NOT NULL, " +
-                        BaseArcheryTrainingConsts.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
-                        "FOREIGN KEY (" + SightDistanceValueConsts.BOW_ID_COLUMN_NAME + ") REFERENCES " + BowConsts.TABLE_NAME + " ( " +  BowConsts.ID_COLUMN_NAME + " ) " +
+                "CREATE TABLE " + SightDistanceValue.TABLE_NAME + " (" +
+                        SightDistanceValue.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                        SightDistanceValue.BOW_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SightDistanceValue.DISTANCE_COLUMN_NAME + " INTEGER NOT NULL, " +
+                        SightDistanceValue.SIGHT_VALUE_COLUMN_NAME + " FLOAT NOT NULL, " +
+                        SightDistanceValue.IS_SYNCED + " INTEGER NOT NULL DEFAULT 0, " +
+                        "FOREIGN KEY (" + SightDistanceValue.BOW_ID_COLUMN_NAME + ") REFERENCES " + Bow.TABLE_NAME + " ( " +  Bow.ID_COLUMN_NAME + " ) " +
                         ")"
         );
     }
