@@ -11,8 +11,6 @@ import java.util.Map;
 
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.database.consts.RoundConstraintConsts;
-import ar.com.tzulberti.archerytraining.database.consts.TournamentConstraintConsts;
 import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
@@ -36,14 +34,14 @@ public class ConstraintsDAO extends BaseDAO{
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                    RoundConstraintConsts.ID_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.DISTANCE_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.SERIES_PER_ROUND_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.ARROWS_PER_SERIES_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.MAX_SCORE_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.MIN_SCORE_COLUMN_NAME + ", " +
-                    RoundConstraintConsts.TARGET_IMAGE_COLUMN_NAME + " " +
-                "FROM " +  RoundConstraintConsts.TABLE_NAME,
+                    RoundConstraint.ID_COLUMN_NAME + ", " +
+                        RoundConstraint.DISTANCE_COLUMN_NAME + ", " +
+                        RoundConstraint.SERIES_PER_ROUND_COLUMN_NAME + ", " +
+                        RoundConstraint.ARROWS_PER_SERIES_COLUMN_NAME + ", " +
+                        RoundConstraint.MAX_SCORE_COLUMN_NAME + ", " +
+                        RoundConstraint.MIN_SCORE_COLUMN_NAME + ", " +
+                        RoundConstraint.TARGET_IMAGE_COLUMN_NAME + " " +
+                "FROM " +  RoundConstraint.TABLE_NAME,
                 null
         );
 
@@ -73,18 +71,18 @@ public class ConstraintsDAO extends BaseDAO{
 
         Cursor cursor = db.rawQuery(
                 "SELECT " +
-                    TournamentConstraintConsts.ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.NAME_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.IS_OUTDOOR_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.STRING_XML_KEY_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ", " +
-                    TournamentConstraintConsts.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " " +
-                "FROM " +  TournamentConstraintConsts.TABLE_NAME + " " +
-                "ORDER BY " + TournamentConstraintConsts.ID_COLUMN_NAME,
+                    TournamentConstraint.ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.NAME_COLUMN_NAME + ", " +
+                        TournamentConstraint.IS_OUTDOOR_COLUMN_NAME + ", " +
+                        TournamentConstraint.STRING_XML_KEY_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ", " +
+                        TournamentConstraint.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " " +
+                "FROM " +  TournamentConstraint.TABLE_NAME + " " +
+                "ORDER BY " + TournamentConstraint.ID_COLUMN_NAME,
                 null
         );
 

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
+import ar.com.tzulberti.archerytraining.model.base.BaseArcheryTrainingModel;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -14,7 +15,14 @@ import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
  *
  * Created by tzulberti on 6/3/17.
  */
-public class PlayoffSerie implements ISerie, Serializable {
+public class PlayoffSerie extends BaseArcheryTrainingModel implements ISerie, Serializable {
+
+    public static final String TABLE_NAME = "playoff_serie";
+
+    public static final String PLAYOFF_ID_COLUMN_NAME = "playoff_id";
+
+    public static final String OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME = "opponent_total_score";
+    public static final String USER_TOTAL_SCORE_COLUMN_NAME = "user_total_score";
 
     public long id;
     public int index;
@@ -53,4 +61,17 @@ public class PlayoffSerie implements ISerie, Serializable {
 
     @Override
     public long getId() { return this.id; }
+
+    @Override
+    public String getScoreColumnName() {
+        return USER_TOTAL_SCORE_COLUMN_NAME;
+    }
+
+    @Override
+    public String getTableName() {
+        return TABLE_NAME;
+    }
+
+    @Override
+    public String getContainerIdColumnName() { return PLAYOFF_ID_COLUMN_NAME; }
 }

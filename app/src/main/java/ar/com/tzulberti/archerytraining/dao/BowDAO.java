@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.database.consts.BowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.SightDistanceValueConsts;
 import ar.com.tzulberti.archerytraining.model.bow.Bow;
 import ar.com.tzulberti.archerytraining.model.bow.SightDistanceValue;
 
@@ -29,18 +27,18 @@ public class BowDAO extends BaseDAO {
         List<Bow> res = new ArrayList<>();
 
         String query = "SELECT " +
-                BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + ", " +
-                BowConsts.TABLE_NAME + "." + BowConsts.NAME_COLUMN_NAME + ", " +
-                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME + ", " +
-                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME + ", " +
-                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.ID_COLUMN_NAME + "  " +
-            "FROM " +  BowConsts.TABLE_NAME + " " +
-            "LEFT JOIN " + SightDistanceValueConsts.TABLE_NAME + " " +
-                "ON " + BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " = " + SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.BOW_ID_COLUMN_NAME + " " +
+                Bow.TABLE_NAME + "." + Bow.ID_COLUMN_NAME + ", " +
+                Bow.TABLE_NAME + "." + Bow.NAME_COLUMN_NAME + ", " +
+                SightDistanceValue.TABLE_NAME + "." + SightDistanceValue.DISTANCE_COLUMN_NAME + ", " +
+                SightDistanceValue.TABLE_NAME + "." + SightDistanceValue.SIGHT_VALUE_COLUMN_NAME + ", " +
+                SightDistanceValue.TABLE_NAME + "." + SightDistanceValue.ID_COLUMN_NAME + "  " +
+            "FROM " +  Bow.TABLE_NAME + " " +
+            "LEFT JOIN " + SightDistanceValue.TABLE_NAME + " " +
+                "ON " + Bow.TABLE_NAME + "." + Bow.ID_COLUMN_NAME + " = " + SightDistanceValue.TABLE_NAME + "." + SightDistanceValue.BOW_ID_COLUMN_NAME + " " +
                 ((bowId >= 0) ? "WHERE id = ? " :  "" )+
             "ORDER BY " +
-                BowConsts.TABLE_NAME + "." + BowConsts.ID_COLUMN_NAME + " DESC, " +
-                SightDistanceValueConsts.TABLE_NAME + "." + SightDistanceValueConsts.DISTANCE_COLUMN_NAME;
+                Bow.TABLE_NAME + "." + Bow.ID_COLUMN_NAME + " DESC, " +
+                SightDistanceValue.TABLE_NAME + "." + SightDistanceValue.DISTANCE_COLUMN_NAME;
 
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor bowCursor = db.rawQuery(
@@ -71,12 +69,12 @@ public class BowDAO extends BaseDAO {
         return res;
     }
 
-    public Bow createBow(String name, List<SightDistanceValue> sightValues) {
+    public void createBow(String name, List<SightDistanceValue> sightValues) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
 
         ContentValues contentValues = new ContentValues();
-        contentValues.put(BowConsts.NAME_COLUMN_NAME, name);
-        long bowId = db.insertOrThrow(BowConsts.TABLE_NAME, null, contentValues);
+        contentValues.put(Bow.NAME_COLUMN_NAME, name);
+        long bowId = db.insertOrThrow(Bow.TABLE_NAME, null, contentValues);
 
         Bow res = new Bow();
         res.name = name;
@@ -85,27 +83,25 @@ public class BowDAO extends BaseDAO {
 
         for (SightDistanceValue sightDistanceValue : sightValues) {
             ContentValues contentValuesSightDistance = new ContentValues();
-            contentValuesSightDistance.put(SightDistanceValueConsts.BOW_ID_COLUMN_NAME, res.id);
-            contentValuesSightDistance.put(SightDistanceValueConsts.DISTANCE_COLUMN_NAME, sightDistanceValue.distance);
-            contentValuesSightDistance.put(SightDistanceValueConsts.SIGHT_VALUE_COLUMN_NAME, sightDistanceValue.sightValue);
-            sightDistanceValue.id = db.insertOrThrow(SightDistanceValueConsts.TABLE_NAME, null, contentValuesSightDistance);
+            contentValuesSightDistance.put(SightDistanceValue.BOW_ID_COLUMN_NAME, res.id);
+            contentValuesSightDistance.put(SightDistanceValue.DISTANCE_COLUMN_NAME, sightDistanceValue.distance);
+            contentValuesSightDistance.put(SightDistanceValue.SIGHT_VALUE_COLUMN_NAME, sightDistanceValue.sightValue);
+            sightDistanceValue.id = db.insertOrThrow(SightDistanceValue.TABLE_NAME, null, contentValuesSightDistance);
         }
-
-        return res;
     }
 
     public void deleteBow(long bowId) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
 
         db.delete(
-                SightDistanceValueConsts.TABLE_NAME,
-                SightDistanceValueConsts.BOW_ID_COLUMN_NAME + "= ? ",
+                SightDistanceValue.TABLE_NAME,
+                SightDistanceValue.BOW_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(bowId)}
         );
 
         db.delete(
-                BowConsts.TABLE_NAME,
-                BowConsts.ID_COLUMN_NAME + "= ? ",
+                Bow.TABLE_NAME,
+                Bow.ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(bowId)}
         );
     }
