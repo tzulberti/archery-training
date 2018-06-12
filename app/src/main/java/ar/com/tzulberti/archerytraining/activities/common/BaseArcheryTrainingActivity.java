@@ -4,7 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
+
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -12,9 +12,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.webkit.WebView;
-import android.widget.TextView;
+
 
 import com.google.firebase.analytics.FirebaseAnalytics;
+
+import org.apache.commons.lang3.StringUtils;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.BowDAO;
@@ -113,5 +115,32 @@ public abstract class BaseArcheryTrainingActivity extends AppCompatActivity {
         } else {
             return super.onOptionsItemSelected(item);
         }
+    }
+
+    /**
+     * Validates the input chosen by the user to make sure that it is a valid value
+     * between the range of values selected
+     *
+     * @param input the input that the user did
+     * @param minValue: the min value that the user might input
+     * @param maxValue the max value that the user might input
+     *
+     * @return the error message if there was some kind of error
+     */
+    protected String validateNumber(String input, int minValue, int maxValue) {
+        if (StringUtils.isEmpty(input)) {
+            return this.getString(R.string.commonRequiredValidationError);
+        }
+
+        try {
+            int res = Integer.valueOf(input);
+            if (res < minValue || res > maxValue) {
+                return this.getString(R.string.common_integer_value_between, minValue, maxValue);
+            }
+            return null;
+        } catch (NumberFormatException e) {
+            return this.getString(R.string.common_integer_value_between, minValue, maxValue);
+        }
+
     }
 }

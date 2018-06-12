@@ -72,21 +72,23 @@ public class AddSerieActivity extends BaseArcheryTrainingActivity {
      *
      */
     public void addNewSerie(View v) {
-        CharSequence distanceValue = this.distanceText.getText().toString();
-        if (StringUtils.isBlank(distanceValue)) {
-            this.distanceText.setError(getText(R.string.commonRequiredValidationError));
+        String distanceValue = this.distanceText.getText().toString();
+        String distanceError = this.validateNumber(distanceValue,1, 999);
+        if (StringUtils.isNotBlank(distanceError)) {
+            this.distanceText.setError(distanceError);
             return;
         }
 
-        CharSequence arrowsAmount = this.arrowAmountText.getText().toString();
-        if (StringUtils.isBlank(arrowsAmount)) {
-            this.arrowAmountText.setError(getText(R.string.commonRequiredValidationError));
+        String arrowsAmount = this.arrowAmountText.getText().toString();
+        String arrorwsError = this.validateNumber(arrowsAmount,1, 999);
+        if (StringUtils.isNotBlank(arrorwsError)) {
+            this.arrowAmountText.setError(arrorwsError);
             return;
         }
 
         this.serieDataDAO.addSerieData(
-                Integer.valueOf(distanceValue.toString()),
-                Integer.valueOf(arrowsAmount.toString()),
+                Integer.valueOf(distanceValue),
+                Integer.valueOf(arrowsAmount),
                 SerieData.TrainingType.FREE
         );
 
@@ -97,7 +99,7 @@ public class AddSerieActivity extends BaseArcheryTrainingActivity {
 
         Snackbar.make(
                 this.findViewById(R.id.serie_add_table_layout),
-                this.getString(R.string.addSerieAdded, Integer.valueOf(arrowsAmount.toString())),
+                this.getString(R.string.addSerieAdded, Integer.valueOf(arrowsAmount)),
                 Snackbar.LENGTH_SHORT
         )
         .setAction("Action", null).show();

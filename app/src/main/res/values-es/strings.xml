@@ -3,6 +3,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Requerido</string>
+    <string name="common_integer_value_between">El valor deberia ser entre %1$d y %2$d</string>
     <string name="commonDelete">Borrar</string>
     <string name="common_confirmation_dialog_title">Confirmación</string>
     <string name="common_container_stats_showing_series">Serie %1$d a %2$d</string>
