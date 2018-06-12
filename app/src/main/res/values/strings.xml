@@ -8,6 +8,7 @@
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <string name="commonRequiredValidationError">Required</string>
+    <string name="common_integer_value_between">The value should be between %1$d and %2$d</string>
     <string name="commonDelete">Delete</string>
     <string name="common_confirmation_dialog_title">Confirmation</string>
     <string name="common_container_stats_showing_series">Serie %1$d to %2$d</string>

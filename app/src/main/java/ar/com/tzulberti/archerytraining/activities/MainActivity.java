@@ -3,11 +3,9 @@ package ar.com.tzulberti.archerytraining.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
+
 import android.view.View;
-import android.view.Window;
+
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity;
@@ -73,5 +71,8 @@ public class MainActivity extends BaseArcheryTrainingActivity {
 
         startActivity(intent);
     }
+
+
+
 
 }

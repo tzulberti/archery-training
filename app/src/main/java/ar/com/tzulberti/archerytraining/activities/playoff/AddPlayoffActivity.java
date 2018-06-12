@@ -12,7 +12,7 @@ import android.widget.Spinner;
 
 import org.apache.commons.lang3.StringUtils;
 
-import java.security.KeyStore;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -128,43 +128,21 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         int playoffType = this.playoffTypeSpinner.getSelectedItemPosition();
         HumanPlayoffConfiguration humanPlayoffConfiguration = null;
         ComputerPlayOffConfiguration computerPlayOffConfiguration = null;
-        String playoffName = null;
+        String playoffName ;
 
         if (playoffType == COMPUTER_PLAYOFF_TYPE) {
             playoffName = this.getString(R.string.playoff_computer_name);
 
             for (Map.Entry<String, EditText> info : inputMapping.entrySet()) {
                 String inputValue = info.getValue().getText().toString();
-                if (StringUtils.isBlank(inputValue)) {
-                    info.getValue().setError(requiredValueError);
+                String inputValueError = this.validateNumber(inputValue, 0, 30);
+                if (StringUtils.isNotBlank(inputValueError)) {
+                    info.getValue().setError(inputValueError);
                     foundError = true;
                     continue;
                 }
 
-
-                int value = 0;
-                try {
-                    value = Integer.parseInt(inputValue);
-                } catch (NumberFormatException e) {
-                    info.getValue().setError(this.getString(R.string.playoff_error_creating_max_value_30));
-                    foundError = true;
-                    continue;
-                }
-
-                if (value <= 0) {
-                    info.getValue().setError(requiredValueError);
-                    foundError = true;
-                    continue;
-                }
-
-                if (info.getKey().equals(MIN_SCORE) || info.getKey().equals(MAX_SCORE)) {
-                    if (value > 30) {
-                        info.getValue().setError(this.getString(R.string.playoff_error_creating_max_value_30));
-                        foundError = true;
-                        continue;
-                    }
-                }
-
+                int value = Integer.parseInt(inputValue);
                 editor.putInt(info.getKey(), value);
                 bundle.putInt(info.getKey(), value);
             }
@@ -182,7 +160,7 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         } else {
             EditText opponentNameEditText = (EditText) this.findViewById(R.id.opponent_name);
             String opponentName = opponentNameEditText.getText().toString();
-            if (opponentName.isEmpty()) {
+            if (StringUtils.isBlank(opponentName)) {
                 opponentNameEditText.setError(requiredValueError);
                 foundError = true;
             }
