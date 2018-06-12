@@ -28,14 +28,15 @@
         <EditText
             android:id="@+id/arrowsAmount"
             android:gravity="right"
-            android:inputType="number" />
+            android:inputType="number"
+            android:imeOptions="actionDone" />
     </TableRow>
 
 
     <TableRow android:layout_width="match_parent">
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/addNewSerie"
             android:layout_width="match_parent"
             android:layout_weight="1"
             android:onClick="addNewSerie"

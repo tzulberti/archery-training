@@ -3,7 +3,10 @@ package ar.com.tzulberti.archerytraining.activities.series;
 
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.view.KeyEvent;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -43,6 +46,19 @@ public class AddSerieActivity extends BaseArcheryTrainingActivity {
         this.lastArrowsAmount = (TextView) this.findViewById(R.id.lastArrowsAmount);
         this.lastDatetime = (TextView) this.findViewById(R.id.lastDatetime);
         this.todaysTotals = (TextView) this.findViewById(R.id.todayTotals);
+
+        final Button addButton = (Button) this.findViewById(R.id.addNewSerie);
+
+        arrowAmountText.setOnEditorActionListener(new EditText.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    addButton.performClick();
+                    return true;
+                }
+                return false;
+            }
+        });
 
         this.showLastSerie();
         this.showTodayArrows();
