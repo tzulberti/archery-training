@@ -44,7 +44,6 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.retention_exercise);
 
         this.canGoBack = false;

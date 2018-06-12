@@ -23,13 +23,13 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.dao.SerieDataDAO;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.TimeAxisValueFormatter;
 import ar.com.tzulberti.archerytraining.model.series.ArrowsPerDayData;
 import ar.com.tzulberti.archerytraining.model.series.ArrowsPerTrainingType;
 import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
 /**
  * Created by tzulberti on 6/13/17.
@@ -45,7 +45,6 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.series_period_data);
 
 
@@ -171,7 +170,7 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
         int index = 0;
         for (ArrowsPerTrainingType data : arrowsPerTrainingTypes) {
             arrowsCounterSet.add(new BarEntry(index, data.totalArrows));
-            SerieInformationConsts.TrainingType trainingType = SerieInformationConsts.TrainingType.getFromValue(data.trainingType);
+            SerieData.TrainingType trainingType = SerieData.TrainingType.getFromValue(data.trainingType);
             int trainingTypeStringKey = 0;
             switch (trainingType) {
                 case FREE:

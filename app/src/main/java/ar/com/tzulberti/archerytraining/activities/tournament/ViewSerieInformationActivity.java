@@ -1,15 +1,17 @@
 package ar.com.tzulberti.archerytraining.activities.tournament;
 
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.View;
 import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
+
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
@@ -30,7 +32,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
 
     @Override
     protected String helpText() {
-        return this.getString(R.string.tournament_general_help);
+        return this.getString(R.string.tournament_view_serie_help);
     }
 
     @Override
@@ -77,7 +79,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
         this.serieDataDAO.addSerieData(
             roundConstraint.distance,
             tournamentSerie.arrows.size(),
-            SerieInformationConsts.TrainingType.TOURNAMENT
+            SerieData.TrainingType.TOURNAMENT
         );
         this.tournamentDAO.saveTournamentSerieInformation(tournamentSerie);
     }
@@ -85,7 +87,7 @@ public class ViewSerieInformationActivity extends AbstractSerieArrowsActivity {
     @Override
     protected void deleteSerie() {
         TournamentSerie tournamentSerie = (TournamentSerie) this.serie;
-        this.tournamentDAO.deleteSerie(tournamentSerie.id);
+        this.tournamentDAO.deleteSerie(tournamentSerie);
     }
 
     @Override

@@ -10,12 +10,16 @@ import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
  *
  * Created by tzulberti on 6/3/17.
  */
-public interface ISerieContainer extends Serializable {
+public interface ISerieContainer extends IPrimaryKeyTable {
+
+    String TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME = "tournament_constraint_id";
 
     List<? extends ISerie> getSeries();
 
     long getId();
 
     TournamentConstraint getTournamentConstraint();
+
+    String getTableName();
 
 }

@@ -40,6 +40,7 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
+import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 
 
 /**
@@ -122,7 +123,19 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
     }
 
     protected void addNewValue() {
-        PlayoffSerie playoffSerie = this.playoffDAO.createSerie(playoff);
+        // check if the last serie has some arrows, and if that is the case then create a new
+        // serie, but if it is empty in arrows, then edit that serie instead of creating one
+        PlayoffSerie playoffSerie = null;
+        if (this.playoff.getSeries().size() > 0) {
+            PlayoffSerie lastSerie = (PlayoffSerie) this.playoff.getSeries().get(this.playoff.getSeries().size() - 1);
+            if (lastSerie.arrows.size() == 0) {
+                playoffSerie = lastSerie;
+            }
+        }
+
+        if (playoffSerie == null) {
+            playoffSerie = this.playoffDAO.createSerie(this.playoff);
+        }
 
         Intent intent = new Intent(this, ViewPlayoffSerieInformationActivity.class);
         intent.putExtra(ViewSerieInformationActivity.SERIE_ARGUMENT_KEY, playoffSerie);

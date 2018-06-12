@@ -12,7 +12,6 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Random;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.database.consts.SerieInformationConsts;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
@@ -20,6 +19,7 @@ import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
+import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
 /**
  * Used to view one of the playoffserie arrows on the target
@@ -104,7 +104,7 @@ public class ViewPlayoffSerieInformationActivity extends AbstractSerieArrowsActi
         PlayoffSerie playoffSerie = (PlayoffSerie) this.serie;
         TournamentConstraint tournamentConstraint = playoffSerie.getContainer().getTournamentConstraint();
         RoundConstraint roundConstraint = tournamentConstraint.getConstraintForSerie(playoffSerie.getIndex());
-        this.serieDataDAO.addSerieData(roundConstraint.distance, playoffSerie.arrows.size(), SerieInformationConsts.TrainingType.PLAYOFF);
+        this.serieDataDAO.addSerieData(roundConstraint.distance, playoffSerie.arrows.size(), SerieData.TrainingType.PLAYOFF);
         this.playoffDAO.updateSerie(playoffSerie);
     }
 

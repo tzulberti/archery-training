@@ -55,7 +55,6 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.createDAOs();
         setContentView(R.layout.playoff_add_new);
 
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);

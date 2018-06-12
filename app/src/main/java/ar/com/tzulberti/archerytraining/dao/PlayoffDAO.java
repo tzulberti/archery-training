@@ -10,17 +10,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
-import ar.com.tzulberti.archerytraining.database.consts.ComputerPlayoffConfigurationConsts;
-import ar.com.tzulberti.archerytraining.database.consts.HumanPlayoffConfigurationConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.PlayoffSerieConsts;
 
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
+import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
+import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 import ar.com.tzulberti.archerytraining.model.playoff.HumanPlayoffConfiguration;
 import ar.com.tzulberti.archerytraining.model.playoff.ComputerPlayOffConfiguration;
@@ -41,17 +36,15 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     }
 
     @Override
-    protected BaseSerieArrowConsts getArrowsTable() {
-        return new PlayoffSerieArrowConsts();
+    protected AbstractArrow getArrowsTable() {
+        return new PlayoffSerieArrow();
     }
 
     @Override
-    protected BaseSerieConsts getSeriesTable() {
-        return new PlayoffSerieConsts();
-    }
+    protected ISerie getSeriesTable() { return new PlayoffSerie();}
 
     @Override
-    protected BaseSerieContainerConsts getContainerTable() {return new PlayoffConsts();}
+    protected ISerieContainer getContainerTable() {return new Playoff();}
 
 
     public Playoff createPlayoff(String name, ComputerPlayOffConfiguration computerPlayOffConfiguration,
@@ -59,25 +52,25 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         long currentTime = DatetimeHelper.getCurrentTime();
         ContentValues contentValues = new ContentValues();
-        contentValues.put(PlayoffConsts.NAME_COLUMN_NAME, name);
-        contentValues.put(PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
-        contentValues.put(PlayoffConsts.DATETIME_COLUMN_NAME, currentTime);
-        contentValues.put(PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME, 0);
-        contentValues.put(PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, 0);
-        long playoffId = db.insertOrThrow(PlayoffConsts.TABLE_NAME, null, contentValues);
+        contentValues.put(Playoff.NAME_COLUMN_NAME, name);
+        contentValues.put(Playoff.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME, tournamentConstraint.id);
+        contentValues.put(Playoff.DATETIME_COLUMN_NAME, currentTime);
+        contentValues.put(Playoff.USER_PLAYOFF_SCORE_COLUMN_NAME, 0);
+        contentValues.put(Playoff.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME, 0);
+        long playoffId = db.insertOrThrow(Playoff.TABLE_NAME, null, contentValues);
 
         if (computerPlayOffConfiguration != null) {
             ContentValues computerConfiguration = new ContentValues();
-            computerConfiguration.put(ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME, computerPlayOffConfiguration.maxScore);
-            computerConfiguration.put(ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME, computerPlayOffConfiguration.minScore);
-            computerConfiguration.put(ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME, playoffId);
-            db.insertOrThrow(ComputerPlayoffConfigurationConsts.TABLE_NAME, null, computerConfiguration);
+            computerConfiguration.put(ComputerPlayOffConfiguration.MAX_SCORE_COLUMN_NAME, computerPlayOffConfiguration.maxScore);
+            computerConfiguration.put(ComputerPlayOffConfiguration.MIN_SCORE_COLUMN_NAME, computerPlayOffConfiguration.minScore);
+            computerConfiguration.put(ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME, playoffId);
+            db.insertOrThrow(ComputerPlayOffConfiguration.TABLE_NAME, null, computerConfiguration);
         } else {
 
             ContentValues humanConfiguration = new ContentValues();
-            humanConfiguration.put(HumanPlayoffConfigurationConsts.OPPONENT_NAME_COLUMN_NAME, humanPlayoffConfiguration.opponentName);
-            humanConfiguration.put(HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME, playoffId);
-            db.insertOrThrow(HumanPlayoffConfigurationConsts.TABLE_NAME, null, humanConfiguration);
+            humanConfiguration.put(HumanPlayoffConfiguration.OPPONENT_NAME_COLUMN_NAME, humanPlayoffConfiguration.opponentName);
+            humanConfiguration.put(HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME, playoffId);
+            db.insertOrThrow(HumanPlayoffConfiguration.TABLE_NAME, null, humanConfiguration);
         }
 
         return this.getCompletePlayoffData(playoffId);
@@ -88,23 +81,23 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor playoffCursor = db.rawQuery(
             "SELECT " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.NAME_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DATETIME_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
-                PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + ", " +
-                ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.ID_COLUMN_NAME + ", " +
-                ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME + ", " +
-                ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME + ", " +
-                HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.ID_COLUMN_NAME + ", " +
-                HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.OPPONENT_NAME_COLUMN_NAME + " " +
-            "FROM " +  PlayoffConsts.TABLE_NAME + " " +
-            "LEFT JOIN " + ComputerPlayoffConfigurationConsts.TABLE_NAME + " " +
-                "ON " + PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + " = " + ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " " +
-            "LEFT JOIN " + HumanPlayoffConfigurationConsts.TABLE_NAME + " " +
-                "ON " + PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + " = " + HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " " +
-            "ORDER BY " + PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DATETIME_COLUMN_NAME + " DESC ",
+                Playoff.TABLE_NAME + "." + Playoff.NAME_COLUMN_NAME + ", " +
+                Playoff.TABLE_NAME + "." + Playoff.DATETIME_COLUMN_NAME + ", " +
+                Playoff.TABLE_NAME + "." + Playoff.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
+                Playoff.TABLE_NAME + "." + Playoff.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
+                Playoff.TABLE_NAME + "." + Playoff.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
+                Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + ", " +
+                ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.ID_COLUMN_NAME + ", " +
+                ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.MIN_SCORE_COLUMN_NAME + ", " +
+                ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.MAX_SCORE_COLUMN_NAME + ", " +
+                HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.ID_COLUMN_NAME + ", " +
+                HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.OPPONENT_NAME_COLUMN_NAME + " " +
+            "FROM " +  Playoff.TABLE_NAME + " " +
+            "LEFT JOIN " + ComputerPlayOffConfiguration.TABLE_NAME + " " +
+                "ON " + Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + " = " + ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME + " " +
+            "LEFT JOIN " + HumanPlayoffConfiguration.TABLE_NAME + " " +
+                "ON " + Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + " = " + HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME + " " +
+            "ORDER BY " + Playoff.TABLE_NAME + "." + Playoff.DATETIME_COLUMN_NAME + " DESC ",
             null
         );
         while (playoffCursor.moveToNext()) {
@@ -125,12 +118,12 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
                 humanPlayoffConfiguration.opponentName = playoffCursor.getString(10);
                 playoff.humanPlayoffConfiguration = humanPlayoffConfiguration;
             } else {
-                ComputerPlayOffConfiguration computerPlayOffConfiguration = new ComputerPlayOffConfiguration();
-                computerPlayOffConfiguration.id = playoffCursor.getInt(6);
-                computerPlayOffConfiguration.minScore = playoffCursor.getInt(7);
-                computerPlayOffConfiguration.maxScore = playoffCursor.getInt(8);
-                computerPlayOffConfiguration.playoff = playoff;
-                playoff.computerPlayOffConfiguration = computerPlayOffConfiguration;
+                ComputerPlayOffConfiguration ComputerPlayOffConfiguration = new ComputerPlayOffConfiguration();
+                ComputerPlayOffConfiguration.id = playoffCursor.getInt(6);
+                ComputerPlayOffConfiguration.minScore = playoffCursor.getInt(7);
+                ComputerPlayOffConfiguration.maxScore = playoffCursor.getInt(8);
+                ComputerPlayOffConfiguration.playoff = playoff;
+                playoff.computerPlayOffConfiguration = ComputerPlayOffConfiguration;
             }
         }
         playoffCursor.close();
@@ -141,14 +134,14 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     public void deleteSerie(long playoffSerieId) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
         db.delete(
-                PlayoffSerieArrowConsts.TABLE_NAME,
-                PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + "= ? ",
+                PlayoffSerieArrow.TABLE_NAME,
+                PlayoffSerieArrow.SERIE_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffSerieId)}
         );
 
         db.delete(
-                PlayoffSerieConsts.TABLE_NAME,
-                PlayoffSerieConsts.ID_COLUMN_NAME + "= ? ",
+                PlayoffSerie.TABLE_NAME,
+                PlayoffSerie.ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffSerieId)}
         );
     }
@@ -156,9 +149,9 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
     public PlayoffSerie createSerie(Playoff playoff) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
         Cursor cursor = db.rawQuery(
-                "SELECT max(" + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + ") " +
-                        "FROM " + PlayoffSerieConsts.TABLE_NAME + " " +
-                        "WHERE " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " = ?",
+                "SELECT max(" + PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.SERIE_INDEX_COLUMN_NAME + ") " +
+                        "FROM " + PlayoffSerie.TABLE_NAME + " " +
+                        "WHERE " + PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(playoff.id)}
         );
         boolean hasData = cursor.moveToNext();
@@ -170,12 +163,12 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
         ContentValues contentValues = new ContentValues();
 
-        contentValues.put(PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME, playoff.id);
-        contentValues.put(PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME, serieIndex);
-        contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, 0);
-        contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, 0);
+        contentValues.put(PlayoffSerie.PLAYOFF_ID_COLUMN_NAME, playoff.id);
+        contentValues.put(PlayoffSerie.SERIE_INDEX_COLUMN_NAME, serieIndex);
+        contentValues.put(PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME, 0);
+        contentValues.put(PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, 0);
 
-        long id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+        long id = db.insertOrThrow(PlayoffSerie.TABLE_NAME, null, contentValues);
         PlayoffSerie res = new PlayoffSerie();
         res.id = id;
         res.arrows = new ArrayList<>();
@@ -189,16 +182,18 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
     public void updateSerie(PlayoffSerie playoffSerie) {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
-        if (playoffSerie.id != 0) {
+        boolean alreadyExistsPlayoffSerie = this.checkIfExists(PlayoffSerie.TABLE_NAME, playoffSerie.id);
+
+        if (alreadyExistsPlayoffSerie) {
             // update the serie total score
             db.execSQL(
-                    "UPDATE " + PlayoffSerieConsts.TABLE_NAME + " " +
+                    "UPDATE " + PlayoffSerie.TABLE_NAME + " " +
                     "SET " +
-                        PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " = ?, " +
-                        PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " = ?, " +
-                        PlayoffSerieConsts.IS_SYNCED + " = 0 " +
+                        PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " = ?, " +
+                        PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " = ?, " +
+                        PlayoffSerie.IS_SYNCED + " = 0 " +
                     "WHERE " +
-                        PlayoffSerieConsts.ID_COLUMN_NAME + " = ?",
+                        PlayoffSerie.ID_COLUMN_NAME + " = ?",
                     new String[] {String.valueOf(playoffSerie.userTotalScore), String.valueOf(playoffSerie.opponentTotalScore), String.valueOf(playoffSerie.id)}
 
             );
@@ -207,16 +202,16 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             // the database
             Cursor cursor = db.rawQuery(
                     "SELECT " +
-                            PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                            PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                            PlayoffSerieArrowConsts.ID_COLUMN_NAME + " " +
-                    "FROM " + PlayoffSerieArrowConsts.TABLE_NAME + " " +
+                            PlayoffSerieArrow.SCORE_COLUMN_NAME + ", " +
+                            PlayoffSerieArrow.IS_X_COLUMN_NAME + ", " +
+                            PlayoffSerieArrow.ID_COLUMN_NAME + " " +
+                    "FROM " + PlayoffSerieArrow.TABLE_NAME + " " +
                     "WHERE " +
-                            PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " = ? " +
+                            PlayoffSerieArrow.SERIE_ID_COLUMN_NAME + " = ? " +
                     "ORDER BY " +
-                            PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " DESC, " +
-                            PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + " DESC, " +
-                            PlayoffSerieArrowConsts.ID_COLUMN_NAME,
+                            PlayoffSerieArrow.IS_X_COLUMN_NAME + " DESC, " +
+                            PlayoffSerieArrow.SCORE_COLUMN_NAME + " DESC, " +
+                            PlayoffSerieArrow.ID_COLUMN_NAME,
                     new String[]{String.valueOf(playoffSerie.id)}
             );
 
@@ -232,13 +227,13 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
                 if (existingIsX != playoffSerieArrow.isX || existingScore != playoffSerieArrow.score) {
                     // if one of the values are different, then it should be updated
                     db.execSQL(
-                            "UPDATE " + PlayoffSerieArrowConsts.TABLE_NAME + " " +
+                            "UPDATE " + PlayoffSerieArrow.TABLE_NAME + " " +
                             "SET " +
-                                    PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + " = ?, " +
-                                    PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + " = ?, " +
-                                    PlayoffSerieArrowConsts.IS_SYNCED + " = 0 " +
+                                    PlayoffSerieArrow.SCORE_COLUMN_NAME + " = ?, " +
+                                    PlayoffSerieArrow.IS_X_COLUMN_NAME + " = ?, " +
+                                    PlayoffSerieArrow.IS_SYNCED + " = 0 " +
                             "WHERE " +
-                                    PlayoffSerieArrowConsts.ID_COLUMN_NAME + " = ?",
+                                    PlayoffSerieArrow.ID_COLUMN_NAME + " = ?",
                             new String[] {String.valueOf(playoffSerieArrow.score), String.valueOf(playoffSerieArrow.isX ? 1 : 0), String.valueOf(id)}
                     );
                 }
@@ -252,34 +247,34 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
                 ContentValues contentValuesArrow = new ContentValues();
                 PlayoffSerieArrow serieArrowData = playoffSerie.arrows.get(currentIndex);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME, playoffSerie.id);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-                serieArrowData.id = db.insertOrThrow(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+                contentValuesArrow.put(PlayoffSerieArrow.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
+                contentValuesArrow.put(PlayoffSerieArrow.SERIE_ID_COLUMN_NAME, playoffSerie.id);
+                contentValuesArrow.put(PlayoffSerieArrow.SCORE_COLUMN_NAME, serieArrowData.score);
+                contentValuesArrow.put(PlayoffSerieArrow.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
+                contentValuesArrow.put(PlayoffSerieArrow.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+                contentValuesArrow.put(PlayoffSerieArrow.IS_X_COLUMN_NAME, serieArrowData.isX);
+                serieArrowData.id = db.insertOrThrow(PlayoffSerieArrow.TABLE_NAME, null, contentValuesArrow);
                 currentIndex += 1;
             }
 
         } else {
             // create the serie and its arrows
             ContentValues contentValues = new ContentValues();
-            contentValues.put(PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
-            contentValues.put(PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME, playoffSerie.index);
-            contentValues.put(PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, playoffSerie.opponentTotalScore);
-            contentValues.put(PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME, playoffSerie.userTotalScore);
-            playoffSerie.id = db.insertOrThrow(PlayoffSerieConsts.TABLE_NAME, null, contentValues);
+            contentValues.put(PlayoffSerie.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
+            contentValues.put(PlayoffSerie.SERIE_INDEX_COLUMN_NAME, playoffSerie.index);
+            contentValues.put(PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME, playoffSerie.opponentTotalScore);
+            contentValues.put(PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME, playoffSerie.userTotalScore);
+            playoffSerie.id = db.insertOrThrow(PlayoffSerie.TABLE_NAME, null, contentValues);
 
             for (PlayoffSerieArrow serieArrowData : playoffSerie.arrows) {
                 ContentValues contentValuesArrow = new ContentValues();
-                contentValuesArrow.put(PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME, playoffSerie.id);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.SCORE_COLUMN_NAME, serieArrowData.score);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
-                contentValuesArrow.put(PlayoffSerieArrowConsts.IS_X_COLUMN_NAME, serieArrowData.isX);
-                serieArrowData.id = db.insertOrThrow(PlayoffSerieArrowConsts.TABLE_NAME, null, contentValuesArrow);
+                contentValuesArrow.put(PlayoffSerieArrow.PLAYOFF_ID_COLUMN_NAME, playoffSerie.playoff.id);
+                contentValuesArrow.put(PlayoffSerieArrow.SERIE_ID_COLUMN_NAME, playoffSerie.id);
+                contentValuesArrow.put(PlayoffSerieArrow.SCORE_COLUMN_NAME, serieArrowData.score);
+                contentValuesArrow.put(PlayoffSerieArrow.X_POSITION_COLUMN_NAME, serieArrowData.xPosition);
+                contentValuesArrow.put(PlayoffSerieArrow.Y_POSITION_COLUMN_NAME, serieArrowData.yPosition);
+                contentValuesArrow.put(PlayoffSerieArrow.IS_X_COLUMN_NAME, serieArrowData.isX);
+                serieArrowData.id = db.insertOrThrow(PlayoffSerieArrow.TABLE_NAME, null, contentValuesArrow);
             }
         }
 
@@ -287,18 +282,18 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         Cursor playoffScoreCursor = db.rawQuery(
                 "SELECT " +
                     "SUM(CASE " +
-                        "WHEN " + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " > " + PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " THEN 2 " +
-                        "WHEN " + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " = " + PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " THEN 1 " +
+                        "WHEN " + PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " > " + PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " THEN 2 " +
+                        "WHEN " + PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " = " + PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " THEN 1 " +
                         "ELSE 0 " +
                     " END ), " +
                     "SUM(CASE " +
-                        "WHEN " + PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " > " + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " THEN 2 " +
-                        "WHEN " + PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " = " + PlayoffSerieConsts.USER_TOTAL_SCORE_COLUMN_NAME + " THEN 1 " +
+                        "WHEN " + PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " > " + PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " THEN 2 " +
+                        "WHEN " + PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + " = " + PlayoffSerie.USER_TOTAL_SCORE_COLUMN_NAME + " THEN 1 " +
                         "ELSE 0 " +
                     " END ) " +
-                "FROM " + PlayoffSerieConsts.TABLE_NAME + " " +
+                "FROM " + PlayoffSerie.TABLE_NAME + " " +
                 "WHERE " +
-                        PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " = ?",
+                        PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(playoffSerie.playoff.id)}
         );
         playoffScoreCursor.moveToNext();
@@ -308,13 +303,13 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         playoffScoreCursor.close();
 
         db.execSQL(
-                "UPDATE " + PlayoffConsts.TABLE_NAME + " " +
+                "UPDATE " + Playoff.TABLE_NAME + " " +
                 "SET " +
-                        PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " =  ?, " +
-                        PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + " =  ?, " +
-                        PlayoffConsts.IS_SYNCED + " = 0 " +
+                        Playoff.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + " =  ?, " +
+                        Playoff.USER_PLAYOFF_SCORE_COLUMN_NAME + " =  ?, " +
+                        Playoff.IS_SYNCED + " = 0 " +
                 "WHERE " +
-                        PlayoffConsts.ID_COLUMN_NAME + " = ?",
+                        Playoff.ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(opponentTotalScore), String.valueOf(userTotalScore), String.valueOf(playoffSerie.playoff.id)}
         );
 
@@ -328,32 +323,32 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
         SQLiteDatabase db = this.databaseHelper.getWritableDatabase();
 
         db.delete(
-                PlayoffSerieArrowConsts.TABLE_NAME,
-                PlayoffSerieArrowConsts.PLAYOFF_ID_COLUMN_NAME + "= ? ",
+                PlayoffSerieArrow.TABLE_NAME,
+                PlayoffSerieArrow.PLAYOFF_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffId)}
         );
 
         db.delete(
-                PlayoffSerieConsts.TABLE_NAME,
-                PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + "= ? ",
+                PlayoffSerie.TABLE_NAME,
+                PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffId)}
         );
 
         db.delete(
-                ComputerPlayoffConfigurationConsts.TABLE_NAME,
-                ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + "= ? ",
+                ComputerPlayOffConfiguration.TABLE_NAME,
+                ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffId)}
         );
 
         db.delete(
-                HumanPlayoffConfigurationConsts.TABLE_NAME,
-                HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + "= ? ",
+                HumanPlayoffConfiguration.TABLE_NAME,
+                HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffId)}
         );
 
         db.delete(
-                PlayoffConsts.TABLE_NAME,
-                PlayoffConsts.ID_COLUMN_NAME + "= ? ",
+                Playoff.TABLE_NAME,
+                Playoff.ID_COLUMN_NAME + "= ? ",
                 new String[]{String.valueOf(playoffId)}
         );
     }
@@ -364,24 +359,24 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
         Cursor playoffCursor = db.rawQuery(
                 "SELECT " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.NAME_COLUMN_NAME + ", " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.DATETIME_COLUMN_NAME + ", " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
-                        PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + ", " +
-                        ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.ID_COLUMN_NAME + ", " +
-                        ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.MIN_SCORE_COLUMN_NAME + ", " +
-                        ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.MAX_SCORE_COLUMN_NAME + ", " +
-                        HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.ID_COLUMN_NAME + ", " +
-                        HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.OPPONENT_NAME_COLUMN_NAME + " " +
-                "FROM " +  PlayoffConsts.TABLE_NAME + " " +
-                "LEFT JOIN " + ComputerPlayoffConfigurationConsts.TABLE_NAME + " " +
-                    "ON " + PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + " = " + ComputerPlayoffConfigurationConsts.TABLE_NAME + "." + ComputerPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " " +
-                "LEFT JOIN " + HumanPlayoffConfigurationConsts.TABLE_NAME + " " +
-                    "ON " + PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + " = " + HumanPlayoffConfigurationConsts.TABLE_NAME + "." + HumanPlayoffConfigurationConsts.PLAYOFF_ID_COLUMN_NAME + " " +
+                        Playoff.TABLE_NAME + "." + Playoff.NAME_COLUMN_NAME + ", " +
+                        Playoff.TABLE_NAME + "." + Playoff.DATETIME_COLUMN_NAME + ", " +
+                        Playoff.TABLE_NAME + "." + Playoff.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + ", " +
+                        Playoff.TABLE_NAME + "." + Playoff.USER_PLAYOFF_SCORE_COLUMN_NAME + ", " +
+                        Playoff.TABLE_NAME + "." + Playoff.OPPONENT_PLAYOFF_SCORE_COLUMN_NAME + ", " +
+                        Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + ", " +
+                        ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.ID_COLUMN_NAME + ", " +
+                        ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.MIN_SCORE_COLUMN_NAME + ", " +
+                        ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.MAX_SCORE_COLUMN_NAME + ", " +
+                        HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.ID_COLUMN_NAME + ", " +
+                        HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.OPPONENT_NAME_COLUMN_NAME + " " +
+                "FROM " +  Playoff.TABLE_NAME + " " +
+                "LEFT JOIN " + ComputerPlayOffConfiguration.TABLE_NAME + " " +
+                    "ON " + Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + " = " + ComputerPlayOffConfiguration.TABLE_NAME + "." + ComputerPlayOffConfiguration.PLAYOFF_ID_COLUMN_NAME + " " +
+                "LEFT JOIN " + HumanPlayoffConfiguration.TABLE_NAME + " " +
+                    "ON " + Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + " = " + HumanPlayoffConfiguration.TABLE_NAME + "." + HumanPlayoffConfiguration.PLAYOFF_ID_COLUMN_NAME + " " +
                 "WHERE "  +
-                    PlayoffConsts.TABLE_NAME + "." + PlayoffConsts.ID_COLUMN_NAME + " = ?",
+                    Playoff.TABLE_NAME + "." + Playoff.ID_COLUMN_NAME + " = ?",
                 new String[]{String.valueOf(playoffId)}
         );
         playoffCursor.moveToFirst();
@@ -401,12 +396,12 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
             humanPlayoffConfiguration.opponentName = playoffCursor.getString(10);
             playoff.humanPlayoffConfiguration = humanPlayoffConfiguration;
         } else {
-            ComputerPlayOffConfiguration computerPlayOffConfiguration = new ComputerPlayOffConfiguration();
-            computerPlayOffConfiguration.id = playoffCursor.getInt(6);
-            computerPlayOffConfiguration.minScore = playoffCursor.getInt(7);
-            computerPlayOffConfiguration.maxScore = playoffCursor.getInt(8);
-            computerPlayOffConfiguration.playoff = playoff;
-            playoff.computerPlayOffConfiguration = computerPlayOffConfiguration;
+            ComputerPlayOffConfiguration ComputerPlayOffConfiguration = new ComputerPlayOffConfiguration();
+            ComputerPlayOffConfiguration.id = playoffCursor.getInt(6);
+            ComputerPlayOffConfiguration.minScore = playoffCursor.getInt(7);
+            ComputerPlayOffConfiguration.maxScore = playoffCursor.getInt(8);
+            ComputerPlayOffConfiguration.playoff = playoff;
+            playoff.computerPlayOffConfiguration = ComputerPlayOffConfiguration;
         }
 
         playoffCursor.close();
@@ -414,22 +409,22 @@ public class PlayoffDAO extends BaseArrowSeriesDAO {
 
         Cursor serieDataCursor = db.rawQuery(
                 "SELECT " +
-                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + ", " +
-                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
-                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.X_POSITION_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.Y_POSITION_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.ID_COLUMN_NAME + " " +
-                "FROM " +  PlayoffSerieConsts.TABLE_NAME  + " " +
-                "LEFT JOIN " + PlayoffSerieArrowConsts.TABLE_NAME + " " +
-                    "ON " + PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME + " = " + PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieArrowConsts.SERIE_ID_COLUMN_NAME + " " +
+                        PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.ID_COLUMN_NAME + ", " +
+                        PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.SERIE_INDEX_COLUMN_NAME + ", " +
+                        PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.OPPONENT_TOTAL_SCORE_COLUMN_NAME_COLUMN_NAME + ", " +
+                        PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.SCORE_COLUMN_NAME + ", " +
+                        PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.X_POSITION_COLUMN_NAME + ", " +
+                        PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.Y_POSITION_COLUMN_NAME + ", " +
+                        PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.IS_X_COLUMN_NAME + ", " +
+                        PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.ID_COLUMN_NAME + " " +
+                "FROM " +  PlayoffSerie.TABLE_NAME  + " " +
+                "LEFT JOIN " + PlayoffSerieArrow.TABLE_NAME + " " +
+                    "ON " + PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.ID_COLUMN_NAME + " = " + PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerieArrow.SERIE_ID_COLUMN_NAME + " " +
                 "WHERE " +
-                        PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.PLAYOFF_ID_COLUMN_NAME + " = ?" +
+                        PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.PLAYOFF_ID_COLUMN_NAME + " = ?" +
                 "ORDER BY " +
-                    PlayoffSerieConsts.TABLE_NAME + "." + PlayoffSerieConsts.SERIE_INDEX_COLUMN_NAME + ", " +
-                    PlayoffSerieArrowConsts.TABLE_NAME + "." + PlayoffSerieConsts.ID_COLUMN_NAME,
+                    PlayoffSerie.TABLE_NAME + "." + PlayoffSerie.SERIE_INDEX_COLUMN_NAME + ", " +
+                    PlayoffSerieArrow.TABLE_NAME + "." + PlayoffSerie.ID_COLUMN_NAME,
                 new String[]{String.valueOf(playoffId)}
         );
 

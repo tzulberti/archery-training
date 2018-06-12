@@ -8,10 +8,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.DatabaseHelper;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieArrowConsts;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieConsts;
-import ar.com.tzulberti.archerytraining.database.consts.BaseSerieContainerConsts;
 
+import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
+import ar.com.tzulberti.archerytraining.model.base.ISerie;
+import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 import ar.com.tzulberti.archerytraining.model.common.ArrowsPerScore;
 import ar.com.tzulberti.archerytraining.model.common.SeriesPerScore;
 import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
@@ -22,45 +22,43 @@ import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
  *
  * Created by tzulberti on 6/26/17.
  */
-public abstract class BaseArrowSeriesDAO  {
-
-    DatabaseHelper databaseHelper;
+public abstract class BaseArrowSeriesDAO extends BaseDAO {
 
     BaseArrowSeriesDAO(DatabaseHelper databaseHelper) {
-        this.databaseHelper = databaseHelper;
+        super(databaseHelper);
     }
 
     /**
-     * Returns the table that contains the series information and that it
+     * Returns the model that contains the series information and that it
      * has a FK to the tournament constraints table
      */
-    protected abstract BaseSerieContainerConsts getContainerTable();
+    protected abstract ISerieContainer getContainerTable();
 
     /**
      * @return the table that has the arrows score data
      */
-    protected abstract BaseSerieArrowConsts getArrowsTable();
+    protected abstract AbstractArrow getArrowsTable();
 
     /**
      * @return The table that has the series score data
      */
-    protected abstract BaseSerieConsts getSeriesTable();
+    protected abstract ISerie getSeriesTable();
 
 
     public List<SeriesPerScore> getSeriesPerScore(TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
-        BaseSerieConsts serieConsts = this.getSeriesTable();
-        BaseSerieContainerConsts baseSerieContainerConsts = this.getContainerTable();
+        ISerie serieConsts = this.getSeriesTable();
+        ISerieContainer baseSerieContainerConsts = this.getContainerTable();
 
         String query =
                 "SELECT " +
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + ", " +
-                    "COUNT(" + serieConsts.getTableName() + "." + BaseSerieConsts.ID_COLUMN_NAME + ") " +
+                    "COUNT(" + serieConsts.getTableName() + "." + serieConsts.getIdColumn() + ") " +
                 "FROM " +  serieConsts.getTableName() + " " +
                 "JOIN " + baseSerieContainerConsts.getTableName() + " " +
-                    "ON " + baseSerieContainerConsts.getTableName() + "." + BaseSerieContainerConsts.ID_COLUMN_NAME + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
+                    "ON " + baseSerieContainerConsts.getTableName() + "." + serieConsts.getIdColumn() + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
                 "WHERE " +
-                    BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
+                        ISerieContainer.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
                 "GROUP BY " +
                     serieConsts.getTableName() + "." + serieConsts.getScoreColumnName() + " " +
                 "ORDER BY " +
@@ -86,28 +84,28 @@ public abstract class BaseArrowSeriesDAO  {
 
     public List<ArrowsPerScore> getArrowsPerScore(TournamentConstraint tournamentConstraint) {
         SQLiteDatabase db = this.databaseHelper.getReadableDatabase();
-        BaseSerieArrowConsts serieArrowConsts = this.getArrowsTable();
-        BaseSerieConsts serieConsts = this.getSeriesTable();
-        BaseSerieContainerConsts baseSerieContainerConsts = this.getContainerTable();
+        AbstractArrow serieArrowConsts = this.getArrowsTable();
+        ISerie serieConsts = this.getSeriesTable();
+        ISerieContainer baseSerieContainerConsts = this.getContainerTable();
 
         Cursor arrowsCursor = db.rawQuery(
                 "SELECT " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME + ", " +
-                        "COUNT(" + serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.ID_COLUMN_NAME + ") " +
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.IS_X_COLUMN_NAME + ", " +
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.SCORE_COLUMN_NAME + ", " +
+                        "COUNT(" + serieArrowConsts.getTableName() + "." + AbstractArrow.ID_COLUMN_NAME + ") " +
                 "FROM " +  serieArrowConsts.getTableName() + " " +
                 "JOIN " + serieConsts.getTableName() + " " +
-                    "ON " + serieArrowConsts.getTableName() + "." + serieArrowConsts.getSerieColumnName() + " = " + serieConsts.getTableName() + "." + BaseSerieConsts.ID_COLUMN_NAME + " " +
+                    "ON " + serieArrowConsts.getTableName() + "." + serieArrowConsts.getSerieColumnName() + " = " + serieConsts.getTableName() + "." + serieConsts.getIdColumn() + " " +
                 "JOIN " + baseSerieContainerConsts.getTableName() + " " +
-                    "ON " + baseSerieContainerConsts.getTableName() + "." + BaseSerieContainerConsts.ID_COLUMN_NAME + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
+                    "ON " + baseSerieContainerConsts.getTableName() + "." + baseSerieContainerConsts.getIdColumn() + " = " + serieConsts.getTableName() + "." + serieConsts.getContainerIdColumnName() + " " +
                 "WHERE " +
-                        BaseSerieContainerConsts.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
+                        ISerieContainer.TOURNAMENT_CONSTRAINT_ID_COLUMN_NAME + " = ? " +
                 "GROUP BY " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + ", " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME + " " +
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.IS_X_COLUMN_NAME + ", " +
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.SCORE_COLUMN_NAME + " " +
                 "ORDER BY " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.IS_X_COLUMN_NAME + " DESC , " +
-                        serieArrowConsts.getTableName() + "." + BaseSerieArrowConsts.SCORE_COLUMN_NAME +  " DESC ",
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.IS_X_COLUMN_NAME + " DESC , " +
+                        serieArrowConsts.getTableName() + "." + AbstractArrow.SCORE_COLUMN_NAME +  " DESC ",
 
                 new String[]{String.valueOf(tournamentConstraint.id)}
         );

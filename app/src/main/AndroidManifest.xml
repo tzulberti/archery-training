@@ -38,6 +38,7 @@
         </activity>
 
         <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -122,6 +123,7 @@
                 android:value="ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity" />
         </activity>
         <activity android:name="ar.com.tzulberti.archerytraining.activities.playoff.ViewPlayoffSerieInformationActivity"
+            android:screenOrientation="portrait"
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
@@ -144,7 +146,7 @@
         </activity>
 
 
-        <!-- Retentions -->
+        <!-- bow -->
         <activity android:name="ar.com.tzulberti.archerytraining.activities.bow.ViewExistingBowsActivity"
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->

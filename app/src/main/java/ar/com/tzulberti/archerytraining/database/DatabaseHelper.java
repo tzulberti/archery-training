@@ -18,9 +18,9 @@ import io.sentry.Sentry;
  */
 public class DatabaseHelper extends SQLiteOpenHelper {
 
-    public static final String DATABASE_NAME = "archery_training.db";
+    private static final String DATABASE_NAME = "archery_training.db";
 
-    protected static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 2;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
