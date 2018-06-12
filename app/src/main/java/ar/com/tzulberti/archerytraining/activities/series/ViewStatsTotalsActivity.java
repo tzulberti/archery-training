@@ -32,9 +32,11 @@ import ar.com.tzulberti.archerytraining.model.series.DistanceTotalData;
 import ar.com.tzulberti.archerytraining.model.series.SerieData;
 
 /**
+ * Show stats based on the number of arrows shot for the period of time
+ * chosen (day, week, month)
+ *
  * Created by tzulberti on 6/13/17.
  */
-
 public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
 
     public static final String PERIOD_TO_GROUP_BY_KEY = "period";
@@ -231,7 +233,7 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
             return;
         }
 
-        List<Entry> entries = new ArrayList<Entry>();
+        List<Entry> entries = new ArrayList<>();
         List<Entry> accumulatedEntries = new ArrayList<>();
 
         long minValue = -1;
@@ -278,7 +280,7 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
         xl.setDrawGridLines(false);
         xl.setValueFormatter(new TimeAxisValueFormatter(minValue, dateFormat));
         xl.setGranularity(1);
-        xl.setLabelCount((int)(hoursTaken - minValue) / periodSize);
+        xl.setLabelRotationAngle(20);
 
         YAxis yl = lineChart.getAxisLeft();
         yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
