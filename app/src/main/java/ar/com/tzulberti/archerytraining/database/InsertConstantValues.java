@@ -24,7 +24,7 @@ public class InsertConstantValues {
 
 
     private void insertRoundConstrainInformation(SQLiteDatabase db) {
-        List<RoundConstraint> roundConstraints = new ArrayList<RoundConstraint>();
+        List<RoundConstraint> roundConstraints = new ArrayList<>();
         roundConstraints.add(new RoundConstraint(1, 70, 6, 6, 10, 1, "complete_archery_target.png"));
         roundConstraints.add(new RoundConstraint(2, 60, 6, 6, 10, 1, "complete_archery_target.png"));
         roundConstraints.add(new RoundConstraint(3, 50, 6, 6, 10, 1, "complete_archery_target.png"));
@@ -57,7 +57,7 @@ public class InsertConstantValues {
     }
 
     private void insertTournamentConstrainsData(SQLiteDatabase db) {
-        List<TournamentConstraint> constraints = new ArrayList<TournamentConstraint>();
+        List<TournamentConstraint> constraints = new ArrayList<>();
         constraints.add(new TournamentConstraint(1, "FITA 70x70 - 70m", true, "70_70_70m", 1, 1, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(20, "FITA 70x70 - 60m", true, "70_70_60m", 2, 2, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(30, "FITA 70x70 - 50m", true, "70_70_50m", 3, 3, 0, 0, 0, 0));
