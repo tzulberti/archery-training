@@ -66,20 +66,20 @@ class TablesCreator {
                         TournamentConstraint.ID_COLUMN_NAME + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                         TournamentConstraint.NAME_COLUMN_NAME + " TEXT NOT NULL, " +
                         TournamentConstraint.IS_OUTDOOR_COLUMN_NAME + " INTEGER NOT NULL, " +
-                        TournamentConstraint.STRING_XML_KEY_COLUMN_NAME + " STRING NOT NULL, " +
+                        TournamentConstraint.STRING_XML_KEY_COLUMN_NAME + " TEXT NOT NULL, " +
                         TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + " INTEGER NOT NULL, " +
                         TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + " INTEGER, " +
                         TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + " INTEGER, " +
                         TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + " INTEGER, " +
                         TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + " INTEGER, " +
                         TournamentConstraint.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + " INTEGER, " +
-                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
-                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_1_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_2_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_3_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_4_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ), " +
+                        "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_5_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ), " +
                         "FOREIGN KEY (" + TournamentConstraint.ROUND_CONSTRAINT_6_ID_COLUMN_NAME + ") REFERENCES " + RoundConstraint.TABLE_NAME + " ( " +  RoundConstraint.ID_COLUMN_NAME + " ) " +
-                        ")"
+                        ");"
         );
     }
 
