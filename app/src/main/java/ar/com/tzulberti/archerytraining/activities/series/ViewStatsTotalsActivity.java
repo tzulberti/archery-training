@@ -1,7 +1,10 @@
 package ar.com.tzulberti.archerytraining.activities.series;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.HorizontalBarChart;
@@ -16,9 +19,12 @@ import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.leavjenn.smoothdaterangepicker.date.SmoothDateRangePickerFragment;
+
 
 import java.text.DateFormat;
 import java.util.ArrayList;
+
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.R;
@@ -44,33 +50,35 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
     public static final String MAX_DATE_KEY = "max_date";
 
 
+    private long minDate;
+    private long maxDate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.series_period_data);
 
 
-        long minDate = this.getIntent().getLongExtra(MIN_DATE_KEY, 0);
-        long maxDate = this.getIntent().getLongExtra(MAX_DATE_KEY, 0);
+
+        this.minDate = this.getIntent().getLongExtra(MIN_DATE_KEY, 0);
+        this.maxDate = this.getIntent().getLongExtra(MAX_DATE_KEY, 0);
         SerieDataDAO.GroupByType periodType = (SerieDataDAO.GroupByType) this.getIntent().getSerializableExtra(PERIOD_TO_GROUP_BY_KEY);
 
         List<DistanceTotalData> distanceTotalDatas = this.serieDataDAO.getTotalsForDistance(
-                minDate,
-                maxDate
+                this.minDate,
+                this.maxDate
         );
 
         List<ArrowsPerDayData> arrowsPerDayDatas = this.serieDataDAO.getDailyArrowsInformation(
-                minDate,
-                maxDate,
+                this.minDate,
+                this.maxDate,
                 periodType
         );
 
         List<ArrowsPerTrainingType> arrowsPerTrainingTypes = this.serieDataDAO.getTotalsForTrainingType(
-                minDate,
-                maxDate
+                this.minDate,
+                this.maxDate
         );
-
-
 
         HorizontalBarChart horizontalBarChart = (HorizontalBarChart) this.findViewById(R.id.series_distance_arrows);
         HorizontalBarChart seriesPerTrainingTypeChart = (HorizontalBarChart) this.findViewById(R.id.series_per_training_type);
@@ -88,9 +96,59 @@ public class ViewStatsTotalsActivity extends BaseArcheryTrainingActivity {
         }
 
 
+        ((TextView) this.findViewById(R.id.series_stats_selected_dates)).setText(this.getString(
+                R.string.series_stats_viewing_date_range,
+                DatetimeHelper.DATE_FORMATTER.format(DatetimeHelper.databaseValueToDate(minDate)),
+                DatetimeHelper.DATE_FORMATTER.format(DatetimeHelper.databaseValueToDate(maxDate))
+        ));
+
         this.showArrowsPerDistance(distanceTotalDatas, horizontalBarChart);
         this.showArrowsPerDay(arrowsPerDayDatas, lineChart, periodType);
         this.showArrowsPerTrainingType(arrowsPerTrainingTypes, seriesPerTrainingTypeChart);
+    }
+
+
+    public void showDateRangePicker(View view) {
+        SmoothDateRangePickerFragment smoothDateRangePickerFragment = SmoothDateRangePickerFragment.newInstance(
+                new SmoothDateRangePickerFragment.OnDateRangeSetListener() {
+                    @Override
+                    public void onDateRangeSet(SmoothDateRangePickerFragment view,
+                                               int yearStart, int monthStart,
+                                               int dayStart, int yearEnd,
+                                               int monthEnd, int dayEnd) {
+
+                        changedDateRange(
+                                DatetimeHelper.getDateInMillis(yearStart, monthStart, dayStart, true),
+                                DatetimeHelper.getDateInMillis(yearEnd, monthEnd, dayEnd, false)
+                        );
+                    }
+                });
+
+        smoothDateRangePickerFragment.setAccentColor(Color.BLUE);
+        /*
+        smoothDateRangePickerFragment.registerOnDateChangedListener(new SmoothDateRangePickerFragment.OnDateChangedListener() {
+            @Override
+            public void onDateChanged() {
+                Log.e("foobar", "Entro en el onDateChanged");
+            }
+        });
+        */
+
+        smoothDateRangePickerFragment.show(getFragmentManager(), "smoothDateRangePicker");
+    }
+
+    public void changedDateRange(long startingTime, long endingTime) {
+        Intent intent = new Intent(this, ViewStatsTotalsActivity.class);
+        intent.putExtra(ViewStatsTotalsActivity.MIN_DATE_KEY, startingTime);
+        intent.putExtra(ViewStatsTotalsActivity.MAX_DATE_KEY, endingTime);
+
+        long diff = (endingTime - startingTime);
+        if (diff <= 86400) {
+            intent.putExtra(ViewStatsTotalsActivity.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.NONE);
+        } else {
+            intent.putExtra(ViewStatsTotalsActivity.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.DAILY);
+        }
+        startActivity(intent);
     }
 
     private void showArrowsPerDistance(List<DistanceTotalData> distanceTotalDatas, HorizontalBarChart horizontalBarChart) {

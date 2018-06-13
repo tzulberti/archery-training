@@ -120,6 +120,9 @@
     <string name="addSerieArrowsAmountTableHeader"># de flechas</string>
     <string name="addSerieTodayTotals">Totales de hoy</string>
 
+    <string name="series_stats_viewing_date_range">Viendo los totales desde %1$s hasta %2$s</string>
+    <string name="series_stats_change_date_range">Cambiar el rango de fechas</string>
+
     <string name="series_help">
         <![CDATA[
         <html>
