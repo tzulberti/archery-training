@@ -10,6 +10,23 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
+
+        <TextView
+            android:padding="3dip"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/series_stats_selected_dates"
+            android:text="@string/series_stats_viewing_date_range" />
+
+        <Button
+            android:id="@+id/addNewSerie"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"
+            android:onClick="showDateRangePicker"
+            android:text="@string/series_stats_change_date_range" />
+
+
         <TextView
             android:paddingTop="30dp"
             android:layout_width="wrap_content"

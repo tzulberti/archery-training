@@ -126,6 +126,9 @@
     <string name="addSerieArrowsAmountTableHeader"># Arrows</string>
     <string name="addSerieTodayTotals">Today totals</string>
 
+    <string name="series_stats_viewing_date_range">Viewing stats from %1$s until %2$s</string>
+    <string name="series_stats_change_date_range">Change date range</string>
+
 
     <string name="series_help">
         <![CDATA[

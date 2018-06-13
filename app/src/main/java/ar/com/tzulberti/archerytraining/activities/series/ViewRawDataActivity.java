@@ -121,16 +121,15 @@ public class ViewRawDataActivity extends AbstractTableDataActivity {
             // the user selected one of the rows to view the existing data
             Intent intent = new Intent(this, ViewStatsTotalsActivity.class);
 
-            Bundle arguments = new Bundle();
             switch (id) {
                 case Integer.MAX_VALUE -1:
                     intent.putExtra(ViewStatsTotalsActivity.MIN_DATE_KEY, DatetimeHelper.getTodayZeroHours());
-                    intent.putExtra(ViewStatsTotalsActivity.MAX_DATE_KEY, DatetimeHelper.getTomorrowZeroHours());
+                    intent.putExtra(ViewStatsTotalsActivity.MAX_DATE_KEY, DatetimeHelper.getTodayLastSecond());
                     intent.putExtra(ViewStatsTotalsActivity.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.NONE);
                     break;
                 case Integer.MAX_VALUE -2:
                     intent.putExtra(ViewStatsTotalsActivity.MIN_DATE_KEY, DatetimeHelper.getLastWeeDate());
-                    intent.putExtra(ViewStatsTotalsActivity.MAX_DATE_KEY, DatetimeHelper.getTomorrowZeroHours());
+                    intent.putExtra(ViewStatsTotalsActivity.MAX_DATE_KEY, DatetimeHelper.getTodayLastSecond());
                     intent.putExtra(ViewStatsTotalsActivity.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.DAILY);
                     break;
                 case Integer.MAX_VALUE -3:
@@ -139,7 +138,7 @@ public class ViewRawDataActivity extends AbstractTableDataActivity {
                     intent.putExtra(ViewStatsTotalsActivity.PERIOD_TO_GROUP_BY_KEY, SerieDataDAO.GroupByType.DAILY);
                     break;
                 default:
-                    throw new RuntimeException("Missing handler for %s");
+                    throw new RuntimeException("Missing handler for " + id);
             }
             startActivity(intent);
 
