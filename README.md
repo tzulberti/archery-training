@@ -18,4 +18,4 @@ to get the application.
 - The target image was taken from Wikipedia. By Alberto Barbati - Own work, CC BY-SA 2.5, https://commons.wikimedia.org/w/index.php?curid=828148
 - Icons taken from FlatIcon
 - Logo image given by Aixa Rodriguez Avendaño
-- New Icons/Logo by zularizal
+- New Icons/Logo by zularizal - Link logo https://drive.google.com/open?id=1r5dflu6U_6YfgM_sV5Xuhe0xOyNT0zkg
