@@ -2,6 +2,8 @@ package ar.com.tzulberti.archerytraining.helper;
 
 import android.graphics.Color;
 
+import ar.com.tzulberti.archerytraining.R;
+
 /**
  * Helper functions used to render the data of the score correctly
  *
@@ -18,13 +20,13 @@ public class TournamentHelper {
         Color.GREEN
     };
 
-    public static final String[] COLORS_TEXT = new String[]{
-        "Yellow",
-        "Red",
-        "Blue",
-        "Black",
-        "White",
-        "M"
+    public static final Integer[] COLORS_TEXT = new Integer[]{
+        R.string.stats_yellow,
+        R.string.stats_red,
+        R.string.stats_blue,
+        R.string.stats_black,
+        R.string.stats_white,
+        R.string.stats_m,
     };
 
     public static final String getUserScore(int score, boolean isX) {
