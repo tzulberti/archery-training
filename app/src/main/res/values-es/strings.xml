@@ -29,6 +29,13 @@
     <string name="stats_series_table_max">Max</string>
     <string name="stats_colors_stats"># of de flechas por color</string>
 
+    <string name="stats_yellow">Amarillo</string>
+    <string name="stats_red">Rojo</string>
+    <string name="stats_blue">Azul</string>
+    <string name="stats_black">Negro</string>
+    <string name="stats_white">Blanco</string>
+    <string name="stats_m">M</string>
+
     <string name="common_container_stats">
         <![CDATA[
         <html>
@@ -140,6 +147,8 @@
 
         ]]>
     </string>
+
+
 
 
 

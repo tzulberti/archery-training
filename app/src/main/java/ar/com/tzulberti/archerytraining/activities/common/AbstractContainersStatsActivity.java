@@ -213,7 +213,7 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
             }
             arrowsCounterSet.add(new BarEntry(i, counter));
             colors.add(color);
-            xAxis.add(TournamentHelper.COLORS_TEXT[i]);
+            xAxis.add(this.getString(TournamentHelper.COLORS_TEXT[i]));
             i += 1;
         }
 

@@ -35,6 +35,12 @@
     <string name="stats_series_table_max">Max</string>
     <string name="stats_colors_stats"># of arrows per color</string>
 
+    <string name="stats_yellow">Yellow</string>
+    <string name="stats_red">Red</string>
+    <string name="stats_blue">Blue</string>
+    <string name="stats_black">Black</string>
+    <string name="stats_white">White</string>
+    <string name="stats_m">M</string>
 
     <string name="common_container_stats">
         <![CDATA[
@@ -57,6 +63,7 @@
 
         ]]>
     </string>
+
 
     <!-- ////////////////////////////////////////////////////////////////////////// -->
     <!-- String used on the main action -->
