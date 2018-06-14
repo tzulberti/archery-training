@@ -15,7 +15,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
-import com.edmodo.rangebar.RangeBar;
+
+import com.appyvet.materialrangebar.RangeBar;
 import com.github.mikephil.charting.charts.HorizontalBarChart;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.XAxis;
@@ -117,11 +118,15 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
 
         if (this.container.getSeries().size() > 1) {
-            this.rangeBar.setTickCount(this.container.getSeries().size());
+            this.rangeBar.setTickStart(1);
+            this.rangeBar.setTickEnd(this.container.getSeries().size());
+            this.rangeBar.setTickInterval(1);
+
+            //this.rangeBar.setTickCount(this.container.getSeries().size());
             this.rangeBar.setOnRangeBarChangeListener(new RangeBar.OnRangeBarChangeListener() {
                 @Override
-                public void onIndexChangeListener(RangeBar rangeBar, int start, int end) {
-                    showSeries(start +1 , end +1);
+                public void onRangeChangeListener(RangeBar rangeBar, int leftPinIndex, int rightPinIndex, String leftPinValue, String rightPinValue) {
+                    showSeries(leftPinIndex + 1 , rightPinIndex +1);
                 }
             });
         } else {
