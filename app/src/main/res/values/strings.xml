@@ -126,12 +126,12 @@
     <string name="addSerieDistance">Distance</string>
     <string name="addSerieArrowsAmount">Arrows amount</string>
     <string name="addSerieAdd">Add</string>
-    <string name="addSerieLastSerie">Today total</string>
     <string name="addSerieAdded">Added serie of %1$d arrows</string>
 
     <string name="addSerieDatetime">When</string>
     <string name="addSerieArrowsAmountTableHeader"># Arrows</string>
-    <string name="addSerieTodayTotals">Today totals</string>
+    <string name="addSerieTodayTotals">Today\'s totals</string>
+    <string name="addSerieLastSerie">Last serie</string>
 
     <string name="series_stats_viewing_date_range">Viewing stats from %1$s until %2$s</string>
     <string name="series_stats_change_date_range">Change date range</string>

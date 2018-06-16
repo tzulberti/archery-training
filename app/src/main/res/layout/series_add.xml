@@ -15,6 +15,7 @@
         <EditText
             android:id="@+id/distance"
             android:gravity="right"
+            android:layout_weight="1"
             android:inputType="number" />
 
     </TableRow>
@@ -29,6 +30,7 @@
             android:id="@+id/arrowsAmount"
             android:gravity="right"
             android:inputType="number"
+            android:layout_weight="1"
             android:imeOptions="actionDone" />
     </TableRow>
 
@@ -43,6 +45,20 @@
             android:text="@string/addSerieAdd" />
     </TableRow>
 
+
+
+
+    <TableRow>
+
+        <TextView
+            android:padding="3dip"
+            android:text="@string/addSerieTodayTotals" />
+
+        <TextView
+            android:id="@+id/todayTotals"
+            android:padding="3dip" />
+    </TableRow>
+
     <TableRow android:layout_width="match_parent">
 
         <TextView
@@ -51,7 +67,6 @@
             android:text="@string/addSerieLastSerie"
             android:textAlignment="center" />
     </TableRow>
-
 
     <TableRow>
 
@@ -70,7 +85,6 @@
 
 
     <TableRow>
-
         <TextView
             android:id="@+id/lastDistance"
             android:padding="3dip" />
@@ -84,16 +98,7 @@
             android:padding="3dip" />
     </TableRow>
 
-    <TableRow>
 
-        <TextView
-            android:padding="3dip"
-            android:text="@string/addSerieTodayTotals" />
-
-        <TextView
-            android:id="@+id/todayTotals"
-            android:padding="3dip" />
-    </TableRow>
 </TableLayout>
 
 
