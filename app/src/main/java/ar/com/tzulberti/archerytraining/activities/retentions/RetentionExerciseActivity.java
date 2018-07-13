@@ -55,10 +55,10 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
         this.repetitionsDuration = arguments.getIntExtra(ConfigureRetentionActivity.REPETITIONS_DURATION, 0);
         this.startIn = arguments.getIntExtra(ConfigureRetentionActivity.START_IN, 0);
 
-        this.timeLeftText = (TextView) this.findViewById(R.id.textTimeLeft);
-        this.statusText = (TextView) this.findViewById(R.id.textStatus);
-        this.textSerieInfo = (TextView) this.findViewById(R.id.textSerieInfo);
-        this.textRepetionsInfo = (TextView) this.findViewById(R.id.textRepetionsInfo);
+        this.timeLeftText = this.findViewById(R.id.textTimeLeft);
+        this.statusText = this.findViewById(R.id.textStatus);
+        this.textSerieInfo = this.findViewById(R.id.textSerieInfo);
+        this.textRepetionsInfo = this.findViewById(R.id.textRepetionsInfo);
 
         this.shouldStop = false;
         this.textToSpeech = new TextToSpeech(this.getApplicationContext(), new TextToSpeech.OnInitListener() {
@@ -99,6 +99,8 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
             }
         }.start();
     }
+
+
 
 
     /**
@@ -178,8 +180,6 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
         timeLeftText.setBackgroundResource(R.color.colorRed);
 
         // do the current repetition
-
-
         this.currentTimer = new CountDownTimer(repetitionsDuration * 1000, 1000) {
 
             public void onTick(long millisUntilFinished) {
@@ -189,7 +189,6 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
             }
 
             public void onFinish() {
-                //readValue("0");
                 readValue(resources.getText(R.string.downBow));
                 currentRepetition += 1;
                 statusText.setText(resources.getText(R.string.restStatus));
@@ -236,6 +235,20 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
         if (res != TextToSpeech.SUCCESS) {
             // TODO check what we can do in this case
         }
+    }
+
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        this.stop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        this.shouldStop = false;
+        this.start();
     }
 
 
