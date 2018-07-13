@@ -77,7 +77,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
     public void start() {
         this.statusText.setText(R.string.waitingToStart);
         this.timeLeftText.setBackgroundResource(R.color.colorBlue);
-        this.timeLeftText.setText(Integer.toString(startIn));
+        this.timeLeftText.setText(String.valueOf(this.startIn));
 
 
         this.currentRepetition = 1;
@@ -87,7 +87,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
         this.currentTimer = new CountDownTimer(startIn * 1000, 1000) {
             public void onTick(long millisUntilFinished) {
                 long secondsMissing = millisUntilFinished / 1000;
-                timeLeftText.setText(Long.toString(secondsMissing));
+                timeLeftText.setText(String.valueOf(secondsMissing));
                 if (secondsMissing <= MIN_WARNING_START) {
                     timeLeftText.setBackgroundResource(R.color.colorYellow);
                 }
@@ -123,7 +123,9 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
             return;
         }
 
-        this.textSerieInfo.setText(Integer.toString(this.currentSerie) + " / " + Integer.toString(this.seriesAmount));
+        this.textSerieInfo.setText(
+                this.getString(R.string.retentions_serie_index, this.currentSerie, this.seriesAmount)
+        );
 
         // make sure of reseting this value for the different series
         this.currentRepetition = 1;
@@ -134,7 +136,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
             // it has finished the first serie so it should go to the next one
             // after sleeping a given number of seconds
             this.readValue(resources.getText(R.string.finishedSerie));
-            this.timeLeftText.setText(Integer.toString(seriesSleepTime));
+            this.timeLeftText.setText(String.valueOf(seriesSleepTime));
             this.timeLeftText.setBackgroundResource(R.color.colorGreen);
             this.statusText.setText(resources.getText(R.string.restStatus));
 
@@ -142,7 +144,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
 
                 public void onTick(long millisUntilFinished) {
                     long secondsMissing = millisUntilFinished / 1000;
-                    timeLeftText.setText(Long.toString(secondsMissing));
+                    timeLeftText.setText(String.valueOf(secondsMissing));
                     if (secondsMissing <= MIN_WARNING_START) {
                         timeLeftText.setBackgroundResource(R.color.colorYellow);
                     }
@@ -170,13 +172,15 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
             return;
         }
 
-        this.textRepetionsInfo.setText(Integer.toString(this.currentRepetition) + " / " + Integer.toString(this.repetitionsAmount));
+        this.textRepetionsInfo.setText(
+                this.getString(R.string.retentions_repetitions_index, this.currentRepetition, this.repetitionsAmount)
+        );
 
         // set the values because on the first execution of onTick will be
         // executed after one second
         this.readValue(Integer.toString(repetitionsDuration));
         this.statusText.setText(resources.getText(R.string.runningStatus));
-        timeLeftText.setText(Integer.toString(repetitionsDuration));
+        timeLeftText.setText(String.valueOf(repetitionsDuration));
         timeLeftText.setBackgroundResource(R.color.colorRed);
 
         // do the current repetition
@@ -184,7 +188,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
 
             public void onTick(long millisUntilFinished) {
                 long secondsMissing = millisUntilFinished / 1000;
-                timeLeftText.setText(Long.toString(secondsMissing));
+                timeLeftText.setText(String.valueOf(secondsMissing));
                 readValue(Long.toString(secondsMissing));
             }
 
@@ -193,7 +197,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
                 currentRepetition += 1;
                 statusText.setText(resources.getText(R.string.restStatus));
                 timeLeftText.setBackgroundResource(R.color.colorGreen);
-                timeLeftText.setText(Integer.toString(repetitionsDuration));
+                timeLeftText.setText(String.valueOf(repetitionsDuration));
 
                 // if this is the last repetiton of the serie there is no need
                 // to sleep because that is going to be given by the serie
@@ -208,7 +212,7 @@ public class RetentionExerciseActivity extends BaseArcheryTrainingActivity {
 
                     public void onTick(long millisUntilFinished) {
                         long secondsMissing = millisUntilFinished / 1000;
-                        timeLeftText.setText(Long.toString(secondsMissing));
+                        timeLeftText.setText(String.valueOf(secondsMissing));
 
                         if (secondsMissing <= MIN_WARNING_START) {
                             timeLeftText.setBackgroundResource(R.color.colorYellow);

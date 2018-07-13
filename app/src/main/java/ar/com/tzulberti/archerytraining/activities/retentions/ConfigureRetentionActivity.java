@@ -47,32 +47,32 @@ public class ConfigureRetentionActivity extends BaseArcheryTrainingActivity {
         int repetitionsDuration = sharedPref.getInt(REPETITIONS_DURATION, -1);
         int startIn = sharedPref.getInt(START_IN, -1);
 
-        this.seriesAmountEditText = (EditText) this.findViewById(R.id.seriesAmount);
-        this.seriesSleepTimeEditText = (EditText) this.findViewById(R.id.seriesSleepTime);
-        this.repetitionsAmountEditText = (EditText) this.findViewById(R.id.repetitionsAmount);
-        this.repetitionsDurationEditText = (EditText) this.findViewById(R.id.repetitionsDuration);
-        this.startInEditText = (EditText) this.findViewById(R.id.startIn);
+        this.seriesAmountEditText = this.findViewById(R.id.seriesAmount);
+        this.seriesSleepTimeEditText = this.findViewById(R.id.seriesSleepTime);
+        this.repetitionsAmountEditText = this.findViewById(R.id.repetitionsAmount);
+        this.repetitionsDurationEditText = this.findViewById(R.id.repetitionsDuration);
+        this.startInEditText = this.findViewById(R.id.startIn);
 
 
         // TODO maybe create a map with this values to prevent doing copy&paste?
         if (seriesAmount >= 0) {
-            this.seriesAmountEditText.setText(Integer.toString(seriesAmount));
+            this.seriesAmountEditText.setText(String.valueOf(seriesAmount));
         }
 
         if (seriesSleepTime >= 0) {
-            this.seriesSleepTimeEditText.setText(Integer.toString(seriesSleepTime));
+            this.seriesSleepTimeEditText.setText(String.valueOf(seriesSleepTime));
         }
 
         if (repetitionsAmount >= 0) {
-            this.repetitionsAmountEditText.setText(Integer.toString(repetitionsAmount));
+            this.repetitionsAmountEditText.setText(String.valueOf(repetitionsAmount));
         }
 
         if (repetitionsDuration >= 0) {
-            this.repetitionsDurationEditText.setText(Integer.toString(repetitionsDuration));
+            this.repetitionsDurationEditText.setText(String.valueOf(repetitionsDuration));
         }
 
         if (startIn >= 0) {
-            this.startInEditText.setText(Integer.toString(startIn));
+            this.startInEditText.setText(String.valueOf(startIn));
         }
 
     }
@@ -91,22 +91,16 @@ public class ConfigureRetentionActivity extends BaseArcheryTrainingActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
 
         boolean foundError = false;
-        String requiredValueError = getResources().getString(R.string.commonRequiredValidationError);
         for (Map.Entry<String, EditText> info : inputMapping.entrySet()) {
             String inputValue = info.getValue().getText().toString();
-            if (StringUtils.isBlank(inputValue)) {
-                info.getValue().setError(requiredValueError);
+            String errorMessagte = this.validateNumber(inputValue, 0, 300);
+            if (! StringUtils.isBlank(errorMessagte)) {
+                info.getValue().setError(errorMessagte);
                 foundError = true;
                 continue;
             }
 
             int value = Integer.parseInt(inputValue);
-            if (value <= 0) {
-                info.getValue().setError(requiredValueError);
-                foundError = true;
-                continue;
-            }
-
             editor.putInt(info.getKey(), value);
             intent.putExtra(info.getKey(), value);
         }
@@ -116,7 +110,7 @@ public class ConfigureRetentionActivity extends BaseArcheryTrainingActivity {
             return;
         }
 
-        editor.commit();
+        editor.apply();
         startActivity(intent);
     }
 }
