@@ -178,6 +178,8 @@
     <string name="stoppedStatus">Stop</string>
     <string name="finishedStatus">Finished</string>
     <string name="waitingToStart">Waiting...</string>
+    <string name="retentions_serie_index">%1$d / %2$d</string>
+    <string name="retentions_repetitions_index">%1$d / %2$d</string>
 
     <!-- Notifications between the excersie -->
     <string name="finishedSerie">Finished serie</string>
