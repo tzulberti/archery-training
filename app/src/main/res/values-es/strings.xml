@@ -66,6 +66,7 @@
     <string name="main_tournament">Torneos</string>
     <string name="main_playoff">Eliminatorias</string>
     <string name="main_bow">Arco</string>
+    <string name="main_timer">Timer</string>
 
     <string name="main_help">
         <![CDATA[
@@ -93,6 +94,9 @@
         </p>
         <p>
             <strong>Arco</strong>: para guardar la informacion de la posicion de la mira del mismo
+        </p>
+        <p>
+            <strong>Timer</strong>: para poder configurar un timer
         </p>
 
         </body>
@@ -375,8 +379,7 @@
         ]]>
     </string>
 
-    <!-- ///////////////////////////////////////////////////////////////////////////// -->
-    <!-- Bow option -->
+
     <!-- ///////////////////////////////////////////////////////////////////////////// -->
     <!-- Bow option -->
     <string name="bow_name">Nombre</string>
@@ -385,5 +388,40 @@
     <string name="bow_distance">Distancia</string>
     <string name="bow_distance_delete">Borrar</string>
     <string name="bow_sight_value">Posición mira</string>
+
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Timer option -->
+    <string name="timer_configure_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Configura un timer
+        </p>
+        <p>
+            La opcion de <strong>Segundos</strong> es lo que va a durar el mismo
+        </p>
+        <p>
+            La opcion de <strong>Cambiar el fondo</strong> indica cuando tiene que cambiar el color de
+            fonde de verde a amarillo. Usualmente, esto es a los 30 segundos
+        </p>
+        <p>
+            La opcion de <strong>Empezar en</strong> es usada para que te de un par de segundos para
+            agarrar el tab y guardar el celular
+        </p>
+        <p>
+            La opcion de <strong>Countar desde</strong> indica a partir de cuando el celular deberia
+            empezar a contar en una voz humana los segundos que quedan
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="timer_time">Segundos</string>
+    <string name="timer_change_at_seconds">ambiar el fondo</string>
+    <string name="timer_start_in">Empezar en</string>
+    <string name="timer_voice_count_down">Countar desde</string>
     
 </resources>

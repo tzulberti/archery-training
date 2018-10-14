@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:keepScreenOn="true"
+    android:stretchColumns="*"
+    >
+
+    <TableRow android:layout_width="match_parent">
+
+        <Button
+            android:id="@+id/button2"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:onClick="stop"
+            android:text="@string/button_stop" />
+    </TableRow>
+
+
+    <TableRow
+        android:layout_weight="1"
+        android:layout_width="fill_parent"
+        android:layout_height ="fill_parent">
+
+        <TextView
+            android:id="@+id/textTimeLeft"
+            android:layout_width="fill_parent"
+            android:layout_height ="fill_parent"
+            android:gravity="center"
+            android:padding="3dip"
+            android:textSize="100sp"
+            android:textStyle="bold"
+            android:layout_span="5" />
+    </TableRow>
+</TableLayout>

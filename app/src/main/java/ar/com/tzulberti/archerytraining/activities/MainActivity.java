@@ -13,6 +13,7 @@ import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingAct
 import ar.com.tzulberti.archerytraining.activities.playoff.ViewExistingPlayoffActivity;
 import ar.com.tzulberti.archerytraining.activities.retentions.ConfigureRetentionActivity;
 import ar.com.tzulberti.archerytraining.activities.series.ViewRawDataActivity;
+import ar.com.tzulberti.archerytraining.activities.timer.ConfigureTimerActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity;
 import ar.com.tzulberti.archerytraining.helper.AppCache;
 import io.sentry.Sentry;
@@ -64,6 +65,9 @@ public class MainActivity extends BaseArcheryTrainingActivity {
 
         } else if (id == R.id.main_activity_bow) {
             intent = new Intent(this, ViewExistingBowsActivity.class);
+
+        } else if (id == R.id.main_activity_timer) {
+            intent = new Intent(this, ConfigureTimerActivity.class);
 
         } else {
             throw new RuntimeException("Unknown selected menu option");

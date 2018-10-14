@@ -73,6 +73,7 @@
     <string name="main_tournament">Tournament</string>
     <string name="main_playoff">Playoff</string>
     <string name="main_bow">Bow</string>
+    <string name="main_timer">Timer</string>
 
     <string name="main_help">
         <![CDATA[
@@ -98,6 +99,9 @@
         </p>
         <p>
             <strong>Bow</strong>: used to save the basic sight information of the bow
+        </p>
+        <p>
+            <strong>Timer</strong>: you can configure the timer
         </p>
 
         </body>
@@ -387,6 +391,42 @@
     <string name="bow_sight_value">Sight value</string>
 
 
+    <!-- ///////////////////////////////////////////////////////////////////////////// -->
+    <!-- Timer option -->
+    <string name="timer_configure_help">
+        <![CDATA[
+        <html>
+        <body>
+        <p>
+            Run a timer to notify you when there is no time
+        </p>
+        <p>
+            The <strong>Seconds</strong> option is the in seconds on when the timer should
+            notify you
+        </p>
+        <p>
+            The <strong>Change background at</strong> indicates when the background color used
+            should be changed. It will change from green to yellow. This is usually at the 30 seconds
+        </p>
+        <p>
+            The <strong>Start in</strong> option is used to start the timer in that given seconds.
+            Used if you need to grab the tab or save the phone before the time starts.
+        </p>
+        <p>
+            The <strong>Count down from</strong> option is used to indicate when there should be a
+            sound notification for the last X seconds that it will notify the number of seconds
+            left
+        </p>
+        </body>
+        </html>
+
+        ]]>
+    </string>
+
+    <string name="timer_time">Seconds</string>
+    <string name="timer_change_at_seconds">Change background at</string>
+    <string name="timer_start_in">Start in</string>
+    <string name="timer_voice_count_down">Count down from</string>
 
 
 </resources>
