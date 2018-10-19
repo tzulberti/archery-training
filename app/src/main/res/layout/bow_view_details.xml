@@ -15,7 +15,8 @@
 
         <EditText
             android:id="@+id/bow_name"
-            android:gravity="right"
+            android:gravity="end"
+            android:inputType="text"
             />
     </TableRow>
 

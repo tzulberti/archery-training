@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="1"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
     >
 
     <TableRow android:paddingTop="2dp">
@@ -37,7 +39,8 @@
 
         <EditText
             android:id="@+id/opponent_name"
-            android:gravity="right"
+            android:gravity="end"
+            android:inputType="text"
             />
     </TableRow>
 
@@ -48,7 +51,7 @@
 
         <EditText
             android:id="@+id/min_socre"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>
@@ -60,7 +63,7 @@
 
         <EditText
             android:id="@+id/max_socre"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>

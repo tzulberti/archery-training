@@ -3,6 +3,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:stretchColumns="1"
+        android:layout_marginEnd="10dp"
+        android:layout_marginRight="10dp"
         >
 
     <TableRow>
@@ -12,7 +14,7 @@
 
         <EditText
             android:id="@+id/seriesAmount"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>
@@ -24,7 +26,7 @@
 
         <EditText
             android:id="@+id/repetitionsAmount"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>
@@ -36,7 +38,7 @@
 
         <EditText
             android:id="@+id/seriesSleepTime"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>
@@ -48,7 +50,7 @@
 
         <EditText
             android:id="@+id/repetitionsDuration"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>
@@ -60,7 +62,7 @@
 
         <EditText
             android:id="@+id/startIn"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             />
     </TableRow>

@@ -2,7 +2,10 @@
 <TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:stretchColumns="*">
+    android:stretchColumns="*"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
+    >
 
     <TableRow android:layout_width="match_parent">
 
@@ -12,7 +15,7 @@
 
         <EditText
             android:id="@+id/name"
-            android:gravity="right"
+            android:gravity="end"
             android:text="@string/tournament_default_name" />
     </TableRow>
 
@@ -39,7 +42,7 @@
             android:text="@string/tournament_is_tournament" />
 
         <CheckBox
-            android:gravity="right"
+            android:gravity="end"
             android:checked="false"
             android:id="@+id/is_tournament"/>
     </TableRow>
