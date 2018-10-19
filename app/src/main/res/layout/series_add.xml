@@ -3,7 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/serie_add_table_layout"
-    android:stretchColumns="*">
+    android:stretchColumns="*"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
+    >
 
 
     <TableRow android:layout_width="match_parent">
@@ -14,7 +17,7 @@
 
         <EditText
             android:id="@+id/distance"
-            android:gravity="right"
+            android:gravity="end"
             android:layout_weight="1"
             android:inputType="number" />
 
@@ -28,7 +31,7 @@
 
         <EditText
             android:id="@+id/arrowsAmount"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             android:layout_weight="1"
             android:imeOptions="actionDone" />

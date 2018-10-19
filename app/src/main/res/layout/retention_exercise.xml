@@ -24,7 +24,7 @@
 
         <TextView
             android:id="@+id/textSerieInfo"
-            android:gravity="right"
+            android:gravity="end"
             android:padding="3dip"
             android:text="0" />
 
@@ -34,7 +34,7 @@
 
         <TextView
             android:id="@+id/textRepetionsInfo"
-            android:gravity="right"
+            android:gravity="end"
             android:padding="3dip"
             android:text="0" />
     </TableRow>
@@ -48,7 +48,7 @@
 
         <TextView
             android:id="@+id/textStatus"
-            android:gravity="right"
+            android:gravity="end"
             android:padding="3dip"
             android:text="0" />
     </TableRow>

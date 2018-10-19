@@ -3,6 +3,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:stretchColumns="1"
+    android:layout_marginEnd="10dp"
+    android:layout_marginRight="10dp"
     >
 
     <TableRow>
@@ -12,7 +14,7 @@
 
         <EditText
             android:id="@+id/timer_time"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             android:text="120"
             />
@@ -25,7 +27,7 @@
 
         <EditText
             android:id="@+id/timer_change_at_seconds"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             android:text="30"
             />
@@ -39,7 +41,7 @@
 
         <EditText
             android:id="@+id/timer_start_in"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             android:text="0"
             />
@@ -52,7 +54,7 @@
 
         <EditText
             android:id="@+id/timer_voice_count_down"
-            android:gravity="right"
+            android:gravity="end"
             android:inputType="number"
             android:text="0"
             />
