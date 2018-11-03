@@ -12,7 +12,7 @@ import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
+
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -28,6 +28,7 @@ import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+
 
 /**
  * Show the target so the user can input were the arrows go and set/view the series
@@ -66,6 +67,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
     private boolean canGoBack;
     protected ISerie serie;
 
+    private RoundConstraint currentRoundConstraint;
 
     /**
      * @return the id of the layout that is going to be shown
@@ -112,6 +114,8 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
         this.targetImageView.setOnTouchListener(this);
         this.targetImageView.setOnLongClickListener(this);
+        this.currentRoundConstraint = this.serie.getContainer().getTournamentConstraint().getConstraintForSerie(this.serie.getIndex());
+
 
         this.currentImpactPaint = new Paint();
         this.currentImpactPaint.setAntiAlias(true);
@@ -156,7 +160,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         this.imageScale = Math.min(this.targetImageView.getWidth(), this.targetImageView.getHeight()) / IMAGE_WIDTH;
         this.targetCenterX = this.targetImageView.getWidth() / (2 * this.imageScale);
         this.targetCenterY = this.targetImageView.getHeight() / (2 * this.imageScale);
-        this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / 10;
+        this.pointWidth = Math.min(this.targetCenterX, this.targetCenterY) / (this.currentRoundConstraint.maxScore - this.currentRoundConstraint.minScore + 1);
 
 
         this.showSeriesArrow();
@@ -184,7 +188,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         myOptions.inScaled = false;
         myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), this.currentRoundConstraint.getDrawable(), myOptions);
         Paint paint = new Paint();
         paint.setAntiAlias(true);
         paint.setColor(Color.BLUE);
@@ -204,6 +208,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
                 arrowIndex += 1;
             }
         }
+        //this.targetImageView.setScaleType(ImageView.ScaleType.FIT_XY);
     }
 
 
@@ -277,7 +282,7 @@ public abstract class AbstractSerieArrowsActivity extends BaseArcheryTrainingAct
         canvas.drawCircle(x, y, ARROW_IMPACT_RADIUS, paint);
         double distance = Math.sqrt(Math.pow(x - this.targetCenterX, 2) + Math.pow(y - this.targetCenterY, 2));
         int score = (int) (10 - Math.floor(distance / this.pointWidth));
-        if (score < 0) {
+        if (score < this.currentRoundConstraint.minScore) {
             score = 0;
         }
         boolean isX = (score == 10 && (distance / this.pointWidth) < 0.5);

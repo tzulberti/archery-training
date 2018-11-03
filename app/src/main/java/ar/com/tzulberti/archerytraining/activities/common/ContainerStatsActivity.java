@@ -43,6 +43,7 @@ import ar.com.tzulberti.archerytraining.helper.charts.HorizontalBarChartHelper;
 import ar.com.tzulberti.archerytraining.model.base.AbstractArrow;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
+import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
 
 /**
  * Used to show the stats for one tournamnent/playoff
@@ -115,7 +116,12 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         myOptions.inScaled = false;
         myOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;// important
 
-        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.complete_archery_target, myOptions);
+        // TODO check what do to do on mixed targets
+        ISerie serie = this.container.getSeries().get(0);
+        RoundConstraint roundConstraint = serie.getContainer().getTournamentConstraint().getContraintForRound(serie.getIndex());
+
+
+        Bitmap bitmap = BitmapFactory.decodeResource(getResources(), roundConstraint.getDrawable(), myOptions);
 
         if (this.container.getSeries().size() > 1) {
             this.rangeBar.setTickStart(1);

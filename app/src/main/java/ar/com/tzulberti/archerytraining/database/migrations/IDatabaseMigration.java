@@ -7,7 +7,7 @@ import android.database.sqlite.SQLiteDatabase;
  *
  * Created by tzulberti on 6/3/17.
  */
-public interface IDatbasseMigration {
+public interface IDatabaseMigration {
 
     /**
      * @return the database version once that this migration is executed

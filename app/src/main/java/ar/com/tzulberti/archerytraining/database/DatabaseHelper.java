@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration1;
-import ar.com.tzulberti.archerytraining.database.migrations.IDatbasseMigration;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration2;
+import ar.com.tzulberti.archerytraining.database.migrations.IDatabaseMigration;
 import io.sentry.Sentry;
 
 /**
@@ -20,7 +21,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "archery_training.db";
 
-    private static final int DATABASE_VERSION = 2;
+    private static final int DATABASE_VERSION = 3;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -45,8 +46,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         // Get all the existing database migrations
-        List<IDatbasseMigration> existingMigrations = new ArrayList<>();
+        List<IDatabaseMigration> existingMigrations = new ArrayList<>();
         existingMigrations.add(new DatabaseMigration1());
+        existingMigrations.add(new DatabaseMigration2());
 
 
         // make sure to disable any FK validation because the table might
@@ -54,7 +56,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         // doesn't allows us to drop a column)
         db.setForeignKeyConstraintsEnabled(false);
 
-        for (IDatbasseMigration databaseMigration : existingMigrations) {
+        for (IDatabaseMigration databaseMigration : existingMigrations) {
             int migrationVersion = databaseMigration.getCurentVersion();
             if (oldVersion <= migrationVersion && migrationVersion < newVersion) {
                 try {
