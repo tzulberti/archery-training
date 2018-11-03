@@ -91,7 +91,7 @@ public class InsertConstantValues {
 
 
         constraints.add(new TournamentConstraint(1000, "Recurve - Indoor - 18m - Triple Spot", false, "18_Triple_Spot", 9, 9, 0, 0, 0, 0));
-        constraints.add(new TournamentConstraint(1000, "Compound - Indoor - 18m - Triple Spot", false, "18_Triple_Spot", 9, 9, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1001, "Compound - Indoor - 18m - Triple Spot", false, "18_Triple_Spot", 9, 9, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(1010, "Indoor - School - 18m - 40cm", false, "18_40", 10, 10, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(1020, "Indoor - School - 18m - 60cm", false, "18_60", 10, 10, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(1030, "Indoor - School - 18m - 80cm", false, "18_80", 10, 10, 0, 0, 0, 0));

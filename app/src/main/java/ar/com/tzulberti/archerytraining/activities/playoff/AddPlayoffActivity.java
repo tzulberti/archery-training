@@ -60,8 +60,8 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         SharedPreferences sharedPref = this.getPreferences(Context.MODE_PRIVATE);
 
         this.inputMapping = new HashMap<>();
-        this.inputMapping.put(MIN_SCORE, (EditText) this.findViewById(R.id.min_socre));
-        this.inputMapping.put(MAX_SCORE, (EditText) this.findViewById(R.id.max_socre));
+        this.inputMapping.put(MIN_SCORE, (EditText) this.findViewById(R.id.min_score));
+        this.inputMapping.put(MAX_SCORE, (EditText) this.findViewById(R.id.max_score));
 
         for (Map.Entry<String, EditText> info : inputMapping.entrySet()) {
             if (sharedPref.contains(info.getKey())) {
@@ -96,15 +96,22 @@ public class AddPlayoffActivity extends BaseArcheryTrainingActivity {
         this.playoffTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                AddPlayoffActivity.this.findViewById(R.id.opponent_name_row).setVisibility(View.GONE);
-                AddPlayoffActivity.this.findViewById(R.id.min_score_row).setVisibility(View.GONE);
-                AddPlayoffActivity.this.findViewById(R.id.max_score_row).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.opponent_name).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.opponent_name_text).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.min_score).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.max_score).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.min_score_text).setVisibility(View.GONE);
+                AddPlayoffActivity.this.findViewById(R.id.max_score_text).setVisibility(View.GONE);
 
                 if (position == COMPUTER_PLAYOFF_TYPE) {
-                    AddPlayoffActivity.this.findViewById(R.id.min_score_row).setVisibility(View.VISIBLE);
-                    AddPlayoffActivity.this.findViewById(R.id.max_score_row).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.min_score).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.max_score).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.min_score_text).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.max_score_text).setVisibility(View.VISIBLE);
+
                 } else {
-                    AddPlayoffActivity.this.findViewById(R.id.opponent_name_row).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.opponent_name).setVisibility(View.VISIBLE);
+                    AddPlayoffActivity.this.findViewById(R.id.opponent_name_text).setVisibility(View.VISIBLE);
                 }
             }
 

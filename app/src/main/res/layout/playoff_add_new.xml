@@ -1,87 +1,113 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:stretchColumns="1"
-    android:layout_marginEnd="10dp"
-    android:layout_marginRight="10dp"
-    >
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ScrollView01"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:scrollbars="vertical">
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
-    <TableRow android:paddingTop="2dp">
 
         <TextView
             android:padding="3dip"
-            android:text="@string/tournament_type" />
+            android:text="@string/tournament_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/tournament_constrains"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-    </TableRow>
+            android:prompt="@string/tournament_type"
+            android:spinnerMode="dialog"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
-    <TableRow android:paddingTop="10dp">
+
 
         <TextView
-            android:padding="3dip"
-            android:text="@string/playoff_opponent_type" />
+            android:paddingTop="20dp"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:text="@string/playoff_opponent_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <Spinner
             android:id="@+id/opponent_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
-    </TableRow>
 
 
-    <TableRow android:id="@+id/opponent_name_row">
+
+
         <TextView
             android:text="@string/playoff_opponent_name"
-            android:padding="3dip" />
+            android:id="@+id/opponent_name_text"
+            android:paddingTop="20dp"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
 
         <EditText
             android:id="@+id/opponent_name"
-            android:gravity="end"
             android:inputType="text"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
-    </TableRow>
 
-    <TableRow android:id="@+id/min_score_row">
+
+
         <TextView
             android:text="@string/playoff_min_score"
-            android:padding="3dip" />
+            android:id="@+id/min_score_text"
+            android:paddingTop="20dp"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <EditText
-            android:id="@+id/min_socre"
-            android:gravity="end"
+            android:id="@+id/min_score"
             android:inputType="number"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
-    </TableRow>
 
-    <TableRow android:id="@+id/max_score_row">
+
         <TextView
             android:text="@string/playoff_max_score"
-            android:padding="3dip" />
+            android:id="@+id/max_score_text"
+            android:paddingTop="20dp"
+            android:paddingStart="3dp"
+            android:paddingLeft="3dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
 
         <EditText
-            android:id="@+id/max_socre"
-            android:gravity="end"
+            android:id="@+id/max_score"
             android:inputType="number"
+            android:gravity="start"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             />
-    </TableRow>
 
-
-    <TableRow
-        android:layout_width="match_parent"
-        >
         <Button
             android:id="@+id/button"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:onClick="addPlayoff"
             android:layout_weight="1"
             android:text="@string/playoff_start"
             />
-    </TableRow>
-</TableLayout>
-
+    </LinearLayout>
+</ScrollView>
 
 
 
