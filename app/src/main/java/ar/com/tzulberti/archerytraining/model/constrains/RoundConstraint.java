@@ -1,7 +1,10 @@
 package ar.com.tzulberti.archerytraining.model.constrains;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.io.Serializable;
 
+import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.model.base.BaseArcheryTrainingModel;
 
 /**
@@ -58,5 +61,15 @@ public class RoundConstraint extends BaseArcheryTrainingModel implements Seriali
     @Override
     public int hashCode() {
         return id;
+    }
+
+    public int getDrawable() {
+        if (StringUtils.equals(this.targetImage, "complete_archery_target.png")) {
+            return R.drawable.complete_archery_target;
+        } else if (StringUtils.equals(this.targetImage, "reduced_outdoor_target.png")) {
+            return R.drawable.reduced_outdoor_target;
+        } else {
+            throw new RuntimeException("Missing drawable for " + this.targetImage);
+        }
     }
 }

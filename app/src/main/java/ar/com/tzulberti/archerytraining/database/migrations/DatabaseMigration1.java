@@ -10,7 +10,7 @@ import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
  *
  * Created by tzulberti on 8/16/17.
  */
-public class DatabaseMigration1 implements IDatbasseMigration {
+public class DatabaseMigration1 implements IDatabaseMigration {
 
     @Override
     public int getCurentVersion() {
