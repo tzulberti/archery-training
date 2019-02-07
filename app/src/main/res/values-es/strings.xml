@@ -36,6 +36,8 @@
     <string name="stats_white">Blanco</string>
     <string name="stats_m">M</string>
 
+    <string name="stats_share_image">Compartir</string>
+
     <string name="common_container_stats">
         <![CDATA[
         <html>

@@ -1,12 +1,19 @@
 package ar.com.tzulberti.archerytraining.activities.common;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.net.Uri;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.content.FileProvider;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
@@ -28,6 +35,7 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 
+import java.io.File;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -36,7 +44,9 @@ import java.util.List;
 import java.util.Map;
 
 import ar.com.tzulberti.archerytraining.R;
+import ar.com.tzulberti.archerytraining.activities.playoff.AddPlayoffActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
+import ar.com.tzulberti.archerytraining.helper.PDFExporter;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.helper.charts.BarAxisValueFormattter;
 import ar.com.tzulberti.archerytraining.helper.charts.HorizontalBarChartHelper;
@@ -76,9 +86,9 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
 
         this.container = (ISerieContainer) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
-        this.targetImageView = (ImageView) this.findViewById(R.id.photo_view);
-        this.rangeBar = (RangeBar) this.findViewById(R.id.tournament_series_rangebar);
-        this.seriesShowingText = (TextView) this.findViewById(R.id.tournament_series_showing);
+        this.targetImageView = this.findViewById(R.id.photo_view);
+        this.rangeBar = this.findViewById(R.id.tournament_series_rangebar);
+        this.seriesShowingText = this.findViewById(R.id.tournament_series_showing);
 
 
         this.finalImpactPaint = new Paint();
@@ -158,9 +168,15 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         this.renderArrowsChart((HorizontalBarChart) this.findViewById(R.id.tournament_arrows_horizontal_chart), series);
         this.renderColorChart((HorizontalBarChart) this.findViewById(R.id.tournament_color_horizontal_chart), series);
         this.showTableValues((TableLayout) this.findViewById(R.id.tournament_stats_table_data), series);
+        this.renderRawData((TableLayout) this.findViewById(R.id.container_raw_data), this.container);
 
         this.seriesShowingText.setText(getString(R.string.common_container_stats_showing_series, minSerie, maxSerie));
     }
+
+    protected void renderRawData(TableLayout tableLayout, ISerieContainer container) {
+
+    }
+
 
     private void showTargetImpacts(List<ISerie> series) {
         Bitmap mutableBitmap = this.imageBitmap.copy(Bitmap.Config.ARGB_8888, true);
@@ -180,8 +196,8 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
         if (numberOfArrows > 0) {
             float maxDistance = 0;
-            float centerX = sumX / numberOfArrows;
-            float centerY = sumY / numberOfArrows;
+            int centerX = sumX / numberOfArrows;
+            int centerY = sumY / numberOfArrows;
 
             this.addTargetImpact(centerX, centerY, mutableBitmap, this.centerPointPaint, ViewSerieInformationActivity.ARROW_IMPACT_RADIUS);
 
@@ -264,7 +280,7 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
 
         for (int i = 0; i < 12; i++) {
             String score;
-            Integer color;
+            int color;
             if (i == 11) {
                 score = TournamentHelper.getUserScore(10, true);
                 color = TournamentHelper.getBackground(10);
@@ -411,6 +427,55 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         tr.addView(avgTextView);
         tr.addView(meanTextView);
         tr.addView(maxTextView);
+    }
+
+    public void exportToPdf(View view) {
+
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+            // TODO check the granted permission for this case
+            // https://developer.android.com/training/permissions/requesting
+            ActivityCompat.requestPermissions(this,
+                    new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                    200);
+        }
+
+        PDFExporter pdfExporter = new PDFExporter();
+        boolean exportToImage = true;
+
+        this.findViewById(R.id.share_button).setVisibility(View.GONE);
+        try {
+
+            View linearLayout = this.findViewById(R.id.arrow_stats_scroll_layout);
+            File exportedFile = null;
+            String type = null;
+            String filename = this.container.getFilename();
+
+            if (exportToImage) {
+                exportedFile = pdfExporter.exportToImage(linearLayout, this.getFilesDir(), filename);
+                type = "image/jpeg";
+            } else {
+                exportedFile = pdfExporter.exportToPdf(linearLayout, this.getFilesDir(), filename);
+                type = "application/pdf";
+            }
+
+            Intent intent = new Intent(Intent.ACTION_VIEW);
+            Uri uri = FileProvider.getUriForFile(
+                this.getApplicationContext(),
+                this.getApplicationContext().getPackageName() + ".provider",
+                exportedFile
+            );
+
+            intent.setDataAndType(uri, type);
+            intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
+            intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
+            startActivity(intent);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            this.findViewById(R.id.share_button).setVisibility(View.VISIBLE);
+        }
     }
 
 }

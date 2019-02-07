@@ -204,7 +204,7 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
                 intent = new Intent(this, ViewTournamentScoreSheetActivity.class);
 
             } else if (id == Integer.MAX_VALUE - 2) {
-                intent = new Intent(this, ContainerStatsActivity.class);
+                intent = new Intent(this, TournamentStatsActivity.class);
             }
 
             intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.tournament);

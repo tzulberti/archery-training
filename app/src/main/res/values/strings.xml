@@ -42,6 +42,8 @@
     <string name="stats_white">White</string>
     <string name="stats_m">M</string>
 
+    <string name="stats_share_image">Share</string>
+
     <string name="common_container_stats">
         <![CDATA[
         <html>

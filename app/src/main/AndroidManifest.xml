@@ -4,6 +4,8 @@
     android:installLocation="preferExternal">
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
 
     <application
         android:allowBackup="true"
@@ -12,12 +14,24 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/provider_paths"/>
+        </provider>
+
+
         <activity
             android:name="ar.com.tzulberti.archerytraining.activities.MainActivity"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
@@ -60,6 +74,14 @@
                 android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
         </activity>
         <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentsStatsActivity"
+            android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
+            <!-- The meta-data tag is required if you support API level 15 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
+        </activity>
+
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.TournamentStatsActivity">
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data
