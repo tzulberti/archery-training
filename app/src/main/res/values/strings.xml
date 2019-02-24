@@ -219,6 +219,7 @@
     <string name="tournament_view_tournament_delete">Delete</string>
     <string name="tournament_view_serie_creating_back">If you got back this incomplete serie is going to be deleted. Are you sure?</string>
     <string name="tournament_view_stats_arrow_chart_description"># of arrows per score</string>
+    <string name="tournament_view_stats_color_chart_description"># of arrows per color</string>
     <string name="tournament_view_stats_series_chart_description">Score per serie</string>
     <string name="tournament_view_stats_serie">Serie</string>
     <string name="tournament_view_stats_arrow">Arrow</string>
