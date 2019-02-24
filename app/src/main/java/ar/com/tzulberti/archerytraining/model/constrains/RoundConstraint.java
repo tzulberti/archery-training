@@ -68,6 +68,8 @@ public class RoundConstraint extends BaseArcheryTrainingModel implements Seriali
             return R.drawable.complete_archery_target;
         } else if (StringUtils.equals(this.targetImage, "reduced_outdoor_target.png")) {
             return R.drawable.reduced_outdoor_target;
+        } else if (StringUtils.equals(this.targetImage, "triple_spot_target.png")) {
+            return R.drawable.triple_spot_target;
         } else {
             throw new RuntimeException("Missing drawable for " + this.targetImage);
         }

@@ -95,7 +95,7 @@ public class InsertConstantValues {
         constraints.add(new TournamentConstraint(1010, "Indoor - School - 18m - 40cm", false, "18_40", 10, 10, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(1020, "Indoor - School - 18m - 60cm", false, "18_60", 10, 10, 0, 0, 0, 0));
         constraints.add(new TournamentConstraint(1030, "Indoor - School - 18m - 80cm", false, "18_80", 10, 10, 0, 0, 0, 0));
-        constraints.add(new TournamentConstraint(1040, "Indoor - School - 12m - 80cm", false, "12_80", 11, 10, 0, 0, 0, 0));
+        constraints.add(new TournamentConstraint(1040, "Indoor - School - 12m - 80cm", false, "12_80", 11, 11, 0, 0, 0, 0));
 
 
         for (TournamentConstraint tournamentConstraint : constraints) {
