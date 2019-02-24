@@ -244,7 +244,11 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         YAxis yl = lineChart.getAxisLeft();
         yl.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         yl.setDrawGridLines(true);
-
+        RoundConstraint roundConstraint = this.container.getTournamentConstraint().getConstraintForSerie(1);
+        yl.setAxisMaximum(roundConstraint.getSerieMaxPossibleScore());
+        yl.setGranularity(1.0f);
+        yl.setGranularityEnabled(true);
+        
         YAxis yr = lineChart.getAxisRight();
         yr.setPosition(YAxis.YAxisLabelPosition.INSIDE_CHART);
         yr.setDrawGridLines(false);
@@ -350,7 +354,7 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         data.setValueFormatter(new BarAxisValueFormattter(totalArrows));
 
         HorizontalBarChartHelper.configureHorizonalBarChart(horizontalBarChart, xAxis, data);
-        horizontalBarChart.getDescription().setText(getString(R.string.tournament_view_stats_arrow_chart_description));
+        horizontalBarChart.getDescription().setText(getString(R.string.tournament_view_stats_color_chart_description));
         horizontalBarChart.invalidate();
     }
 

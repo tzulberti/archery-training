@@ -133,4 +133,6 @@ public class TournamentConstraint extends BaseArcheryTrainingModel implements Se
         }
         return res;
     }
+
+
 }
