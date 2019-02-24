@@ -429,16 +429,32 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
         tr.addView(maxTextView);
     }
 
-    public void exportToPdf(View view) {
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case 200: {
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    try {
+                        this.exportToPdf(null);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }
+    }
 
+    public void exportToPdf(View view) throws Exception {
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 != PackageManager.PERMISSION_GRANTED) {
-            // TODO check the granted permission for this case
-            // https://developer.android.com/training/permissions/requesting
+
             ActivityCompat.requestPermissions(this,
                     new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE},
                     200);
+            return;
         }
 
         PDFExporter pdfExporter = new PDFExporter();
@@ -471,8 +487,6 @@ public class ContainerStatsActivity extends BaseArcheryTrainingActivity {
             intent.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
             intent.setFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
             startActivity(intent);
-        } catch (Exception e) {
-            e.printStackTrace();
         } finally {
             this.findViewById(R.id.share_button).setVisibility(View.VISIBLE);
         }
