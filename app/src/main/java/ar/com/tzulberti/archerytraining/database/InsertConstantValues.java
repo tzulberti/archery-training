@@ -49,8 +49,8 @@ public class InsertConstantValues {
 
         roundConstraints.add(new RoundConstraint(9, 18, 10, 3, 10, 6, "triple_spot_target.png"));
         // Has the information of the target 80cm, 40cm
-        roundConstraints.add(new RoundConstraint(10, 18, 10, 3, 10, 6, "complete_archery_target.png"));
-        roundConstraints.add(new RoundConstraint(11, 12, 10, 3, 10, 6, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(10, 18, 10, 3, 10, 1, "complete_archery_target.png"));
+        roundConstraints.add(new RoundConstraint(11, 12, 10, 3, 10, 1, "complete_archery_target.png"));
 
 
         for (RoundConstraint roundConstraint : roundConstraints) {

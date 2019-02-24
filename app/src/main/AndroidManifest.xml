@@ -81,7 +81,7 @@
                 android:value="ar.com.tzulberti.archerytraining.activities.tournament.ViewExistingTournamentsActivity" />
         </activity>
 
-        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.TournamentStatsActivity">
+        <activity android:name="ar.com.tzulberti.archerytraining.activities.tournament.TournamentStatsActivity"
             android:parentActivityName="ar.com.tzulberti.archerytraining.activities.MainActivity" >
             <!-- The meta-data tag is required if you support API level 15 and lower -->
             <meta-data

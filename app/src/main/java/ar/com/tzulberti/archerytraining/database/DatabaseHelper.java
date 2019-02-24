@@ -9,6 +9,7 @@ import java.util.List;
 
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration1;
 import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration2;
+import ar.com.tzulberti.archerytraining.database.migrations.DatabaseMigration3;
 import ar.com.tzulberti.archerytraining.database.migrations.IDatabaseMigration;
 import io.sentry.Sentry;
 
@@ -21,7 +22,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DATABASE_NAME = "archery_training.db";
 
-    private static final int DATABASE_VERSION = 3;
+    private static final int DATABASE_VERSION = 4;
 
     public DatabaseHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
@@ -49,6 +50,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         List<IDatabaseMigration> existingMigrations = new ArrayList<>();
         existingMigrations.add(new DatabaseMigration1());
         existingMigrations.add(new DatabaseMigration2());
+        existingMigrations.add(new DatabaseMigration3());
 
 
         // make sure to disable any FK validation because the table might
