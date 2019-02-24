@@ -32,7 +32,6 @@ import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActiv
 
 import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.activities.tournament.ViewSerieInformationActivity;
-import ar.com.tzulberti.archerytraining.activities.tournament.ViewTournamentScoreSheetActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.PlayoffHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
@@ -40,7 +39,7 @@ import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieScore;
 import ar.com.tzulberti.archerytraining.model.playoff.Playoff;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerie;
 import ar.com.tzulberti.archerytraining.model.playoff.PlayoffSerieArrow;
-import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
+
 
 
 /**
@@ -231,14 +230,8 @@ public class ViewPlayoffSeriesActivity extends AbstractTableDataActivity {
     public void onClick(View v) {
         int id = v.getId();
 
-        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2) {
-            Intent intent = null;
-            if (id == Integer.MAX_VALUE - 1) {
-                intent = new Intent(this, ViewTournamentScoreSheetActivity.class);
-
-            } else if (id == Integer.MAX_VALUE - 2) {
-                intent = new Intent(this, ContainerStatsActivity.class);
-            }
+        if (id == Integer.MAX_VALUE - 2) {
+            Intent intent = new Intent(this, ContainerStatsActivity.class);
 
             intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.playoff);
             startActivity(intent);

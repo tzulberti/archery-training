@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.model.base.BaseArcheryTrainingModel;
 import ar.com.tzulberti.archerytraining.model.base.ISerie;
 import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
@@ -61,5 +62,10 @@ public class Tournament extends BaseArcheryTrainingModel implements ISerieContai
     @Override
     public String getTableName() {
         return TABLE_NAME;
+    }
+
+    @Override
+    public String getFilename() {
+        return this.name + "-" + DatetimeHelper.DATE_FORMATTER.format(this.datetime);
     }
 }

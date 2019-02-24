@@ -22,7 +22,6 @@ import java.util.List;
 import ar.com.tzulberti.archerytraining.R;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
 import ar.com.tzulberti.archerytraining.activities.common.AbstractTableDataActivity;
-import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.helper.DatetimeHelper;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
@@ -157,17 +156,6 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
 
 
         boolean buttonsEnabled = ! this.tournament.series.isEmpty();
-        // add the buttons to delete/view charts for the tournament
-        TableRow tr2 = new TableRow(this);
-        Button viewScoreSheetButton = new Button(this);
-        viewScoreSheetButton.setId(Integer.MAX_VALUE - 1);
-        viewScoreSheetButton.setText(R.string.tournament_view_score_sheet);
-        viewScoreSheetButton.setLayoutParams(trParams);
-        viewScoreSheetButton.setOnClickListener(this);
-        viewScoreSheetButton.setEnabled(buttonsEnabled);
-        tr2.addView(viewScoreSheetButton);
-        tableLayout.addView(tr2);
-
 
         TableRow tr3 = new TableRow(this);
         Button viewTournamentArrowStats = new Button(this);
@@ -196,17 +184,8 @@ public class ViewTournamentSeriesActivity extends AbstractTableDataActivity impl
         int id = v.getId();
 
 
-        if (id == Integer.MAX_VALUE - 1 || id == Integer.MAX_VALUE - 2) {
-            // selected the option to view all impacts for the current tournament
-            Intent intent = null;
-
-            if (id == Integer.MAX_VALUE - 1) {
-                intent = new Intent(this, ViewTournamentScoreSheetActivity.class);
-
-            } else if (id == Integer.MAX_VALUE - 2) {
-                intent = new Intent(this, ContainerStatsActivity.class);
-            }
-
+        if (id == Integer.MAX_VALUE - 2) {
+            Intent intent = new Intent(this, TournamentStatsActivity.class);
             intent.putExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY, this.tournament);
             startActivity(intent);
 

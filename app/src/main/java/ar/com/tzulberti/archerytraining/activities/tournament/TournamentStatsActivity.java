@@ -1,40 +1,24 @@
 package ar.com.tzulberti.archerytraining.activities.tournament;
 
-import android.os.Bundle;
 import android.util.TypedValue;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 
 import ar.com.tzulberti.archerytraining.R;
-import ar.com.tzulberti.archerytraining.activities.common.AbstractSerieArrowsActivity;
-import ar.com.tzulberti.archerytraining.activities.common.BaseArcheryTrainingActivity;
+import ar.com.tzulberti.archerytraining.activities.common.ContainerStatsActivity;
 import ar.com.tzulberti.archerytraining.helper.TournamentHelper;
-import ar.com.tzulberti.archerytraining.model.constrains.RoundConstraint;
+import ar.com.tzulberti.archerytraining.model.base.ISerieContainer;
 import ar.com.tzulberti.archerytraining.model.tournament.Tournament;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerie;
 import ar.com.tzulberti.archerytraining.model.tournament.TournamentSerieArrow;
 
-/**
- * View the tournament information as a score sheet.
- *
- * Created by tzulberti on 5/26/17.
- */
-public class ViewTournamentScoreSheetActivity extends BaseArcheryTrainingActivity {
-
+public class TournamentStatsActivity extends ContainerStatsActivity {
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.tournament_view_tournament_score_sheet);
-
-        Tournament tournament = (Tournament) this.getIntent().getSerializableExtra(AbstractSerieArrowsActivity.CONTAINER_ARGUMENT_KEY);
-        this.renderScoreSheet((TableLayout) this.findViewById(R.id.tournament_score_sheet_table), tournament);
-    }
-
-
-    private void renderScoreSheet(TableLayout tableLayout, Tournament tournament) {
+    protected void renderRawData(TableLayout tableLayout, ISerieContainer container) {
         int roundAccumulatedScore = 0;
+        Tournament tournament = (Tournament) container;
 
         int roundIndex = 0;
         for (TournamentSerie tournamentSerie : tournament.series) {

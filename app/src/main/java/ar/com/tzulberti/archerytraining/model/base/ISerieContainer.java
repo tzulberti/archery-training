@@ -22,4 +22,6 @@ public interface ISerieContainer extends IPrimaryKeyTable {
 
     String getTableName();
 
+    String getFilename();
+
 }

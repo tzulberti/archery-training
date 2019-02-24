@@ -38,7 +38,7 @@ import ar.com.tzulberti.archerytraining.model.constrains.TournamentConstraint;
 
 
 /**
- * Show the stats for the playoffs on the selected date range
+ * Show the stats for the playoffs/tournament on the selected date range.
  *
  * Created by tzulberti on 6/25/17.
  */
@@ -71,7 +71,7 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         super.onCreate(savedInstanceState);
         setContentView(R.layout.common_view_stats);
 
-        Spinner tournamentConstrainsSpinner = (Spinner) this.findViewById(R.id.tournament_constrains);
+        Spinner tournamentConstrainsSpinner = this.findViewById(R.id.tournament_constrains);
         ArrayAdapter<String> dataAdapter = new ArrayAdapter<>(
                 this,
                 android.R.layout.simple_spinner_item,
@@ -82,9 +82,9 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         tournamentConstrainsSpinner.setOnItemSelectedListener(this);
 
         this.baseArrowSeriesDAO = this.setBaseArrowSeriesDAO();
-        this.tableStats = (TableLayout) this.findViewById(R.id.playoff_stats_table_data);
-        this.arrowsStatsHorizontalBarChart = (HorizontalBarChart) this.findViewById(R.id.playoff_stats_arrow_stats);
-        this.seriesStatsHorizontalBarChart = (HorizontalBarChart) this.findViewById(R.id.playoff_stats_series_stats);
+        this.tableStats = this.findViewById(R.id.playoff_stats_table_data);
+        this.arrowsStatsHorizontalBarChart = this.findViewById(R.id.playoff_stats_arrow_stats);
+        this.seriesStatsHorizontalBarChart = this.findViewById(R.id.playoff_stats_series_stats);
     }
 
 
@@ -333,4 +333,6 @@ public abstract class AbstractContainersStatsActivity extends BaseArcheryTrainin
         }
 
     }
+
+
 }
